@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Courtesy</title>
+    <link rel="stylesheet" href='static/css/style.css'>
+</head>
+
+<body>
+    <header>
+        <div>
+        <!-- <div class="menu"> -->
+            <a href="/about">О нас</a> |
+            <a href="/services ">Услуги и цены</a> |
+            <a href="/services ">Врачи</a> |
+            <a href="/news ">Новости</a> |
+            <a href="/conctacts ">Контакты</a> |
+            <a href="/personal ">Личный кабинет</a> |
+        </div>
+    </header>
+    <h1>{% block header %}{% endblock header %}</h1>
+    <div>{% block content%}{% endblock content %}</div>
+    <div style="height: 10000px;">MyCorp. 2022. All rights reserved.</div>
+
+</body>
+
+</html>
