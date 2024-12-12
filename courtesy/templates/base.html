@@ -3,26 +3,84 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Courtesy</title>
-    <link rel="stylesheet" href='static/css/style.css'>
+    <title>{% block title %}{% endblock title %}</title>
+    {% load static %}
+    <link rel="stylesheet" href='{% static "css/style.css" %}'>
 </head>
 
 <body>
     <header>
-        <div>
-        <!-- <div class="menu"> -->
-            <a href="/about">О нас</a> |
-            <a href="/services ">Услуги и цены</a> |
-            <a href="/services ">Врачи</a> |
-            <a href="/news ">Новости</a> |
-            <a href="/conctacts ">Контакты</a> |
-            <a href="/personal ">Личный кабинет</a> |
+        <div class="header-container">
+            <!-- Логотип -->
+            <div class="logo">
+                <a href="/"><img src="{% static 'images/logo.png' %}" alt="Логотип"></a>
+                <span>Courtesy</span>
+            </div>
+
+            <!-- Поисковая строка -->
+            <div class="search-container">
+                <input type="text" placeholder="Введите запрос" class="search-input">
+                <button type="submit" class="search-button">
+                    <img src="{% static 'images/search-icon.png' %}" alt="Искать">
+                </button>
+            </div>
+
+
+            <!-- Навигация -->
+            <nav>
+                <a href="/about">О нас</a>
+                <a href="/services">Услуги и цены</a>
+                <a href="/doctors">Врачи</a>
+                <a href="/news">Новости</a>
+                <a href="/contacts">Контакты</a>
+            </nav>
+
+            <!-- Иконка профиля -->
+            <div class="profile-icon">
+                <a href="/personal">
+                    <img src="{% static 'images/profile-icon.png' %}" alt="Профиль">
+                </a>
+                <span><a href="/personal" class="profile-label">Личный кабинет</a></span>
+            </div>
         </div>
     </header>
-    <h1>{% block header %}{% endblock header %}</h1>
-    <div>{% block content%}{% endblock content %}</div>
-    <div style="height: 10000px;">MyCorp. 2022. All rights reserved.</div>
 
+    <main>
+        <h1>{% block header %}{% endblock header %}</h1>
+        <div>{% block content%}{% endblock content %}</div>
+        <div style="height: 1000px;">MyCorp. 2022. All rights reserved.</div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <!-- Контакты -->
+            <div class="footer-contacts">
+                <p>Контакты:</p>
+                <p>+375 XXX XXX XX</p>
+                <p>+375 XXX XXX XX</p>
+            </div>
+
+            <!-- Адреса -->
+            <div class="footer-addresses">
+                <p>Наши адреса:</p>
+                <p>Ул. xxxxxxxxx</p>
+                <p>Ул. xxxxxxxxx</p>
+            </div>
+
+            <!-- Социальные сети -->
+            <div class="footer-socials">
+                <a href="https://web.telegram.org/a/" class="social-icon">
+                    <img src="{% static 'images/telegram-icon.png' %}" alt="Telegram">
+                </a>
+                <a href="https://www.youtube.com" class="social-icon">
+                    <img src="{% static 'images/youtube-icon.png' %}" alt="YouTube">
+                </a>
+                <a href="https://ru-ru.facebook.com/login" class="social-icon">
+                    <img src="{% static 'images/facebook-icon.png' %}" alt="Facebook">
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

@@ -1,16 +1,219 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   font-family: sans-serif;
 }
 
+/* Общие настройки */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 
 header {
-  background-color: skyblue;
-  text-align: center;
-  background-color: gray;
-  border-bottom: 1px solid black ;
-  position: fixed;
+  background-color: #d9f5eb;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Логотип */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.logo img {
+  height: 100px;
+  /* Увеличенный размер логотипа */
+}
+
+.logo span {
+  font-size: 20px;
+  /* Чуть меньше размера текста */
+  font-weight: bold;
+  color: #43b5a0;
+  text-align: center;
+  /* Центрирование текста под логотипом */
+}
+
+/* Поисковая строка */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 10px; /* Отступ сверху, если нужно */
+}
+
+/* Поле ввода */
+.search-input {
+  width: 300px; /* Ширина поля поиска */
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #C4E6DE;
+  border-radius: 25px; /* Закругленные края */
+  outline: none;
+}
+
+/* Кнопка поиска */
+.search-button {
+  position: absolute;
+  right: 10px; /* Расположение кнопки внутри поля ввода */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+/* Иконка лупы */
+.search-button img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0.5); /* Легкий затемненный эффект */
+  transition: transform 0.2s, filter 0.2s; /* Плавное увеличение при наведении */
+}
+
+.search-button img:hover {
+  transform: scale(1.1); /* Увеличение при наведении */
+  filter: brightness(0.8);
+}
+
+/* Навигация */
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  /* Добавлены внутренние отступы для выделенной области */
+  border-radius: 8px;
+  /* Закругление углов */
+  transition: all 0.3s ease;
+  /* Плавный переход */
+}
+
+nav a:hover {
+  color: #D2FFFB;
+  /* Цвет текста при наведении */
+  background-color: #5EAEA7;
+  /* Цвет фона при наведении */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  /* Легкая тень для эффекта */
+  transform: scale(1.05);
+  /* Небольшое увеличение ссылки */
+}
+
+/* Иконка профиля */
+.profile-icon {
+  display: flex;
+  flex-direction: column; /* Выравнивание вертикально */
+  align-items: center; /* Центрирование по горизонтали */
+  gap: 10px; /* Отступ между иконкой и подписью */
+  margin-left: 20px; /* Отступ от контактов */
+}
+
+.profile-icon img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: #d9f5eb;
+  cursor: pointer;
+}
+
+/* Подпись "Личный кабинет" */
+.profile-icon .profile-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 8px; /* Закругленные углы для фона при наведении */
+  transition: color 0.3s, background-color 0.3s; /* Плавный переход стиля */
+  text-align: center;
+}
+
+/* Эффект наведения для подписи */
+.profile-icon .profile-label:hover {
+  color: #D2FFFB; /* Цвет текста при наведении */
+  background-color: #5EAEA7; /* Фон текста при наведении */
+  padding: 5px 10px; /* Добавляем отступы для фона при наведении */
+}
+
+
+
+
+main {
+  background-color: darkorange;
+  padding: 20px;
+  /* Отступы для основного контента */
+}
+
+
+/* Футер */
+footer {
+  background-color: #5eaea6;
+  padding: 20px 0;
+  border-top: 1px solid #C4E6DE;
+  font-family: Arial, sans-serif;
+}
+
+/* Контейнер футера */
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Блок контактов */
+.footer-contacts, .footer-addresses {
+  color: #333;
+  font-size: 14px;
+}
+
+.footer-contacts p, .footer-addresses p {
+  margin: 5px 0;
+}
+
+/* Блок социальных сетей */
+.footer-socials {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-socials .social-icon img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.footer-socials .social-icon img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
