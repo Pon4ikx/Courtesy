@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация аккаунта{% endblock title %}
+
+{% block header %}{% endblock header %}
+
+{% block content %}
+<div class="login-main">
+    <div class="login-container">
+        <h2>Регистрация</h2>
+        <input type="text" class="login-input" placeholder="Фамилия" required>
+        <input type="text" class="login-input" placeholder="Имя" required>
+
+        <div>
+            <label class="light-text" for="has-patronymic">
+                <input type="checkbox" id="has-patronymic"><span class="signup-text"> Есть отчество</span>
+            </label>
+        </div>
+
+        <div id="patronymic-container" style="display: none;">
+            <input type="text" class="login-input" placeholder="Отчество">
+        </div>
+
+        <script>
+            const patronymicCheckbox = document.getElementById('has-patronymic');
+            const patronymicContainer = document.getElementById('patronymic-container');
+        
+            patronymicCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    patronymicContainer.style.display = 'block';
+                } else {
+                    patronymicContainer.style.display = 'none';
+                }
+            });
+        </script>
+        
+        <label for="birth-year" class="light-text">Дата рождения:</label>
+        <div style="display: flex; gap: 10px;">
+            <select id="birth-year" class="login-input light-text" required>
+                <option value="" disabled selected>Год</option>
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+            <select id="birth-month" class="login-input light-text" required>
+                <option value="" disabled selected>Месяц</option>
+                {% for month in months %}
+                <option value="{{ month }}">{{ month }}</option>
+                {% endfor %}
+            </select>
+            <select id="birth-day" class="login-input light-text" required>
+                <option value="" disabled selected>День</option>
+                {% for day in days %}
+                <option value="{{ day }}">{{ day }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <script>
+            const yearSelect = document.getElementById('birth-year');
+            const monthSelect = document.getElementById('birth-month');
+            const daySelect = document.getElementById('birth-day');
+
+            function updateDays() {
+                const selectedYear = parseInt(yearSelect.value);
+                const selectedMonth = parseInt(monthSelect.value);
+                let daysInMonth;
+
+                if (selectedMonth === 2) {
+                    daysInMonth = (selectedYear % 4 === 0 && (selectedYear % 100 !== 0 || selectedYear % 400 === 0)) ? 29 : 28;
+                } else if ([4, 6, 9, 11].includes(selectedMonth)) {
+                    daysInMonth = 30;
+                } else {
+                    daysInMonth = 31;
+                }
+
+                // Очистка текущих опций дней
+                daySelect.innerHTML = '<option value="" disabled selected>День</option>';
+
+                // Добавление новых опций
+                for (let day = 1; day <= daysInMonth; day++) {
+                    daySelect.innerHTML += `<option value="${day}">${day}</option>`;
+                }
+            }
+
+            monthSelect.addEventListener('change', updateDays);
+            yearSelect.addEventListener('change', updateDays);
+        </script>
+
+        <input type="text" class="login-input" placeholder="Телефон" required>
+        <input type="email" class="login-input" placeholder="Электронная почта" required>
+        <input type="password" class="login-input" placeholder="Пароль" required>
+        <input type="password" class="login-input" placeholder="Подтвердите пароль" required>
+        <button class="login-button">Зарегистрироваться</button>
+        <div class="register-note">
+            Если у вас есть аккаунт, можете <a href="/login">войти</a>.
+        </div>
+    </div>
+</div>
+{% endblock content %}
