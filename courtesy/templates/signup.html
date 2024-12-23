@@ -24,7 +24,7 @@
         <script>
             const patronymicCheckbox = document.getElementById('has-patronymic');
             const patronymicContainer = document.getElementById('patronymic-container');
-        
+
             patronymicCheckbox.addEventListener('change', function () {
                 if (this.checked) {
                     patronymicContainer.style.display = 'block';
@@ -33,59 +33,9 @@
                 }
             });
         </script>
-        
-        <label for="birth-year" class="light-text">Дата рождения:</label>
-        <div style="display: flex; gap: 10px;">
-            <select id="birth-year" class="login-input light-text" required>
-                <option value="" disabled selected>Год</option>
-                {% for year in years %}
-                <option value="{{ year }}">{{ year }}</option>
-                {% endfor %}
-            </select>
-            <select id="birth-month" class="login-input light-text" required>
-                <option value="" disabled selected>Месяц</option>
-                {% for month in months %}
-                <option value="{{ month }}">{{ month }}</option>
-                {% endfor %}
-            </select>
-            <select id="birth-day" class="login-input light-text" required>
-                <option value="" disabled selected>День</option>
-                {% for day in days %}
-                <option value="{{ day }}">{{ day }}</option>
-                {% endfor %}
-            </select>
-        </div>
 
-        <script>
-            const yearSelect = document.getElementById('birth-year');
-            const monthSelect = document.getElementById('birth-month');
-            const daySelect = document.getElementById('birth-day');
-
-            function updateDays() {
-                const selectedYear = parseInt(yearSelect.value);
-                const selectedMonth = parseInt(monthSelect.value);
-                let daysInMonth;
-
-                if (selectedMonth === 2) {
-                    daysInMonth = (selectedYear % 4 === 0 && (selectedYear % 100 !== 0 || selectedYear % 400 === 0)) ? 29 : 28;
-                } else if ([4, 6, 9, 11].includes(selectedMonth)) {
-                    daysInMonth = 30;
-                } else {
-                    daysInMonth = 31;
-                }
-
-                // Очистка текущих опций дней
-                daySelect.innerHTML = '<option value="" disabled selected>День</option>';
-
-                // Добавление новых опций
-                for (let day = 1; day <= daysInMonth; day++) {
-                    daySelect.innerHTML += `<option value="${day}">${day}</option>`;
-                }
-            }
-
-            monthSelect.addEventListener('change', updateDays);
-            yearSelect.addEventListener('change', updateDays);
-        </script>
+        <input class="login-input" placeholder="Дата рождения" type="text" onfocus="this.type='date'"
+            onblur="if(this.value==''){this.type='text'}" />
 
         <input type="text" class="login-input" placeholder="Телефон" required>
         <input type="email" class="login-input" placeholder="Электронная почта" required>

@@ -121,6 +121,7 @@ nav a {
   border-radius: 8px;
   /* Закругление углов */
   transition: all 0.3s ease;
+  vertical-align: middle;
   /* Плавный переход */
 }
 
@@ -255,6 +256,12 @@ footer {
   border: 1px solid #C4E6DE;
   border-radius: 5px;
   font-size: 14px;
+  color: gray;
+}
+
+.login-input:focus,
+.login-input:not(:placeholder-shown) {
+    color: black; /* Цвет текста, когда поле заполнено */
 }
 
 .login-button {
@@ -291,4 +298,9 @@ footer {
 
 .light-text{
   color: #636363;
+  margin-top: 10px;
+}
+
+#lab {
+  margin-top: 15px; /* Вы можете изменить значение по вашему усмотрению */
 }
