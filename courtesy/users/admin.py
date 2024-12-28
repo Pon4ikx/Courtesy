@@ -1,20 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Account
+from .models import Account, Category, Specialist
 
-
-# Создаём кастомную форму для пользователя (если нужно)
-# from django import forms
-# class AccountChangeForm(forms.ModelForm):
-#     class Meta:
-#         model = Account
-#         fields = '__all__'
-
-# # Также можно создать форму для создания пользователя
-# class AccountCreationForm(forms.ModelForm):
-#     class Meta:
-#         model = Account
-#         fields = ('username', 'email', 'phone', 'password')
 
 # Настройка админки для модели Account
 class AccountAdmin(admin.ModelAdmin):
@@ -45,5 +32,28 @@ class AccountAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)  # Убрали slug из отображаемых колонок
+    search_fields = ('name',)  # Поле поиска остается по имени
+    exclude = ('slug',)  # Исключаем поле slug из формы
+
+
+class SpecialistAdmin(admin.ModelAdmin):
+    list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category')
+    list_filter = ('category', 'speciality')  # Фильтры по категориям и специальностям
+    search_fields = ('last_name', 'first_name', 'middle_name', 'speciality')  # Поля для поиска
+    ordering = ('last_name', 'first_name')  # Сортировка по фамилии и имени
+    exclude = ('slug',)  # Исключаем поле slug из формы
+    fieldsets = (
+        (None, {
+            'fields': ('photo', 'last_name', 'first_name', 'middle_name', 'speciality', 'category', 'dop_info')
+        }),
+
+    )
+    # prepopulated_fields = {'slug': ('last_name', 'first_name', 'middle_name')}  # Генерация slug на основе ФИО
+
+
 # Регистрация модели в админке
 admin.site.register(Account, AccountAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Specialist, SpecialistAdmin)

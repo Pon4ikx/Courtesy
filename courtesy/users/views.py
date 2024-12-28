@@ -20,6 +20,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')  # Перенаправление на страницу входа
 
+
 # Страница входа
 def login_view(request):
     if request.method == 'POST':
@@ -53,3 +54,7 @@ def signup_view(request):
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
+
+
+def specialists_view(request):
+    return render(request, 'specialists.html')
