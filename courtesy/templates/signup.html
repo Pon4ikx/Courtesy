@@ -2,46 +2,90 @@
 
 {% block title %}Регистрация аккаунта{% endblock title %}
 
-{% block header %}{% endblock header %}
-
 {% block content %}
 <div class="login-main">
     <div class="login-container">
         <h2>Регистрация</h2>
-        <input type="text" class="login-input" placeholder="Фамилия" required>
-        <input type="text" class="login-input" placeholder="Имя" required>
+        <form method="post" class="signup-form">
+            {% csrf_token %}
 
-        <div>
-            <label class="light-text" for="has-patronymic">
-                <input type="checkbox" id="has-patronymic"><span class="signup-text"> Есть отчество</span>
-            </label>
-        </div>
+            <!-- Поле фамилии -->
+            <input type="text" name="last_name" class="login-input" placeholder="Фамилия"
+                value="{{ form.last_name.value }}" required>
+            {% if form.last_name.errors %}
+            <div class="form-error">{{ form.last_name.errors|join:", " }}</div>
+            {% endif %}
 
-        <div id="patronymic-container" style="display: none;">
-            <input type="text" class="login-input" placeholder="Отчество">
-        </div>
+            <!-- Поле имени -->
+            <input type="text" name="first_name" class="login-input" placeholder="Имя"
+                value="{{ form.first_name.value }}" required>
+            {% if form.first_name.errors %}
+            <div class="form-error">{{ form.first_name.errors|join:", " }}</div>
+            {% endif %}
 
-        <script>
-            const patronymicCheckbox = document.getElementById('has-patronymic');
-            const patronymicContainer = document.getElementById('patronymic-container');
+            <!-- Поле отчества (показывается по запросу) -->
+            <div>
+                <label class="light-text" for="has-patronymic">
+                    <input type="checkbox" id="has-patronymic">
+                    <span class="signup-text"> Есть отчество</span>
+                </label>
+            </div>
+            <div id="patronymic-container" style="display: none;">
+                <input type="text" name="middle_name" class="login-input" placeholder="Отчество"
+                    value="{{ form.middle_name.value }}">
+            </div>
+            {% if form.middle_name.errors %}
+            <div class="form-error">{{ form.middle_name.errors|join:", " }}</div>
+            {% endif %}
 
-            patronymicCheckbox.addEventListener('change', function () {
-                if (this.checked) {
-                    patronymicContainer.style.display = 'block';
-                } else {
-                    patronymicContainer.style.display = 'none';
-                }
-            });
-        </script>
+            <!-- JavaScript для показа/скрытия поля отчества -->
+            <script>
+                const patronymicCheckbox = document.getElementById('has-patronymic');
+                const patronymicContainer = document.getElementById('patronymic-container');
 
-        <input class="login-input" placeholder="Дата рождения" type="text" onfocus="this.type='date'"
-            onblur="if(this.value==''){this.type='text'}" />
+                patronymicCheckbox.addEventListener('change', function () {
+                    patronymicContainer.style.display = this.checked ? 'block' : 'none';
+                });
+            </script>
 
-        <input type="text" class="login-input" placeholder="Телефон" required>
-        <input type="email" class="login-input" placeholder="Электронная почта" required>
-        <input type="password" class="login-input" placeholder="Пароль" required>
-        <input type="password" class="login-input" placeholder="Подтвердите пароль" required>
-        <button class="login-button">Зарегистрироваться</button>
+            <!-- Поле даты рождения -->
+            <input type="date" name="date_of_birth" class="login-input" placeholder="Дата рождения"
+                value="{{ form.date_of_birth.value }}" required>
+            {% if form.date_of_birth.errors %}
+            <div class="form-error">{{ form.date_of_birth.errors|join:", " }}</div>
+            {% endif %}
+
+            <!-- Поле телефона -->
+            <input type="text" name="phone" class="login-input" placeholder="Телефон" value="{{ form.phone.value }}"
+                required>
+            {% if form.phone.errors %}
+            <div class="form-error">{{ form.phone.errors|join:", " }}</div>
+            {% endif %}
+
+            <!-- Поле электронной почты -->
+            <input type="email" name="email" class="login-input" placeholder="Электронная почта"
+                value="{{ form.email.value }}" required>
+            {% if form.email.errors %}
+            <div class="form-error">{{ form.email.errors|join:", " }}</div>
+            {% endif %}
+
+            <!-- Поле пароля -->
+            <input type="password" name="password1" class="login-input" placeholder="Пароль" required>
+            {% if form.password1.errors %}
+            <div class="form-error">{{ form.password1.errors|join:", " }}</div>
+            {% endif %}
+
+            <!-- Поле подтверждения пароля -->
+            <input type="password" name="password2" class="login-input" placeholder="Подтвердите пароль" required>
+            {% if form.password2.errors %}
+            <div class="form-error">{{ form.password2.errors|join:", " }}</div>
+            {% endif %}
+
+            <!-- Кнопка регистрации -->
+            <button type="submit" class="login-button">Зарегистрироваться</button>
+        </form>
+
+        <!-- Примечание для зарегистрированных пользователей -->
         <div class="register-note">
             Если у вас есть аккаунт, можете <a href="/login">войти</a>.
         </div>

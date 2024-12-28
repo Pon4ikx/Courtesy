@@ -47,6 +47,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # Отвечает за управление сессиями пользователей
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # Добавляет объект request.user в каждый запрос. Этот объект содержит информацию о текущем пользователе. Также проверяет, авторизован ли пользователь, и предоставляет атрибут is_authenticated для проверки его статуса
 ]
 
 ROOT_URLCONF = 'courtesy.urls'
@@ -136,3 +140,11 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.Account'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailBackend',  # Указываем путь к кастомному бэкенду
+    'django.contrib.auth.backends.ModelBackend',  # Оставляем стандартный бэкенд для других случаев
+]
+
+LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
