@@ -152,3 +152,5 @@ LOGOUT_REDIRECT_URL = '/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+ADMIN_SITE_HEADER = "Администрирование"
+ADMIN_SITE_TITLE = "Администрирование"

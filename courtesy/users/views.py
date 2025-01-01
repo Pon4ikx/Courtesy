@@ -3,13 +3,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import SignupForm
 from django.contrib.auth import logout
-
+from .models import Specialist
 
 # Create your views here.
 
 
 def index(request):
-    return render(request, "index.html")
+    # Получаем первых 3 специалистов
+    specialists = Specialist.objects.all()[:3]
+    return render(request, 'index.html', {'specialists': specialists})
 
 
 def about(request):

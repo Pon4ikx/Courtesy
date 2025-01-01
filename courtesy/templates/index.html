@@ -1,5 +1,65 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Медецинский центр "Courtesy"{% endblock title %}
+{% block title %}Медицинский центр "Courtesy"{% endblock title %}
 
-{% block header %}Главная{% endblock header %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+
+<div class="container">
+    <div class="hero-container">
+        <div class="hero-text">
+            <h1>Медицинский центр "Courtesy"</h1>
+            <p>Многопрофильный медицинский центр, предлагающий широкий спектр услуг для вашего здоровья.</p>
+            <a href="#appointment" class="button">Записаться на прием</a>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'images/hospital.jpg' %}" alt="Медицинский центр">
+        </div>
+    </div>
+    
+    
+
+    <section class="advantages">
+        <h2>Наши преимущества</h2>
+        <ul>
+            <li>Профессионализм</li>
+            <li>Широкий спектр услуг</li>
+            <li>Современное оборудование</li>
+            <li>Высокий уровень обслуживания</li>
+            <li>Хирургические стационары</li>
+        </ul>
+    </section>
+
+    <section class="staff">
+        <h2>Наши сотрудники</h2>
+        {% for specialist in specialists %}
+        <div class="staff-member">
+            {% if specialist.photo %}
+            <img src="{{ specialist.photo.url }}" alt="{{ specialist.last_name }} {{ specialist.first_name }}">
+            {% else %}
+            <img src="{% static 'images/default-photo.png' %}" alt="Фото не доступно">
+            {% endif %}
+            <h3>{{ specialist.last_name }} {{ specialist.first_name }} {% if specialist.middle_name != null%}{{
+                specialist.middle_name }}{% endif %}</h3>
+            <p>{{ specialist.speciality }}</p>
+            <p>Стаж: {{ specialist.experience }}</p>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="popular-services">
+        <h2>Последние новости</h2>
+        <ul>
+            <li>Эстетическая медицина</li>
+            <li>Оздоровительные процедуры</li>
+            <li>Служба помощи на дому</li>
+            <li>Восстановительная терапия</li>
+        </ul>
+    </section>
+</div>
+{% endblock content %}

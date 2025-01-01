@@ -1,0 +1,207 @@
+/* Основные стили для главной страницы */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Блок Hero - главный баннер */
+.hero-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    padding: 40px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #d3ffe9;
+    /* Цвет фона по бокам */
+}
+
+.hero-text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.hero-text h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.hero-text .button {
+    background-color: #ffa9a9;
+    color: #333;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.hero-text .button:hover {
+    background-color: #36a594;
+    color: white;
+}
+
+.hero-image {
+    flex: 1;
+    padding-left: 20px;
+    /* Отступ слева для изображения */
+}
+
+.hero-image img {
+    margin-left: 100px;
+    width: 80%;
+    /* Уменьшаем размер изображения */
+    max-width: 500px;
+    /* Максимальная ширина изображения */
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Добавляем фон на body и main, чтобы убрать белые края */
+body,
+main {
+    background-color: #d3ffe9;
+    /* Цвет фона для всей страницы */
+}
+
+
+
+
+/* Преимущества */
+.advantages {
+    padding: 40px 20px;
+    background-color: #d2fffa;
+    /* Цвет фона */
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 5px solid #000000;
+    /* Добавление цвета на края */
+    border-radius: 10px;
+    /* Закругляем углы */
+}
+
+.advantages h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.advantages ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /* Элементы в столбик */
+    gap: 20px;
+    align-items: center;
+    /* Центрируем элементы */
+}
+
+.advantages li {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+
+
+/* Сотрудники */
+.staff {
+    padding: 40px 20px;
+}
+
+.staff h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.staff-member {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.staff-member img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #43b5a0;
+}
+
+.staff-member h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.staff-member p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Популярные услуги */
+.popular-services {
+    background-color: #f4f4f4;
+    padding: 40px 20px;
+    margin-top: 40px;
+}
+
+.popular-services h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.popular-services ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.popular-services li {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.popular-services li:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
