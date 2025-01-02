@@ -5,6 +5,7 @@ from pytils.translit import slugify as pytils_slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 
+
 # Кастомный менеджер для модели Account
 class AccountManager(BaseUserManager):
     def create_user(self, username=None, email=None, password=None, **extra_fields):
@@ -136,6 +137,7 @@ class Service(models.Model):
         default=Decimal('0.00'),
         verbose_name="Цена"
     )
+
     class Meta:
         verbose_name = "Услуга"
         verbose_name_plural = "Услуги"
@@ -273,3 +275,28 @@ class SpecialistService(models.Model):
 
     specialist_category.admin_order_field = 'specialist__category'  # Для сортировки по категории
     specialist_category.short_description = 'Категория специалиста'  # Заголовок для админки
+
+
+class Address(models.Model):
+    # example =
+    address = models.CharField(
+        max_length=255,
+        verbose_name="Адрес",
+        help_text="Пример: ул. (Название улицы или проспекта(пр.)), д. (Номер дома), Город"
+    )
+    working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
+                                     null=True)  # Время работы
+
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, verbose_name="Широта", blank=True, null=True
+    )  # Поле для широты
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, verbose_name="Долгота", blank=True, null=True
+    )  # Поле для долготы
+
+    class Meta:
+        verbose_name = "Адрес"
+        verbose_name_plural = "Адреса"
+
+    def __str__(self):
+        return self.address
