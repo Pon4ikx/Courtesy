@@ -9,6 +9,14 @@ main {
     flex: 1;
 }
 
+/* разграничитель */
+.divider {
+    max-width: 1200px;
+    height: 5px;
+    background-color: #5eaea6;
+    margin: 40px auto;
+}
+
 /* Блок Hero - главный баннер */
 .hero-container {
     display: flex;
@@ -20,7 +28,6 @@ main {
     max-width: 1200px;
     margin: 0 auto;
     background-color: #d3ffe9;
-    /* Цвет фона по бокам */
 }
 
 .hero-text {
@@ -59,34 +66,20 @@ main {
 .hero-image {
     flex: 1;
     padding-left: 20px;
-    /* Отступ слева для изображения */
 }
 
 .hero-image img {
     margin-left: 100px;
     width: 80%;
-    /* Уменьшаем размер изображения */
     max-width: 500px;
-    /* Максимальная ширина изображения */
     height: auto;
     border-radius: 10px;
 }
-
-/* Добавляем фон на body и main, чтобы убрать белые края */
-body,
-main {
-    background-color: #d3ffe9;
-    /* Цвет фона для всей страницы */
-}
-
-
-
 
 /* Преимущества */
 .advantages {
     padding: 40px 20px;
     background-color: #d2fffa;
-    /* Цвет фона */
     text-align: center;
     max-width: 1200px;
     margin: 0 auto;
@@ -106,7 +99,6 @@ main {
     /* Элементы в столбик */
     gap: 20px;
     align-items: center;
-    /* Центрируем элементы */
 }
 
 .advantages li {
@@ -126,6 +118,8 @@ main {
 /* Сотрудники */
 .staff {
     padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .staff h2 {
@@ -136,20 +130,33 @@ main {
     text-align: center;
 }
 
-.staff-member {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.staff-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 столбца */
     gap: 20px;
-    margin-bottom: 30px;
 }
 
-.staff-member img {
-    width: 100px;
-    height: 100px;
+.staff-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.staff-photo img {
+    width: 200px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #43b5a0;
+    border-radius: 10px;
+}
+
+.staff-info {
+    text-align: center;
 }
 
 .staff-member h3 {
@@ -164,14 +171,18 @@ main {
     color: #666;
 }
 
-/* Популярные услуги */
-.popular-services {
-    background-color: #f4f4f4;
+
+/* Последние новости */
+.latest-news {
+    background-color: #d2fffa;
     padding: 40px 20px;
     margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.popular-services h2 {
+.latest-news h2 {
     font-size: 24px;
     font-weight: 700;
     color: #333;
@@ -179,25 +190,73 @@ main {
     text-align: center;
 }
 
-.popular-services ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.latest-news ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
+    padding: 0;
+    list-style: none;
 }
 
-.popular-services li {
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    padding: 10px 20px;
+.latest-news .news-card {
     background-color: #ffffff;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.popular-services li:hover {
+.latest-news .news-card:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
+
+.latest-news .news-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.latest-news .news-content {
+    padding: 15px;
+}
+
+.latest-news .news-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.latest-news .news-content p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.latest-news .news-content .date {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.latest-news .news-content .read-more {
+    font-size: 14px;
+    color: #43b5a0;
+    text-decoration: none;
+}
+
+.latest-news .new-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff5050;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+

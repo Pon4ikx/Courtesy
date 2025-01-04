@@ -35,34 +35,63 @@
                 <li>Хирургические стационары</li>
             </ul>
         </section>
+
+        <div class="divider"></div> <!-- Разделительная линия -->
+
+        <section class="staff">
+            <h2>Наши сотрудники</h2>
+            <div class="staff-list">
+                {% for specialist in specialists|slice:":3" %}
+                <div class="staff-member">
+                    <div class="staff-photo">
+                        {% if specialist.photo %}
+                        <img src="{{ specialist.photo.url }}" alt="{{ specialist.last_name }} {{ specialist.first_name }}">
+                        {% else %}
+                        <img src="{% static 'images/default-photo.png' %}" alt="Фото не доступно">
+                        {% endif %}
+                    </div>
+                    <div class="staff-info">
+                        <h3>
+                            {{ specialist.last_name }} {{ specialist.first_name }}
+                            {% if specialist.middle_name|default_if_none:'' %}
+                                {{ specialist.middle_name }}
+                            {% endif %}
+                        </h3>
+                        <p>{{ specialist.speciality }}</p>
+                        <p>Стаж: {{ specialist.experience }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+
+        <div class="divider"></div> <!-- Разделительная линия -->
+
+        <section class="latest-news">
+            <h2>Последние новости</h2>
+            <ul>
+                {% for news in news_list %}
+                <li>
+                    <div class="news-card">
+                        <img src="{{ news.main_image.url }}" alt="{{ news.title }}">
+                        <div class="news-content">
+                            <h3>{{ news.title }}</h3>
+                            <p>{{ news.content|truncatechars:100 }}</p>
+                            <p class="date">{{ news.published_date }}</p>
+                            <a href="{% url 'news_detail' news.slug %}" class="read-more">Читать подробнее</a>
+                        </div>
+                        {% if news.is_new %}
+                        <span class="new-badge">New</span>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        
+        
     </div>
-
-
-    <section class="staff">
-        <h2>Наши сотрудники</h2>
-        {% for specialist in specialists %}
-        <div class="staff-member">
-            {% if specialist.photo %}
-            <img src="{{ specialist.photo.url }}" alt="{{ specialist.last_name }} {{ specialist.first_name }}">
-            {% else %}
-            <img src="{% static 'images/default-photo.png' %}" alt="Фото не доступно">
-            {% endif %}
-            <h3>{{ specialist.last_name }} {{ specialist.first_name }} {% if specialist.middle_name != null%}{{
-                specialist.middle_name }}{% endif %}</h3>
-            <p>{{ specialist.speciality }}</p>
-            <p>Стаж: {{ specialist.experience }}</p>
-        </div>
-        {% endfor %}
-    </section>
-
-    <section class="popular-services">
-        <h2>Последние новости</h2>
-        <ul>
-            <li>Эстетическая медицина</li>
-            <li>Оздоровительные процедуры</li>
-            <li>Служба помощи на дому</li>
-            <li>Восстановительная терапия</li>
-        </ul>
-    </section>
 </div>
 {% endblock content %}

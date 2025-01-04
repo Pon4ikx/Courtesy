@@ -28,23 +28,24 @@
 
             <!-- Навигация -->
             <nav>
-                <div class="burger-menu">
-
-                    <a href="#" class="burger-toggle">О нас<span class="arrow">&#9660;</span></a>
-                    <div class="burger-links">
-                        <a href="/about">О нашей клинике</a>
-                        <a href="/addresses">Адреса</a>
-                        <a href="/contacts">Контакты</a>
-                        <a href="/doctors">Наши специалисты</a>
-                        <a href="/news">Новости</a>
-                    </div>
-                </div>
+                <a href="/about">О нас</a>
                 <a href="/services">Услуги и цены</a>
                 <a href="/doctors">Врачи</a>
                 <a href="/news">Новости</a>
                 <a href="/contacts">Контакты</a>
             </nav>
-
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const burgerToggle = document.querySelector(".burger-toggle");
+                    const burgerMenu = document.querySelector(".burger-menu");
+            
+                    burgerToggle.addEventListener("click", function() {
+                        burgerMenu.classList.toggle("active");
+                    });
+                });
+            </script>
+            
 
             <!-- Иконка профиля -->
             <div class="profile-icon">
@@ -92,19 +93,5 @@
         </div>
     </footer>
 </body>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const burgerToggle = document.querySelector(".burger-toggle");
-        const burgerMenu = document.querySelector(".burger-menu");
-        const arrow = document.querySelector(".burger-toggle .arrow");
-
-        burgerToggle.addEventListener("click", function (event) {
-            event.preventDefault(); // Предотвращаем переход по ссылке
-            burgerMenu.classList.toggle("active"); // Переключаем класс активности меню
-            arrow.classList.toggle("rotated"); // Переключаем класс для стрелки
-        });
-    });
-</script>
 
 </html>

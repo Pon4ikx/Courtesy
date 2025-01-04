@@ -1,12 +1,67 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Наши специалисты{% endblock title %}
 
 {% block header %}{% endblock header %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/specialists.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><b>Наши специалисты</b></span>
+        </nav>
+    </div>
+</div>
 
 <h2>Наши специалисты</h2>
+<div class="container">
+    <div class="specialists-container">
+        <!-- Список фильтрации по категориям -->
+        <div class="category-filter">
+            <h3>Фильтровать по категориям</h3>
+            <form method="GET" action="{% url 'specialists' %}">
+                <div class="category-list">
+                    {% for category in categories %}
+                    <label>
+                        <input type="checkbox" name="categories" value="{{ category.id }}" {% if category.id in selected_categories %}checked{% endif %}>
+                        {{ category.name }}
+                    </label><br>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn-filter">Применить</button>
+            </form>
+        </div>
 
-
+        <!-- Список специалистов -->
+        <div class="specialist-list">
+            {% for specialist in specialists %}
+            <div class="specialist-card">
+                <div class="specialist-photo-container">
+                    {% if specialist.photo %}
+                    <img src="{{ specialist.photo.url }}" alt="Фото {{ specialist }}" class="specialist-photo">
+                    {% else %}
+                    <div class="placeholder-photo">Фото отсутствует</div>
+                    {% endif %}
+                </div>
+                <div class="specialist-info">
+                    <h3>{{ specialist.last_name }} {{ specialist.first_name }}{% if specialist.middle_name %} {{specialist.middle_name }}{% endif %}</h3>
+                    <p><b>Специальность:</b> {{ specialist.speciality }}</p>
+                    <p><b>Категория:</b> {% if specialist.category %}{{ specialist.category.name }}{% else %}Не
+                        указана{% endif %}</p>
+                    <p><b>Стаж работы:</b> {{ specialist.experience }}</p>
+                    {% if specialist.dop_info %}
+                    <p><b>Дополнительная информация:</b> {{ specialist.dop_info }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>Специалисты отсутствуют.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock content %}

@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'Courtesy_DB',  # Название базы
         'USER': 'postgres',  # Имя пользователя
         'PASSWORD': 'postgres',  # Пароль пользователя
-        'HOST': '0.0.0.0',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }

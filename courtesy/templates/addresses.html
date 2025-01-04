@@ -1,0 +1,72 @@
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Инициализация карты
+        const map = L.map("map").setView([55.751244, 37.618423], 12); // Центр карты (Москва)
+
+        // Добавление слоя OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 18,
+            attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Пример данных для маркеров (центральные координаты Москвы)
+        const addresses = [
+            {
+                lat: 55.751244,
+                lon: 37.618423,
+                info: `<b>Москва, Красная площадь</b><br>Время работы: с 9:00 до 18:00`
+            }
+        ];
+
+        // Добавление маркеров на карту
+        addresses.forEach(function (addr) {
+            L.marker([addr.lat, addr.lon])
+                .addTo(map)
+                .bindPopup(addr.info);
+        });
+    });
+</script>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Адреса | Courtesy{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/addresses.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><b>Адреса</b></span>
+        </nav>
+    </div>
+</div>
+
+<div class="addresses-container">
+    <!-- Список адресов -->
+    <div class="address-list">
+        <h2>Наши адреса</h2>
+        <ul>
+            {% for address in addresses %}
+            <li>
+                <strong>{{ address.address }}</strong><br>
+                Время работы: {{ address.working_hours|default:"Не указано" }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Карта -->
+    <div id="map" class="map" style="height: 500px; width: 100%;"></div>
+</div>
+
+
+
+
+{% endblock %}

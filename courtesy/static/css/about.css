@@ -1,0 +1,122 @@
+body {
+    background-color: #d2fffa;
+}
+
+/* Основные стили для страницы О нас */
+.about-section {
+    padding: 0px 20px;
+    background-color: #d2fffa;
+    text-align: center;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.about-section h2 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Стили для блока "Наша миссия" */
+.our-mission {
+    max-width: 1200px;
+    /* Уменьшаем максимальную ширину */
+    background-color: #ffffff;
+    padding: 40px 20px;
+    margin: 50px auto;
+    /* Центрируем блок по горизонтали с отступом сверху и снизу */
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.our-mission h3 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.our-mission p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Стили для блока "Наша команда" */
+.our-team {
+    max-width: 1200px;
+    /* Уменьшаем максимальную ширину */
+    background-color: #ffffff;
+    padding: 40px 20px;
+    margin: 50px auto;
+    /* Центрируем блок по горизонтали с отступом сверху и снизу */
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.our-team h3 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.our-team p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Общие стили для текста */
+h2,
+h3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+
+p {
+    font-family: 'Arial', sans-serif;
+    font-weight: 300;
+}
+
+
+/* Адаптивность для мобильных устройств */
+/* @media (max-width: 768px) {
+    .about-container {
+        padding: 20px;
+    }
+
+    .about-section h2 {
+        font-size: 28px;
+    }
+
+    .about-section p {
+        font-size: 16px;
+    }
+
+    .our-mission h3, .our-team h3 {
+        font-size: 24px;
+    }
+
+    .our-mission p, .our-team p {
+        font-size: 16px;
+    }
+} */

@@ -1,0 +1,53 @@
+/* Стили для хлебных крошек */
+.breadcrumb {
+    font-size: 16px;
+    margin: 20px 0;
+    /* Отступ сверху и снизу */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    /* Используем flex для выравнивания */
+    align-items: center;
+    /* Выравнивание по центру по вертикали */
+}
+
+.container {
+    max-width: 1200px;
+    /* Задайте желаемую ширину */
+    margin: 0 auto;
+    /* Выровнять по центру */
+    padding: 0 15px;
+    /* Отступы для контента */
+}
+
+.breadcrumb a {
+    color: #5EAEA7;
+    /* Цвет ссылок */
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 5px;
+    /* Отступ между ссылками */
+}
+
+.breadcrumb a:hover {
+    text-decoration: none;
+    /* Добавляем подчеркивание при наведении */
+}
+
+.breadcrumb span {
+    color: #333;
+    /* Цвет текущей страницы */
+}
+
+/* Обновленный стиль для контейнера */
+.breadcrumb-container {
+    display: flex;
+    justify-content: flex-start;
+    /* Выровнять по правому краю */
+    align-items: center;
+    /* Выравнивание по центру по вертикали */
+    margin-bottom: 5px;
+    /* Отступ от основного блока */
+    max-width: 1200px;
+    width: 100%;
+    /* Занимает всю ширину контейнера */
+}

@@ -4,6 +4,9 @@ from django.core.exceptions import ValidationError
 from pytils.translit import slugify as pytils_slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
+from datetime import timedelta
+from django.utils import timezone
+import requests
 
 
 # Кастомный менеджер для модели Account
@@ -172,6 +175,11 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def is_new(self):
+        """Возвращает True, если новость была опубликована менее недели назад."""
+        return self.published_date >= (timezone.now().date() - timedelta(days=7))
+
     def save(self, *args, **kwargs):
         if not self.slug:  # Генерация слага только если он отсутствует
             self.slug = pytils_slugify(self.title)
@@ -282,7 +290,7 @@ class Address(models.Model):
     address = models.CharField(
         max_length=255,
         verbose_name="Адрес",
-        help_text="Пример: ул. (Название улицы или проспекта(пр.)), д. (Номер дома), Город"
+        help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город\n"
     )
     working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
                                      null=True)  # Время работы
@@ -298,5 +306,41 @@ class Address(models.Model):
         verbose_name = "Адрес"
         verbose_name_plural = "Адреса"
 
+    def save(self, *args, **kwargs):
+        # Проверяем, если координаты пустые, заполняем их через геокодирование
+        if not self.latitude or not self.longitude:
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                'q': self.address,
+                'format': 'json',
+                'addressdetails': 1,
+                'limit': 1,
+                'accept-language': 'ru'
+            }
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36'
+            }
+            response = requests.get(url, params=params, headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                if data:
+                    self.latitude = data[0].get('lat', None)
+                    self.longitude = data[0].get('lon', None)
+        # Сохраняем объект, без изменения других данных
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.address
+
+
+class Contacts(models.Model):
+    contact = models.CharField(max_length=100, unique=True, verbose_name="Данные для связи")
+    person = models.CharField(max_length=100, verbose_name="Человек для связи")
+    what_doing = models.CharField(max_length=100, default="", verbose_name="Занятость")
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
+
+    def __str__(self):
+        return f'{self.contact} - {self.person}'

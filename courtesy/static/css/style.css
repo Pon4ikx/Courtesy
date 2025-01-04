@@ -8,10 +8,10 @@
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Обеспечиваем, что body занимает всю высоту окна */
+  min-height: 100vh;
 }
 
-main{
+main {
   flex: 1;
 }
 
@@ -42,16 +42,15 @@ header {
 
 .logo img {
   height: 100px;
-  /* Увеличенный размер логотипа */
 }
 
 .logo span {
   font-size: 20px;
-  /* Чуть меньше размера текста */
+
   font-weight: bold;
   color: #43b5a0;
   text-align: center;
-  /* Центрирование текста под логотипом */
+
 }
 
 /* Поисковая строка */
@@ -60,18 +59,18 @@ header {
   display: flex;
   align-items: center;
   margin-top: 10px;
-  /* Отступ сверху, если нужно */
+
 }
 
 /* Поле ввода */
 .search-input {
   width: 300px;
-  /* Ширина поля поиска */
+
   padding: 10px 15px;
   font-size: 14px;
   border: 1px solid #C4E6DE;
   border-radius: 25px;
-  /* Закругленные края */
+
   outline: none;
 }
 
@@ -79,7 +78,7 @@ header {
 .search-button {
   position: absolute;
   right: 10px;
-  /* Расположение кнопки внутри поля ввода */
+
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -94,14 +93,13 @@ header {
   width: 20px;
   height: 20px;
   filter: brightness(0.5);
-  /* Легкий затемненный эффект */
+
   transition: transform 0.2s, filter 0.2s;
-  /* Плавное увеличение при наведении */
+
 }
 
 .search-button img:hover {
   transform: scale(1.1);
-  /* Увеличение при наведении */
   filter: brightness(0.8);
 }
 
@@ -109,6 +107,7 @@ header {
 nav {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 nav a {
@@ -117,36 +116,98 @@ nav a {
   font-size: 16px;
   font-weight: 500;
   padding: 8px 12px;
-  /* Добавлены внутренние отступы для выделенной области */
   border-radius: 8px;
-  /* Закругление углов */
   transition: all 0.3s ease;
   vertical-align: middle;
-  /* Плавный переход */
 }
 
 nav a:hover {
   color: #D2FFFB;
-  /* Цвет текста при наведении */
   background-color: #5EAEA7;
-  /* Цвет фона при наведении */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  /* Легкая тень для эффекта */
   transform: scale(1.05);
-  /* Небольшое увеличение ссылки */
+}
+
+/* Бургер-меню */
+.burger-menu {
+  position: relative;
+}
+
+.burger-toggle {
+  cursor: pointer;
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.burger-toggle:hover {
+  color: #D2FFFB;
+  background-color: #5EAEA7;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+/* Скрыть подпункты по умолчанию */
+.burger-links {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  width: 200px;
+  z-index: 1;
+}
+
+.burger-links a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.burger-links a:hover {
+  background-color: #5eaea6;
+  color: #D2FFFB;
+}
+
+/* Показываем подпункты при активации */
+.burger-menu.active .burger-links {
+  display: block;
+}
+
+/* Стрелка */
+.arrow {
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 8px;
+  transform: rotate(0deg);
+  /* Начальное положение */
+  transition: transform 0.3s ease;
+  /* Убедитесь, что время изменяется */
+}
+
+/* Поворот стрелки вверх */
+.burger-menu.active .arrow {
+  transform: rotate(180deg);
+}
+
+.arrow.rotated {
+  transform: rotate(180deg);
 }
 
 /* Иконка профиля */
 .profile-icon {
   display: flex;
   flex-direction: column;
-  /* Выравнивание вертикально */
   align-items: center;
-  /* Центрирование по горизонтали */
   gap: 10px;
-  /* Отступ между иконкой и подписью */
   margin-left: 20px;
-  /* Отступ от контактов */
 }
 
 .profile-icon img {
@@ -165,20 +226,15 @@ nav a:hover {
   text-decoration: none;
   padding: 5px 10px;
   border-radius: 8px;
-  /* Закругленные углы для фона при наведении */
   transition: color 0.3s, background-color 0.3s;
-  /* Плавный переход стиля */
   text-align: center;
 }
 
 /* Эффект наведения для подписи */
 .profile-icon .profile-label:hover {
   color: #D2FFFB;
-  /* Цвет текста при наведении */
   background-color: #5EAEA7;
-  /* Фон текста при наведении */
   padding: 5px 10px;
-  /* Добавляем отступы для фона при наведении */
 }
 
 
@@ -261,7 +317,7 @@ footer {
 
 .login-input:focus,
 .login-input:not(:placeholder-shown) {
-    color: black; /* Цвет текста, когда поле заполнено */
+  color: black;
 }
 
 .login-button {
@@ -296,13 +352,41 @@ footer {
   text-decoration: underline;
 }
 
-.light-text{
+.light-text {
   color: #636363;
   margin-top: 10px;
 }
 
 #lab {
-  margin-top: 15px; /* Вы можете изменить значение по вашему усмотрению */
+  margin-top: 15px;
 }
 
-/*index.html */
+/* news_detail.html */
+.news-detail-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.news-detail-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.news-detail-date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.news-detail-content {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+}

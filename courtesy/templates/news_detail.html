@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ news.title }} - Новости
+{% endblock title %}
+
+{% block header %}
+{{ news.title }}
+{% endblock header %}
+
+{% block content %}
+<div class="news-detail-container">
+    <img src="{{ news.main_image.url }}" alt="{{ news.title }}" class="news-detail-image">
+    <p class="news-detail-date">Опубликовано: {{ news.published_date }}</p>
+    <div class="news-detail-content">
+        {{ news.content|linebreaks }}
+    </div>
+</div>
+{% endblock content %}

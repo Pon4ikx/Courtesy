@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address
+from .models import Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address, Contacts
 
 admin.site.site_header = "Администрирование Courtesy"  # Заголовок панели администратора
 admin.site.site_title = "Администрирование Courtesy"  # Заголовок на вкладке браузера
@@ -160,18 +160,25 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
 
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ("address", "working_hours", "latitude", "longitude")  # Отображение столбцов в списке
-    search_fields = ("address",)  # Поле поиска по адресу
-    list_filter = ("working_hours",)  # Фильтр по времени работы
+    list_display = ("address", "working_hours", "latitude", "longitude")
+    search_fields = ("address",)
+    list_filter = ("working_hours",)
     fieldsets = (
         (None, {
             "fields": ("address", "working_hours")
         }),
         ("Координаты", {
             "fields": ("latitude", "longitude"),
-            "classes": ("collapse",),  # Скрытие блока для компактности
+            "classes": ("collapse",),
         }),
     )
+
+
+class ContactsAdmin(admin.ModelAdmin):
+    list_display = ("person", "what_doing", "contact")
+    search_fields = ("person", "what_doing", "contact")
+    list_filter = ("person", "what_doing")
+    fields = ("person", "contact", "what_doing")
 
 
 # Регистрация модели в админке
@@ -183,3 +190,4 @@ admin.site.register(News, NewsAdmin)
 admin.site.register(Talon, TalonAdmin)
 admin.site.register(SpecialistService, SpecialistServiceAdmin)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(Contacts, ContactsAdmin)
