@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Новости | Courtesy{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><b>Новости</b></span>
+        </nav>
+    </div>
+</div>
+
+<h2 class="news-heading">Новости</h2>
+
+<div class="news-container">
+    {% for news in news %}
+    <div class="news-card">
+        <img src="{{ news.main_image.url }}" alt="{{ news.title }}" class="news-image">
+        <div class="news-content">
+            <h3 class="news-title">
+                {{ news.title }}
+                {% if news.is_new %}
+                    <span class="new-tag">New</span>
+                {% endif %}
+            </h3>
+            <p class="news-date">{{ news.published_date }}</p>
+            <p class="news-text">{{ news.content|truncatewords:20 }}</p>
+            <a href="{% url 'news_detail' news.slug %}" class="read-more">Читать далее</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Услуги | Courtesy
+{% endblock title %}
+
+{% block header %} {% endblock header %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><b>Услуги</b></span>
+        </nav>
+    </div>
+</div>
+
+<h2 class="services-heading">Услуги</h2>
+
+<div class="services-container">
+    <div class="category-filter">
+        <h3>Фильтр по категориям</h3>
+        <form method="get" action="{% url 'services' %}">
+            <div class="category-list">
+                {% for category in categories %}
+                <label>
+                    <input type="checkbox" name="categories" value="{{ category.id }}" {% if category.id in request.GET.categories %}checked{% endif %}>
+                    {{ category.name }}
+                </label>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn-filter">Применить</button>
+        </form>
+    </div>
+
+    <div class="service-list">
+        {% for service in services %}
+        <div class="service-card">
+            <h3 class="service-name">{{ service.name }}</h3>
+            <p class="service-description">{{ service.description }}</p>
+            <p class="service-price">Цена: {{ service.price }} руб.</p>
+            <p><a href="{{ service.link }}" class="service-link" target="_blank">Подробнее вы можете почитать</a></p>
+            <a href="#" class="btn-book">Записаться</a>
+        </div>
+        {% empty %}
+        <p>Услуги не найдены.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

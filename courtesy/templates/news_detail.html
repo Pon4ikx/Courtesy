@@ -1,15 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {{ news.title }} - Новости
 {% endblock title %}
 
-{% block header %}
-{{ news.title }}
-{% endblock header %}
+{% block header %} {% endblock header %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/news_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><a href="/news"><b>Новости</b></a></span> &gt; <span><b>{{ news.title }}</b></span>
+        </nav>
+    </div>
+</div>
+
 <div class="news-detail-container">
+    <h1 class="news-detail-title">{{ news.title }}</h1>
     <img src="{{ news.main_image.url }}" alt="{{ news.title }}" class="news-detail-image">
     <p class="news-detail-date">Опубликовано: {{ news.published_date }}</p>
     <div class="news-detail-content">
