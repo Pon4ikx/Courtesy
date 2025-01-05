@@ -161,7 +161,7 @@ class Service(models.Model):
 
 
 class News(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Название")  # Поле для названия
+    title = models.CharField(max_length=255, unique=True, verbose_name="Название")  # Поле для названия
     main_image = models.ImageField(upload_to='news_images/', verbose_name="Главное фото")  # Поле для фото
     content = models.TextField(verbose_name="Содержимое")  # Поле для текста новости
     published_date = models.DateField(verbose_name="Дата публикации")  # Поле для даты
@@ -290,6 +290,7 @@ class Address(models.Model):
     address = models.CharField(
         max_length=255,
         verbose_name="Адрес",
+        unique=True,
         help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город\n"
     )
     working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
