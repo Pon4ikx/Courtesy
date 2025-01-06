@@ -3,13 +3,18 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import SignupForm
 from django.contrib.auth import logout
-from django.utils.timezone import now
+from random import sample
 from .models import Specialist, News, Address, Contacts, Category, Service
 
 
 def index(request):
-    specialists = Specialist.objects.all()[:3]
+    specialists_to_display = Specialist.objects.filter(display_on_main=True)
 
+    # Получаем случайных 3 специалистов, если их больше 3
+    if specialists_to_display.count() > 3:
+        specialists = sample(list(specialists_to_display), 3)
+    else:
+        specialists = specialists_to_display
     news_list = News.objects.all()[:4]
 
     context = {

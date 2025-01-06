@@ -63,8 +63,8 @@ class Category(models.Model):
     slug = models.SlugField(max_length=50, unique=True, verbose_name="Слаг", blank=True, editable=False)
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = "Направление"
+        verbose_name_plural = "Направления"
 
     def __str__(self):
         return self.name
@@ -98,11 +98,12 @@ class Specialist(models.Model):
         on_delete=models.SET_NULL,  # Удаляем специалиста, если удалена категория
         blank=True,
         null=True,
-        verbose_name="Категория",
+        verbose_name="Направление",
         related_name="specialists"
     )
     experience = models.CharField(max_length=25, verbose_name="Стаж работы")
     dop_info = models.TextField(verbose_name="Дополнительная информация", blank=True)
+    display_on_main = models.BooleanField(default=False, verbose_name="Отображать на главной странице")
 
     class Meta:
         verbose_name = "Специалист"

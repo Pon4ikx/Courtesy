@@ -43,15 +43,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class SpecialistAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience')
+    list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience', "display_on_main")
     list_filter = ('category', 'speciality')  # Фильтры по категориям и специальностям
-    search_fields = ('last_name', 'first_name', 'middle_name', 'speciality')  # Поля для поиска
-    ordering = ('last_name', 'first_name')  # Сортировка по фамилии и имени
+    search_fields = ('last_name', 'first_name', 'middle_name', 'speciality', 'display_on_main')  # Поля для поиска
+    ordering = ('last_name', 'first_name', 'display_on_main')  # Сортировка по фамилии и имени
     exclude = ('slug',)  # Исключаем поле slug из формы
     fieldsets = (
         (None, {
             'fields': (
-                'photo', 'last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience', 'dop_info')
+                'photo', 'last_name', 'first_name', 'middle_name',
+                'speciality', 'category', 'experience', 'dop_info',
+                'display_on_main')
         }),
 
     )
@@ -87,9 +89,6 @@ class NewsAdmin(admin.ModelAdmin):
 
     main_image_preview.short_description = "Предпросмотр фото"
     main_image_preview.allow_tags = True
-
-
-from django.contrib import admin
 
 
 class TalonAdmin(admin.ModelAdmin):
