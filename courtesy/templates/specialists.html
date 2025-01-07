@@ -22,7 +22,7 @@
     <div class="specialists-container">
         <!-- Список фильтрации по категориям -->
         <div class="category-filter">
-            <h3>Фильтровать по категориям</h3>
+            <h3>Фильтровать по направлениям</h3>
             <form method="GET" action="{% url 'specialists' %}">
                 <div class="category-list">
                     {% for category in categories %}
@@ -48,7 +48,7 @@
                     {% endif %}
                 </div>
                 <div class="specialist-info">
-                    <h3>{{ specialist.last_name }} {{ specialist.first_name }}{% if specialist.middle_name %} {{specialist.middle_name }}{% endif %}</h3>
+                    <h3 style="text-align: center;">{{ specialist.last_name }} {{ specialist.first_name }}{% if specialist.middle_name %} {{specialist.middle_name }}{% endif %}</h3>
                     <p><b>Специальность:</b> {{ specialist.speciality }}</p>
                     <p><b>Направление:</b> {% if specialist.category %}{{ specialist.category.name }}{% else %}Не указана{% endif %}</p>
                     <p><b>Стаж работы:</b> {{ specialist.experience }}</p>

@@ -1,0 +1,44 @@
+{% extends 'admin/change_form.html' %}
+
+{% block content %}
+{% if filter_message %}
+<div class="alert alert-info"><b>{{ filter_message }}</b></div>
+{% endif %}
+<br>
+<form method="get" action="{% url 'admin:users_specialistservice_add' %}">
+  <label for="category" style="padding-right: 20px;"><b>Направление:</b></label>
+  <select name="category" id="category">
+    <option value="">-- Выберите направление --</option>
+    {% for category in categories %}
+    <option value="{{ category.id }}" {% if category.id == category_id %}selected{% endif %}>
+      {{ category.name }}
+    </option>
+    {% endfor %}
+  </select>
+  <button type="submit" style="margin-left: 20px;" class="button-custom">Применить фильтрацию</button>
+</form>
+
+<style>
+  .button-custom {
+    background-color: #417690; /* Цвет фона */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем рамку */
+    padding: 10px 20px; /* Отступы */
+    text-align: center; /* Центрирование текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Позволяет задавать размеры */
+    font-size: 14px; /* Размер шрифта */
+    margin: 4px 2px; /* Отступы */
+    cursor: pointer; /* Указатель мыши */
+    border-radius: 5px; /* Закругленные углы */
+    transition: background-color 0.3s; /* Плавный переход */
+}
+
+.button-custom:hover {
+    background-color: #264b5d; /* Цвет при наведении */
+}
+</style>
+<br>
+<!-- Выводим уже существующую форму для добавления связи -->
+{{ block.super }}
+{% endblock %}

@@ -19,7 +19,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from users import views
+from users.admin import SpecialistServiceAdmin
+
 urlpatterns = [
-    path("", include('users.urls')),
-    path('admin/', admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path("", include('users.urls')),
+                  path('admin/', admin.site.urls),
+                  #path('apply_filter/', SpecialistServiceAdmin.apply_filter,
+                  #     name='users_specialistservice_apply_filter'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

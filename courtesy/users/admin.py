@@ -1,5 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django import forms
+from django.http import HttpResponseRedirect
+from django.urls import path
+from django.utils.html import format_html
 from .models import Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address, Contacts
 
 admin.site.site_header = "Администрирование Courtesy"  # Заголовок панели администратора
@@ -145,17 +148,53 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 class SpecialistServiceAdmin(admin.ModelAdmin):
-    list_display = ('specialist', 'specialist_category', 'service')  # Отображение связей в списке
-    search_fields = (
-        'specialist__last_name', 'specialist__first_name',
-        'service__name')  # Поиск по имени специалиста и названию услуги
-    list_filter = ('specialist', 'service')  # Фильтры по специалистам и услугам
+    list_display = ('specialist', 'service', 'specialist_category')
+    search_fields = ('specialist__name', 'service__name')
+    list_filter = ('specialist', 'service',)
 
-    def specialist_display(self, obj):
-        # Отображение ФИО специалиста в удобном формате
-        return f"{obj.specialist.last_name} {obj.specialist.first_name} {obj.specialist.middle_name or ''}".strip()
+    def specialist_category(self, obj):
+        return obj.specialist.category.name
 
-    specialist_display.short_description = "Специалист"  # Название колонки
+    specialist_category.short_description = 'Направление специалиста'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        category_id = request.GET.get('category')
+        if db_field.name == "specialist" and category_id:
+            kwargs['queryset'] = Specialist.objects.filter(category_id=category_id)
+        elif db_field.name == "service" and category_id:
+            kwargs['queryset'] = Service.objects.filter(category_id=category_id)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('apply_filter/', self.admin_site.admin_view(self.apply_filter), name='apply_filter'),
+        ]
+        return custom_urls + urls
+
+    def apply_filter(self, request):
+        category_id = request.GET.get('category')
+        if category_id:
+            return HttpResponseRedirect(f'/admin/users/specialistservice/add/?category={category_id}')
+        return HttpResponseRedirect('/admin/users/specialistservice/add/')
+
+    def add_view(self, request, form_url='', extra_context=None):
+        category_id = request.GET.get('category')
+        categories = Category.objects.all()
+
+        # Формируем сообщение о фильтрации
+        filter_message = ""
+        if category_id:
+            category = categories.filter(id=category_id).first()
+            if category:
+                filter_message = f"Фильтрация по направлению: {category.name}"
+
+        extra_context = extra_context or {}
+        extra_context['categories'] = categories
+        extra_context['category_id'] = category_id
+        extra_context['filter_message'] = filter_message
+
+        return super().add_view(request, form_url, extra_context=extra_context)
 
 
 class AddressAdmin(admin.ModelAdmin):

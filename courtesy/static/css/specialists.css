@@ -96,7 +96,7 @@ h2 {
 
 .specialist-photo-container {
     width: 200px;
-    height: 200px;
+    height: auto;
     flex-shrink: 0;
     overflow: hidden;
     border-radius: 8px;

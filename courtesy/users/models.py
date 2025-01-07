@@ -279,13 +279,6 @@ class SpecialistService(models.Model):
     def __str__(self):
         return f"{self.specialist} - {self.service}"
 
-    def specialist_category(self):
-        return self.specialist.category.name  # Вывод категории специалиста
-
-    specialist_category.admin_order_field = 'specialist__category'  # Для сортировки по категории
-    specialist_category.short_description = 'Категория специалиста'  # Заголовок для админки
-
-
 class Address(models.Model):
     # example =
     address = models.CharField(
