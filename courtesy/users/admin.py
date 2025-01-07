@@ -180,11 +180,17 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
 
     def add_view(self, request, form_url='', extra_context=None):
         category_id = request.GET.get('category')
+        # Проверяем, что category_id — это число, иначе устанавливаем в None
+        if category_id and not category_id.isdigit():
+            category_id = 1
+
         categories = Category.objects.all()
+
 
         # Формируем сообщение о фильтрации
         filter_message = ""
         if category_id:
+            category_id = int(category_id)  # Приводим к типу int
             category = categories.filter(id=category_id).first()
             if category:
                 filter_message = f"Фильтрация по направлению: {category.name}"
@@ -195,6 +201,12 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
         extra_context['filter_message'] = filter_message
 
         return super().add_view(request, form_url, extra_context=extra_context)
+
+    def response_add(self, request, obj, post_url_continue=None):
+        # Сохраняем категорию после добавления объекта
+        request.session['category_id'] = request.POST.get('category', '')
+        return super().response_add(request, obj, post_url_continue)
+
 
 
 class AddressAdmin(admin.ModelAdmin):

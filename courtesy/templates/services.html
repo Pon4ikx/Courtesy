@@ -42,8 +42,17 @@
         <div class="service-card">
             <h3 class="service-name">{{ service.name }}</h3>
             <p class="service-description">{{ service.description }}</p>
-            <p class="service-price">Цена: {{ service.price }} руб.</p>
+            <p class="service-price">
+                Цена:
+                {% if service.price == 0 %}
+                Уточняется в клинике
+                {% else %}
+                от {{ service.price }} руб.
+                {% endif %}
+            </p>
+            {% if service.link %}
             <p><a href="{{ service.link }}" class="service-link" target="_blank">Подробнее вы можете почитать</a></p>
+            {% endif %}
             <a href="#" class="btn-book">Записаться</a>
         </div>
         {% empty %}

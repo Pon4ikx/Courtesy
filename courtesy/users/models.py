@@ -122,7 +122,7 @@ class Specialist(models.Model):
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=50, unique=True, verbose_name="Название")
+    name = models.CharField(max_length=200, unique=True, verbose_name="Название")
     # Поле с ForeignKey для связи с моделью категории
     category = models.ForeignKey(
         'Category',  # Ссылка на модель категорий
@@ -134,7 +134,7 @@ class Service(models.Model):
     )
     description = models.TextField(verbose_name="Описание")
     link = models.CharField(max_length=200, blank=True, null=True, verbose_name="Ссылка")
-    slug = models.SlugField(max_length=50, unique=True, verbose_name="Слаг", blank=True, editable=False)
+    slug = models.SlugField(max_length=200, unique=True, verbose_name="Слаг", blank=True, editable=False)
     price = models.DecimalField(
         max_digits=10,  # Максимальная длина числа (включая запятую)
         decimal_places=2,  # Количество знаков после запятой
@@ -278,6 +278,7 @@ class SpecialistService(models.Model):
 
     def __str__(self):
         return f"{self.specialist} - {self.service}"
+
 
 class Address(models.Model):
     # example =
