@@ -22,7 +22,7 @@
 
         // Добавление маркеров на карту
         addresses.forEach(function (addr) {
-            L.marker([addr.lat, addr.lon])
+            L.marker([addr.lat, addr.lon])     
                 .addTo(map)
                 .bindPopup(addr.info);
         });
