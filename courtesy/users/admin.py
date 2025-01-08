@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django import forms
 from django.http import HttpResponseRedirect
 from django.urls import path
-from django.utils.html import format_html
+import os
+from courtesy.settings import BASE_DIR
 from .models import Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address, Contacts
 
 admin.site.site_header = "Администрирование Courtesy"  # Заголовок панели администратора
@@ -147,6 +147,19 @@ class ReviewAdmin(admin.ModelAdmin):
         return obj.content[:50] + "..." if len(obj.content) > 50 else obj.content
 
 
+CATEGORY_FILE = os.path.join(BASE_DIR, 'data', 'category_id.txt')
+
+def get_category_id():
+    if os.path.exists(CATEGORY_FILE):
+        with open(CATEGORY_FILE, 'r') as file:
+            category_id = file.read().strip()
+            return category_id
+    return None
+
+def set_category_id(category_id):
+    with open(CATEGORY_FILE, 'w') as file:
+        file.write(str(category_id))
+
 class SpecialistServiceAdmin(admin.ModelAdmin):
     list_display = ('specialist', 'service', 'specialist_category')
     search_fields = ('specialist__name', 'service__name')
@@ -154,11 +167,10 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
 
     def specialist_category(self, obj):
         return obj.specialist.category.name
-
     specialist_category.short_description = 'Направление специалиста'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        category_id = request.GET.get('category')
+        category_id = get_category_id()
         if db_field.name == "specialist" and category_id:
             kwargs['queryset'] = Specialist.objects.filter(category_id=category_id)
         elif db_field.name == "service" and category_id:
@@ -175,38 +187,45 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
     def apply_filter(self, request):
         category_id = request.GET.get('category')
         if category_id:
+            set_category_id(category_id)  # Сохраняем в файл
             return HttpResponseRedirect(f'/admin/users/specialistservice/add/?category={category_id}')
         return HttpResponseRedirect('/admin/users/specialistservice/add/')
 
     def add_view(self, request, form_url='', extra_context=None):
+        # Получаем category_id из GET-запроса, если он был передан
         category_id = request.GET.get('category')
-        # Проверяем, что category_id — это число, иначе устанавливаем в None
-        if category_id and not category_id.isdigit():
-            category_id = 1
+
+        # Если category_id передан, сохраняем его в файл
+        if category_id:
+            set_category_id(category_id)  # Сохраняем в файл
+
+        # Получаем category_id из файла для дальнейшего использования
+        category_id_from_file = get_category_id()
 
         categories = Category.objects.all()
 
-
         # Формируем сообщение о фильтрации
         filter_message = ""
-        if category_id:
-            category_id = int(category_id)  # Приводим к типу int
-            category = categories.filter(id=category_id).first()
+        if category_id_from_file and category_id_from_file.isdigit():
+            category_id_from_file = int(category_id_from_file)  # Приводим к типу int
+            category = categories.filter(id=category_id_from_file).first()
             if category:
                 filter_message = f"Фильтрация по направлению: {category.name}"
 
         extra_context = extra_context or {}
         extra_context['categories'] = categories
-        extra_context['category_id'] = category_id
+        extra_context['category_id'] = category_id_from_file
         extra_context['filter_message'] = filter_message
 
-        return super().add_view(request, form_url, extra_context=extra_context)
+        response = super().add_view(request, form_url, extra_context=extra_context)
+
+        return response
 
     def response_add(self, request, obj, post_url_continue=None):
-        # Сохраняем категорию после добавления объекта
-        request.session['category_id'] = request.POST.get('category', '')
+        category_id = request.POST.get('category')
+        if category_id:
+            set_category_id(category_id)  # Сохраняем в файл
         return super().response_add(request, obj, post_url_continue)
-
 
 
 class AddressAdmin(admin.ModelAdmin):

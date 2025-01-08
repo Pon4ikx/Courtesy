@@ -14,9 +14,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 // Добавление маркеров на карту
 addresses.forEach(function (addr) {
-    // str = 
     L.marker([addr.latitude, addr.longitude])
         .addTo(map)
-        .bindPopup(`<b>${addr.address}</b><br>Время работы: ${addr.working_hours}`);
+        .bindPopup(`<b>${addr.address}</b><br>Время работы: ${addr.working_hours}<br><b>Выходные: сб, вс, праздничные дни</b>`);
 });
 });

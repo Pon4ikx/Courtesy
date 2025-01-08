@@ -7,6 +7,7 @@ from decimal import Decimal
 from datetime import timedelta
 from django.utils import timezone
 import requests
+from urllib.parse import quote
 
 
 # Кастомный менеджер для модели Account
@@ -129,7 +130,7 @@ class Service(models.Model):
         on_delete=models.SET_NULL,  # Удаляем специалиста, если удалена категория
         blank=True,
         null=True,
-        verbose_name="Категория",
+        verbose_name="Направление",
         related_name="services"
     )
     description = models.TextField(verbose_name="Описание")
@@ -281,52 +282,52 @@ class SpecialistService(models.Model):
 
 
 class Address(models.Model):
-    # example =
     address = models.CharField(
         max_length=255,
         verbose_name="Адрес",
         unique=True,
-        help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город\n"
+        help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город<br>" +
+                  "Если в адресе проспект, то надо писать полностью: проспект (Название)"
     )
-    working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
-                                     null=True)  # Время работы
-
+    working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True, null=True)
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, verbose_name="Широта", blank=True, null=True
-    )  # Поле для широты
+    )
     longitude = models.DecimalField(
         max_digits=9, decimal_places=6, verbose_name="Долгота", blank=True, null=True
-    )  # Поле для долготы
+    )
 
     class Meta:
         verbose_name = "Адрес"
         verbose_name_plural = "Адреса"
 
     def save(self, *args, **kwargs):
-        # Проверяем, если координаты пустые, заполняем их через геокодирование
         if not self.latitude or not self.longitude:
-            url = "https://nominatim.openstreetmap.org/search"
+            api_key = '1f94f378144d44938b3c2997a4fe6544'
+            url = "https://api.geoapify.com/v1/geocode/search"
             params = {
-                'q': self.address,
+                'text': self.address,
+                'apiKey': api_key,
                 'format': 'json',
-                'addressdetails': 1,
                 'limit': 1,
-                'accept-language': 'ru'
+                'lang': 'ru'
             }
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36'
-            }
-            response = requests.get(url, params=params, headers=headers)
+            response = requests.get(url, params=params)
             if response.status_code == 200:
                 data = response.json()
-                if data:
-                    self.latitude = data[0].get('lat', None)
-                    self.longitude = data[0].get('lon', None)
-        # Сохраняем объект, без изменения других данных
+                if data and 'features' in data and data['features']:
+                    location = data['features'][0]['geometry']['coordinates']
+                    self.longitude = location[0]
+                    self.latitude = location[1]
+                else:
+                    print("Нет данных для адреса:", self.address)
+            else:
+                print("Ошибка API:", response.status_code, response.text)
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.address
+
 
 
 class Contacts(models.Model):
