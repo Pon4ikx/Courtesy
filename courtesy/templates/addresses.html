@@ -1,41 +1,16 @@
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Инициализация карты
-        const map = L.map("map").setView([55.751244, 37.618423], 12); // Центр карты (Москва)
-
-        // Добавление слоя OpenStreetMap
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 18,
-            attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-        }).addTo(map);
-
-        // Пример данных для маркеров (центральные координаты Москвы)
-        const addresses = [
-            {
-                lat: 55.751244,
-                lon: 37.618423,
-                info: `<b>Москва, Красная площадь</b><br>Время работы: с 9:00 до 18:00`
-            }
-        ];
-
-        // Добавление маркеров на карту
-        addresses.forEach(function (addr) {
-            L.marker([addr.lat, addr.lon])     
-                .addTo(map)
-                .bindPopup(addr.info);
-        });
-    });
-</script>
 {% extends "base.html" %}
 {% load static %}
+
 
 {% block title %}Адреса | Courtesy{% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block content %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script src="{% static 'js/map_script.js' %}"></script>
+
 <link rel="stylesheet" href="{% static 'css/addresses.css' %}">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <link rel="stylesheet" href="{% static 'css/other.css' %}">

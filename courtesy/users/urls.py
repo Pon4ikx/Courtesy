@@ -1,5 +1,10 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 from . import views
+from .views import AdressesViewSet
+
+router = SimpleRouter()
+router.register('api/addresses', AdressesViewSet)
 
 urlpatterns = [
     path("", views.index),
@@ -15,4 +20,4 @@ urlpatterns = [
     path('news/', views.news_list_view, name='news_list'),
     path('news/<slug:slug>/', views.news_detail, name='news_detail'),
 
-]
+] + router.urls

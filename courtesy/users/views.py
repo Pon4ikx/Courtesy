@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import SignupForm
 from django.contrib.auth import logout
 from random import sample
-from django.http import JsonResponse
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from .models import Specialist, News, Address, Contacts, Category, Service
+from .serializers import AdressSerializer
 
 
 def index(request):
@@ -113,3 +114,7 @@ def service_list_view(request):
         'services': services,
         'categories': categories
     })
+
+class AdressesViewSet(ReadOnlyModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AdressSerializer
