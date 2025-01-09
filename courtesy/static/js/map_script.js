@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const map = L.map("map").setView([53.9, 27.5667], 12); // Центр карты (Минск)
 
     // Добавление слоя OpenStreetMap
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://tile.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
         attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
     }).addTo(map);
