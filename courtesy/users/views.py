@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -5,7 +6,7 @@ from .forms import SignupForm
 from django.contrib.auth import logout
 from random import sample
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from .models import Specialist, News, Address, Contacts, Category, Service
+from .models import Specialist, News, Address, Contacts, Category, Service, Review
 from .serializers import AdressSerializer
 
 
@@ -114,6 +115,10 @@ def service_list_view(request):
         'services': services,
         'categories': categories
     })
+def reviews_view(request):
+    reviews = Review.objects.all()
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    return render(request, 'reviews.html', {'reviews': reviews, 'average_rating': average_rating})
 
 class AdressesViewSet(ReadOnlyModelViewSet):
     queryset = Address.objects.all()

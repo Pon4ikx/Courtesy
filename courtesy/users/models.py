@@ -233,11 +233,11 @@ class Review(models.Model):
         verbose_name="Пользователь",
         related_name="reviews"
     )
-    rating = models.FloatField(
+    rating = models.IntegerField(
         verbose_name="Оценка",
         validators=[
-            MinValueValidator(0.0, "Оценка не может быть меньше 0."),
-            MaxValueValidator(5.0, "Оценка не может быть больше 5.")
+            MinValueValidator(0, "Оценка не может быть меньше 0."),
+            MaxValueValidator(5, "Оценка не может быть больше 5.")
         ]
     )
     content = models.TextField(verbose_name="Содержимое", blank=True)
