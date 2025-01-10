@@ -280,6 +280,67 @@ class SpecialistService(models.Model):
     def __str__(self):
         return f"{self.specialist} - {self.service}"
 
+
+class Address(models.Model):
+    address = models.CharField(
+        max_length=255,
+        verbose_name="Адрес",
+        unique=True,
+        help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город<br>" +
+                  "Если в адресе проспект, то надо писать полностью: проспект (Название)"
+    )
+    working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
+                                     null=True)  # Время работы
+
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, verbose_name="Широта", blank=True, null=True
+    )  # Поле для широты
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, verbose_name="Долгота", blank=True, null=True
+    )  # Поле для долготы
+
+    class Meta:
+        verbose_name = "Адрес"
+        verbose_name_plural = "Адреса"
+
+    def save(self, *args, **kwargs):
+        # Проверяем, если координаты пустые, заполняем их через геокодирование
+        if not self.latitude or not self.longitude:
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                'q': quote(self.address),
+                'format': 'json',
+                'addressdetails': 1,
+                'limit': 1,
+                'accept-language': 'ru'
+            }
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36'
+            }
+            response = requests.get(url, params=params, headers=headers)
+
+            # Проверяем статус ответа
+            if response.status_code == 200:
+                data = response.json()
+                # Выводим отладочную информацию
+                print(f"Запрос: {self.address}")
+                print(f"Ответ: {data}")
+
+                if data:
+                    self.latitude = data[0].get('lat', None)
+                    self.longitude = data[0].get('lon', None)
+                else:
+                    print("Нет данных для данного адреса.")
+            else:
+                print(f"Ошибка: {response.status_code} - {response.text}")
+
+        # Сохраняем объект, без изменения других данных
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.address
+
+
 # class Address(models.Model):
 #     address = models.CharField(
 #         max_length=255,
@@ -326,54 +387,6 @@ class SpecialistService(models.Model):
 #
 #     def __str__(self):
 #         return self.address
-
-class Address(models.Model):
-    address = models.CharField(
-        max_length=255,
-        verbose_name="Адрес",
-        unique=True,
-        help_text="Пример: ул. (Название улицы или проспекта(пр.)), (Номер дома), Город<br>" +
-                  "Если в адресе проспект, то надо писать полностью: проспект (Название)"
-    )
-    working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True, null=True)
-    latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="Широта", blank=True, null=True
-    )
-    longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="Долгота", blank=True, null=True
-    )
-
-    class Meta:
-        verbose_name = "Адрес"
-        verbose_name_plural = "Адреса"
-
-    def save(self, *args, **kwargs):
-        if not self.latitude or not self.longitude:
-            api_key = '1f94f378144d44938b3c2997a4fe6544'
-            url = "https://api.geoapify.com/v1/geocode/search"
-            params = {
-                'text': self.address,
-                'apiKey': api_key,
-                'format': 'json',
-                'limit': 1,
-                'lang': 'ru'
-            }
-            response = requests.get(url, params=params)
-            if response.status_code == 200:
-                data = response.json()
-                if data and 'features' in data and data['features']:
-                    location = data['features'][0]['geometry']['coordinates']
-                    self.longitude = location[0]
-                    self.latitude = location[1]
-                else:
-                    print("Нет данных для адреса:", self.address)
-            else:
-                print("Ошибка API:", response.status_code, response.text)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.address
-
 
 
 class Contacts(models.Model):
