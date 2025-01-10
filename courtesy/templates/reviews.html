@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Отзывы | Courtesy{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><b>Отзывы</b></span>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Отзывы</h2>
+
+    <!-- Средняя оценка -->
+    <div class="average-rating">
+        {% if average_rating %}
+        <p>Средняя оценка: {{ average_rating|floatformat:2 }} из 5</p>
+        {% else %}
+        <p>Оценок пока нет.</p>
+        {% endif %}
+    </div>
+
+    <div class="reviews-container">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <span class="review-user">{{ review.get_user_short_name }}</span>
+                <span class="review-rating">
+                    {% if review.rating == 1 %}
+                    <span class="star">&#9733;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    {% elif review.rating == 2 %}
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+
+                    {% elif review.rating == 3 %}
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+
+                    {% elif review.rating == 4 %}
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star empty">&#9734;</span>
+
+                    {% elif review.rating == 5 %}
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    {% else %}
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+                    <span class="star empty">&#9734;</span>
+
+                    {% endif %}
+
+                </span>
+            </div>
+            <div class="review-content">
+                <p>{{ review.content }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>Пока нет отзывов.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
