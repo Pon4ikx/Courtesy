@@ -1,0 +1,83 @@
+body {
+    background-color: #d2fffa;
+}
+
+.tabs-container {
+    display: flex;
+}
+
+.tabs {
+    flex: 1;
+    max-width: 200px;
+    border-right: 1px solid #ddd;
+}
+
+.tab-link {
+    display: block;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+}
+
+.tab-link:hover {
+    background-color: #ddd;
+}
+
+.tab-link.active {
+    background-color: #ccc;
+}
+
+.tab-content {
+    flex: 3;
+    padding: 20px;
+}
+
+.personal-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-logout,
+.btn-feedback {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-logout:hover,
+.btn-feedback:hover {
+    background-color: #0056b3;
+}
+
+.btn-save {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+.btn-change-password {
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.btn-change-password:hover {
+    text-decoration: underline;
+}
