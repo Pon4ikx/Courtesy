@@ -12,8 +12,8 @@ admin.site.index_title = "Администрирование Courtesy"  # Тек
 
 # Настройка админки для модели Account
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'middle_name', 'is_active', 'is_staff')
-    search_fields = ('username', 'email', 'phone', 'first_name', 'last_name')
+    list_display = ('email', 'first_name', 'last_name', 'middle_name', 'is_active', 'is_staff')
+    search_fields = ('username', 'email', 'phone', 'first_name', 'last_name', 'middle_name')
     list_filter = ('is_active', 'is_staff')
 
     fieldsets = (
@@ -77,7 +77,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 class NewsAdmin(admin.ModelAdmin):
     list_display = ('title', 'published_date', 'main_image_preview')  # Отображение столбцов в списке
-    search_fields = ('title', 'content')  # Поля для поиска
+    search_fields = ('title', 'content', 'published_date')  # Поля для поиска
     list_filter = ('published_date',)  # Фильтр по дате публикации
     date_hierarchy = 'published_date'  # Навигация по датам
     fields = ('title', 'main_image', 'content', 'published_date')  # Поля в форме редактирования
@@ -96,15 +96,16 @@ class NewsAdmin(admin.ModelAdmin):
 
 class TalonAdmin(admin.ModelAdmin):
     list_display = (
+        'get_doctor_full_name',
         'get_user_full_name',
         'date',
         'cabinet',
-        'get_doctor_full_name',
         'time',
         'get_service_name',
     )
     list_filter = ('date', 'cabinet')
     search_fields = ('user__last_name', 'user__first_name', 'doctor__last_name', 'service__name')
+    date_hierarchy = 'date'
 
     def get_user_full_name(self, obj):
         return f"{obj.user.last_name} {obj.user.first_name} {obj.user.middle_name or ''}".strip()
@@ -122,19 +123,35 @@ class TalonAdmin(admin.ModelAdmin):
     get_service_name.short_description = "Услуга"
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "user":
-            # Фильтруем пользователей без статуса персонала
-            kwargs["queryset"] = db_field.related_model.objects.filter(is_staff=False)
+        if db_field.name == "service" and 'doctor' in request.GET:
+            doctor_id = request.GET.get('doctor')
+            if doctor_id:
+                # Получаем все услуги, связанные с выбранным специалистом через промежуточную модель SpecialistService
+                service_ids = SpecialistService.objects.filter(specialist_id=doctor_id).values_list('service_id', flat=True)
+                kwargs['queryset'] = Service.objects.filter(id__in=service_ids)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    # Меняем порядок полей в форме
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = [
+            (None, {
+                'fields': ('doctor', 'user', 'service', 'date', 'time', 'cabinet', 'dop_info'),
+            }),
+        ]
+        return fieldsets
+
+    class Media:
+        js = ('js/talon_filter.js',)  # Подключаем JS для динамической фильтрации
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('get_user_short_name', 'rating', 'content_preview')  # Поля, отображаемые в списке
-    list_filter = ('rating',)  # Фильтрация по оценке
-    search_fields = ('user__last_name', 'user__first_name', 'content')  # Поиск по имени и содержимому
+    list_display = ('get_user_short_name', 'rating', 'content_preview', 'date')  # Поля, отображаемые в списке
+    list_filter = ('rating', 'date')  # Фильтрация по оценке
+    search_fields = ('user__last_name', 'user__first_name', 'content', 'date')  # Поиск по имени и содержимому
     readonly_fields = ('get_user_short_name',)  # Поле только для чтения
-    fields = ('get_user_short_name', 'rating', 'content')  # Порядок полей в форме
+    fields = ('get_user_short_name', 'rating','date', 'content')  # Порядок полей в форме
+    date_hierarchy = 'date'
 
     @admin.display(description="Пользователь")
     def get_user_short_name(self, obj):

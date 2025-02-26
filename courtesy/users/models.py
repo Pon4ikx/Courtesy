@@ -8,6 +8,8 @@ from datetime import timedelta
 from django.utils import timezone
 import requests
 from urllib.parse import quote
+from django.utils.timezone import now
+
 
 
 # Кастомный менеджер для модели Account
@@ -240,6 +242,7 @@ class Review(models.Model):
             MaxValueValidator(5, "Оценка не может быть больше 5.")
         ]
     )
+    date = models.DateField(verbose_name="Дата", default=now)
     content = models.TextField(verbose_name="Содержимое", blank=True)
 
     class Meta:
@@ -256,6 +259,11 @@ class Review(models.Model):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name[0]}. {self.user.middle_name[0] if self.user.middle_name else ''}".strip()
         return "Аноним"
+
+    def clean(self):
+        """Проверка, что дата не в будущем."""
+        if self.date > now().date():
+            raise ValidationError({"date": "Дата не может быть в будущем."})
 
 
 class SpecialistService(models.Model):
