@@ -127,7 +127,8 @@ class TalonAdmin(admin.ModelAdmin):
             doctor_id = request.GET.get('doctor')
             if doctor_id:
                 # Получаем все услуги, связанные с выбранным специалистом через промежуточную модель SpecialistService
-                service_ids = SpecialistService.objects.filter(specialist_id=doctor_id).values_list('service_id', flat=True)
+                service_ids = SpecialistService.objects.filter(specialist_id=doctor_id).values_list('service_id',
+                                                                                                    flat=True)
                 kwargs['queryset'] = Service.objects.filter(id__in=service_ids)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -150,7 +151,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('rating', 'date')  # Фильтрация по оценке
     search_fields = ('user__last_name', 'user__first_name', 'content', 'date')  # Поиск по имени и содержимому
     readonly_fields = ('get_user_short_name',)  # Поле только для чтения
-    fields = ('get_user_short_name', 'rating','date', 'content')  # Порядок полей в форме
+    fields = ('get_user_short_name', 'rating', 'date', 'content')  # Порядок полей в форме
     date_hierarchy = 'date'
 
     @admin.display(description="Пользователь")
@@ -166,6 +167,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 CATEGORY_FILE = os.path.join(BASE_DIR, 'data', 'category_id.txt')
 
+
 def get_category_id():
     if os.path.exists(CATEGORY_FILE):
         with open(CATEGORY_FILE, 'r') as file:
@@ -173,17 +175,20 @@ def get_category_id():
             return category_id
     return None
 
+
 def set_category_id(category_id):
     with open(CATEGORY_FILE, 'w') as file:
         file.write(str(category_id))
 
+
 class SpecialistServiceAdmin(admin.ModelAdmin):
     list_display = ('specialist', 'service', 'specialist_category')
-    search_fields = ('specialist__name', 'service__name')
-    list_filter = ('specialist', 'service',)
+    search_fields = ('specialist__name', 'service__name',)
+    list_filter = ('specialist', 'specialist__category',)
 
     def specialist_category(self, obj):
         return obj.specialist.category.name
+
     specialist_category.short_description = 'Направление специалиста'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
