@@ -154,3 +154,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 ADMIN_SITE_HEADER = "Администрирование"
 ADMIN_SITE_TITLE = "Администрирование"
+
+ADMIN_INTERFACE_HIDE_THEMES = True
+GRAPPELLI_SWITCH_THEME = False
