@@ -63,6 +63,7 @@
         <div>{% block content%}{% endblock content %}</div>
     </main>
 
+
     <footer>
         <div class="footer-container">
             <!-- Контакты -->
@@ -93,20 +94,18 @@
             </div>
         </div>
     </footer>
+
+    {% if user.is_authenticated and user.is_staff %}
+    <button id="adminPanelBtn" title="Админка" onclick="location.href='/admin/'">⚙</button>
+    {% endif %}
+
+
+
+    <button id="scrollToTopBtn" title="Наверх">&#9650;</button> <!-- ▲ Unicode U+25B2 -->
+
+    <script src="{% static 'js/scroll_button.js' %}"></script>
+    <script src="{% static 'js/burger.js' %}"></script>
+
 </body>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const burgerToggle = document.querySelector(".burger-toggle");
-        const burgerMenu = document.querySelector(".burger-menu");
-        const arrow = document.querySelector(".burger-toggle .arrow");
-
-        burgerToggle.addEventListener("click", function (event) {
-            event.preventDefault(); // Предотвращаем переход по ссылке
-            burgerMenu.classList.toggle("active"); // Переключаем класс активности меню
-            arrow.classList.toggle("rotated"); // Переключаем класс для стрелки
-        });
-    });
-</script>
 
 </html>

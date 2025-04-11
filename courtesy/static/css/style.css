@@ -362,3 +362,73 @@ footer {
 }
 
 /* news_detail.html */
+
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 100;
+  background-color: #4DAEAA;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  padding: 20px 22px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+  transition: 
+    background-color 0.4s ease,
+    transform 0.3s ease,
+    opacity 0.4s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+#scrollToTopBtn:hover {
+  background-color: #3d9996;
+  transform: scale(1.1);
+}
+
+#scrollToTopBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* кнопка админки */
+#adminPanelBtn {
+  position: fixed;
+  bottom: 120px;  /* над кнопкой "Наверх" */
+  right: 42px;
+  z-index: 100;
+  background-color: #F4A6A0;
+  color: white;
+  border: none;
+  border-radius: 50%;  /* идеально круглую форму */
+  width: 70px;  /* ширина кнопки */
+  height: 70px;  /* высота кнопки, равная ширине */
+  padding: 0;  /* убираем внутренние отступы */
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition: 
+    background-color 0.4s ease,
+    transform 0.3s ease,
+    opacity 0.4s ease,
+    box-shadow 0.3s ease;
+}
+
+#adminPanelBtn:hover {
+  transform: scale(1);  /* увеличение кнопки при наведении */
+  background-color: #e28b86;  /* изменение цвета на более светлый */
+}
+
