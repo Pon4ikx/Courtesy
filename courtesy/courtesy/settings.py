@@ -157,3 +157,12 @@ ADMIN_SITE_TITLE = "Администрирование"
 
 ADMIN_INTERFACE_HIDE_THEMES = True
 GRAPPELLI_SWITCH_THEME = False
+
+
+# Почта
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'courtesy.clinic.email@gmail.com'
+EMAIL_HOST_PASSWORD = 'mupf lptp ktfs iepu'
