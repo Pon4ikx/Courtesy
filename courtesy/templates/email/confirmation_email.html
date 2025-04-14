@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4DAEAA;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F4A6A0;
+        }
+        .footer {
+            background-color: #B2E3E0;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .footer a {
+            color: #4DAEAA;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Добро пожаловать в клинику</h1>
+    </div>
+
+    <div class="content">
+        <p>Здравствуйте, {{ user.first_name }}!</p>
+        <p>Спасибо за регистрацию. Чтобы завершить процесс, пожалуйста, подтвердите вашу почту, введя следующий код:</p>
+        <p class="code">{{ code }}</p>
+        <p>Если вы не регистрировались на нашем сайте, просто проигнорируйте это письмо.</p>
+    </div>
+
+    <div class="footer">
+        <p>С уважением, команда Клиники</p>
+        <p><a href="#">Перейти на сайт</a></p>
+    </div>
+</div>
+
+</body>
+</html>

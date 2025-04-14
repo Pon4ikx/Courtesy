@@ -9,7 +9,7 @@ from django.utils import timezone
 import requests
 from urllib.parse import quote
 from django.utils.timezone import now
-
+from django.conf import settings
 
 
 # Кастомный менеджер для модели Account
@@ -408,3 +408,12 @@ class Contacts(models.Model):
 
     def __str__(self):
         return f'{self.contact} - {self.person}'
+
+
+class EmailConfirmationCode(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Code for {self.user.email}: {self.code}"

@@ -1,0 +1,70 @@
+/* Общие стили для страницы подтверждения почты */
+.confirmation-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.confirmation-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4DAEAA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirmation-button:hover {
+    background-color: #45a79b;
+}
+
+.error-message {
+    margin-top: 20px;
+    color: red;
+    text-align: center;
+}
+
+.resend-info {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.resend-info a {
+    color: #4DAEAA;
+    text-decoration: none;
+}
+
+.resend-info a:hover {
+    text-decoration: underline;
+}

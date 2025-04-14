@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение электронной почты{% endblock %}
+
+{% block content %}
+<div class="confirmation-container">
+    <h2>Подтвердите вашу почту</h2>
+
+    <p>Для завершения регистрации, пожалуйста, введите код, который мы отправили вам на email.</p>
+
+    <!-- Форма для ввода кода подтверждения -->
+    <form method="post" class="confirmation-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="code">Введите код из письма</label>
+            <input type="text" name="code" id="code" placeholder="Введите код из письма" required>
+        </div>
+
+        <button type="submit" class="confirmation-button">Подтвердить</button>
+    </form>
+
+    <!-- Если есть ошибка, показываем сообщение -->
+    {% if error %}
+    <div class="error-message">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Если отправка была успешной, показываем сообщение -->
+    {% if message %}
+    <div class="success-message">
+        <p>{{ message }}</p>
+    </div>
+    {% endif %}
+
+    <div class="resend-info">
+        <p>Не получили письмо? <a href="{% url 'resend_email' %}">Отправить код снова</a></p>
+    </div>
+</div>
+
+<!-- Подключаем новый файл стилей -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/confirm_email.css' %}">
+
+{% endblock content %}
