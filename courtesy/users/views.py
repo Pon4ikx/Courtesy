@@ -84,42 +84,28 @@ def signup_view(request):
 
 
 def confirm_email(request):
+    user = request.user if request.user.is_authenticated else None
+
     if request.method == 'POST':
-        code = request.POST.get('code')
-        try:
-            confirmation = EmailConfirmationCode.objects.get(code=code)
-            user = confirmation.user
-            user.is_active = True
-            user.save()
-            confirmation.delete()
-            return redirect('login')  # или куда надо
-        except EmailConfirmationCode.DoesNotExist:
-            return render(request, 'confirm_email.html', {'error': 'Неверный код'})
-    return render(request, 'confirm_email.html')
+        if 'resend' in request.POST:
+            if user:
+                code = str(random.randint(100000, 999999))
+                EmailConfirmationCode.objects.filter(user=user).delete()
+                EmailConfirmationCode.objects.create(user=user, code=code)
+                send_confirmation_email(user, code)
+                return render(request, 'confirm_email.html', {'message': 'Код отправлен повторно.'})
+        else:
+            code = request.POST.get('code')
+            confirmation = EmailConfirmationCode.objects.filter(code=code).first()
 
+            if confirmation and confirmation.user:
+                confirmation.user.is_active = True
+                confirmation.user.save()
+                confirmation.delete()
+                return redirect('login')
+            else:
+                return render(request, 'confirm_email.html', {'error': 'Неверный код.'})
 
-def resend_email(request):
-    if request.method == 'POST':
-        # Получаем email пользователя
-        email = request.POST.get('email')
-        try:
-            user = Account.objects.get(email=email)
-        except Account.DoesNotExist:
-            return render(request, 'confirm_email.html', {'error': 'Пользователь с таким email не найден'})
-
-        # Генерация нового кода
-        code = str(random.randint(100000, 999999))
-        EmailConfirmationCode.objects.create(user=user, code=code)
-
-        # Отправка нового кода
-        send_confirmation_email(user, code)
-
-        # Возвращаем ту же страницу с сообщением
-        return render(request, 'confirm_email.html', {
-            'message': 'Код подтверждения был отправлен на ваш email!',
-        })
-
-    # Если запрос GET, просто отображаем страницу
     return render(request, 'confirm_email.html')
 
 
