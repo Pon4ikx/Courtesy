@@ -125,6 +125,12 @@ def specialists_view(request):
     })
 
 
+def specialist_info(request, slug):
+    specialist = get_object_or_404(Specialist, slug=slug)
+    services = [ss.service for ss in specialist.services.select_related('service').all()]
+    return render(request, 'specialist_info.html', {'specialist': specialist, 'services': services})
+
+
 def news_list_view(request):
     news = News.objects.all()
     return render(request, 'news.html', {'news': news})

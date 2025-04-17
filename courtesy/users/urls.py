@@ -21,5 +21,6 @@ urlpatterns = [
                   path('news/<slug:slug>/', views.news_detail, name='news_detail'),
                   path('reviews/', views.reviews_view, name='reviews_list'),
                   path('confirm_email/', views.confirm_email, name='confirm_email'),
+                  path('specialist/<slug:slug>/', views.specialist_info, name='specialist_info'),
 
               ] + router.urls

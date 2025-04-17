@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ specialist }} – услуги | Courtesy{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/specialist_info.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt; <span><a href="/doctors"><b>Наши специалисты</b></a></span>
+            &gt; <span><b>{{ specialist.last_name }} {{ specialist.first_name|slice:":1"|upper }}.
+                    {% if specialist.middle_name %} {{ specialist.middle_name|slice:":1"|upper }}. {% endif %}</b></span>
+        </nav>
+    </div>
+</div>
+
+<div class="container2">
+    <h2>Услуги, предоставляемые специалистом</h2>
+    <h3>{{ specialist.last_name }} {{ specialist.first_name }}
+        {% if specialist.middle_name %} {{ specialist.middle_name }}{% endif %}</h3>
+
+    <ul class="service-list">
+        {% for service in services %}
+        <li>
+            <strong>{{ service.name }}</strong><br>
+            {{ service.description|default:"Описание отсутствует" }}<br>
+            <em>Цена: от {{ service.price }} рублей</em>
+        </li>
+        {% empty %}
+        <li>Услуги не указаны.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

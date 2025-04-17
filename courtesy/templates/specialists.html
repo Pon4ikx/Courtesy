@@ -56,6 +56,7 @@
                     <p><b>Дополнительная информация:</b> {{ specialist.dop_info }}</p>
                     {% endif %}
                 </div>
+                <a href="{% url 'specialist_info' specialist.slug %}" class="btn-services">Предоставляемые услуги</a>
             </div>
             {% empty %}
             <p>Специалисты отсутствуют.</p>
