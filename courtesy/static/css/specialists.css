@@ -83,7 +83,6 @@ h2 {
     max-width: 1200px;
 }
 
-/* Стили для карточки специалиста */
 .specialist-card {
     display: flex;
     gap: 20px;
@@ -92,7 +91,9 @@ h2 {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    align-items: stretch; /* чтобы колонки были одинаковой высоты */
 }
+
 
 .specialist-photo-container {
     width: 200px;
@@ -119,9 +120,22 @@ h2 {
     font-size: 1.2rem;
 }
 
+/* новая обёртка */
+.specialist-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* чтобы кнопка упала вниз */
+    flex: 1;
+    position: relative;
+}
+
 .specialist-info {
     flex-grow: 1;
 }
+
+/* .specialist-info {
+    margin-bottom: 10px;
+} */
 
 .specialist-info h3 {
     font-size: 1.6rem;
@@ -141,22 +155,31 @@ h2 {
 
 /* Стили для пустого списка специалистов */
 .specialist-list p {
-    text-align: center;
+    margin-left: 5%;
     font-size: 1.2rem;
     color: #777;
 }
 
+/* Обёртка, которая прижимает кнопку к низу */
+.btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* сама кнопка */
 .btn-services {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 15px;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 8px 16px;
     background-color: #4DAEAA;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
 }
 
 .btn-services:hover {
     background-color: #3d938f;
 }
+
