@@ -417,3 +417,15 @@ class EmailConfirmationCode(models.Model):
 
     def __str__(self):
         return f"Code for {self.user.email}: {self.code}"
+
+
+class Cabinet(models.Model):
+    number = models.CharField(max_length=10, unique=True, verbose_name="Номер кабинета")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Направление")
+
+    class Meta:
+        verbose_name = "Кабинет"
+        verbose_name_plural = "Кабинеты"
+
+    def __str__(self):
+        return f"Кабинет {self.number} ({self.category.name})"

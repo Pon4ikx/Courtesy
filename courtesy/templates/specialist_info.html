@@ -10,28 +10,59 @@
 <div class="container">
     <div class="breadcrumb-container">
         <nav class="breadcrumb">
-            <a href="/"><b>Главная</b></a> &gt; <span><a href="/doctors"><b>Наши специалисты</b></a></span>
-            &gt; <span><b>{{ specialist.last_name }} {{ specialist.first_name|slice:":1"|upper }}.
-                    {% if specialist.middle_name %} {{ specialist.middle_name|slice:":1"|upper }}. {% endif %}</b></span>
+            <a href="/"><b>Главная</b></a> &gt;
+            <a href="/doctors"><b>Наши специалисты</b></a> &gt;
+            <span><b>{{ specialist.last_name }} {{ specialist.first_name|slice:":1"|upper }}.
+                {% if specialist.middle_name %}{{ specialist.middle_name|slice:":1"|upper }}.{% endif %}</b></span>
         </nav>
     </div>
 </div>
 
-<div class="container2">
-    <h2>Услуги, предоставляемые специалистом</h2>
-    <h3>{{ specialist.last_name }} {{ specialist.first_name }}
-        {% if specialist.middle_name %} {{ specialist.middle_name }}{% endif %}</h3>
+<div class="container2 specialist-details">
+    <div class="specialist-main">
+        <div class="specialist-photo-wrapper">
+            {% if specialist.photo %}
+                <img src="{{ specialist.photo.url }}" alt="Фото {{ specialist }}" class="specialist-photo-big">
+            {% else %}
+                <div class="placeholder-photo">Фото отсутствует</div>
+            {% endif %}
+        </div>
 
-    <ul class="service-list">
-        {% for service in services %}
-        <li>
-            <strong>{{ service.name }}</strong><br>
-            {{ service.description|default:"Описание отсутствует" }}<br>
-            <em>Цена: от {{ service.price }} рублей</em>
-        </li>
-        {% empty %}
-        <li>Услуги не указаны.</li>
-        {% endfor %}
-    </ul>
+        <div class="specialist-info-wrapper">
+            <h2>{{ specialist.last_name }} {{ specialist.first_name }}{% if specialist.middle_name %} {{ specialist.middle_name }}{% endif %}</h2>
+            <p><b>Специальность:</b> {{ specialist.speciality }}</p>
+            <p><b>Направление:</b> {% if specialist.category %}{{ specialist.category.name }}{% else %}Не указана{% endif %}</p>
+            <p><b>Стаж:</b> {{ specialist.experience }} лет</p>
+            {% if specialist.dop_info %}
+            <p><b>Дополнительная информация:</b> {{ specialist.dop_info }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="specialist-services">
+        <h3>Услуги, предоставляемые специалистом</h3>
+        <ul class="service-list">
+            {% for service in services %}
+            <li>
+                <strong>{{ service.name }}</strong><br>
+                {{ service.description|default:"Описание отсутствует" }}<br>
+                <em>
+                    Цена:
+                    {% if service.price == 0 %}
+                    Уточняется в клинике
+                    {% else %}
+                    от {{ service.price }} руб.
+                    {% endif %}
+                </em>
+            </li>
+            {% empty %}
+            <li>Услуги не указаны.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="book-btn-container">
+        <a href="/" class="btn-book">Записаться</a>
+    </div>
 </div>
 {% endblock %}
