@@ -3,82 +3,83 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Подтверждение электронной почты</title>
+    <title>Подтверждение электронной почты | Courtesy</title>
+    <link rel="icon" href="{% static 'icons/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/confirm_email.css' %}">
 </head>
 <body>
-    <div class="confirmation-container">
-        <h2>Подтвердите вашу почту</h2>
+<div class="confirmation-container">
+    <h2>Подтвердите вашу почту</h2>
 
-        <p>Для завершения регистрации введите код, который мы отправили вам на email.  
+    <p>Для завершения регистрации введите код, который мы отправили вам на email.
         Проверьте также папку <strong>«Спам»</strong>, если письмо не пришло.</p>
 
-        <form method="post" class="confirmation-form">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="code">Введите код из письма</label>
-                <input type="text" name="code" id="code" required>
-            </div>
-
-            <button type="submit" class="confirmation-button">Подтвердить</button>
-        </form>
-
-        {% if error %}
-            <div class="error-message">{{ error }}</div>
-        {% endif %}
-        {% if message %}
-            <div class="success-message">{{ message }}</div>
-        {% endif %}
-
-        <div class="resend-info">
-            <p>
-                Не получили письмо?
-                <a href="#" id="resend-link" onclick="resendCode(event)">Отправить код снова</a>
-                <span id="timer"></span>
-            </p>
+    <form method="post" class="confirmation-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="code">Введите код из письма</label>
+            <input type="text" name="code" id="code" required>
         </div>
+
+        <button type="submit" class="confirmation-button">Подтвердить</button>
+    </form>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+    {% if message %}
+    <div class="success-message">{{ message }}</div>
+    {% endif %}
+
+    <div class="resend-info">
+        <p>
+            Не получили письмо?
+            <a href="#" id="resend-link" onclick="resendCode(event)">Отправить код снова</a>
+            <span id="timer"></span>
+        </p>
     </div>
+</div>
 
-    <script>
-        let resendLink = document.getElementById('resend-link');
-        let timerSpan = document.getElementById('timer');
-        let countdown = 60;
+<script>
+    let resendLink = document.getElementById('resend-link');
+    let timerSpan = document.getElementById('timer');
+    let countdown = 60;
 
-        function startTimer() {
-            resendLink.style.pointerEvents = 'none';
-            resendLink.style.opacity = '0.5';
+    function startTimer() {
+        resendLink.style.pointerEvents = 'none';
+        resendLink.style.opacity = '0.5';
+        timerSpan.textContent = ` (через ${countdown} сек)`;
+
+        let interval = setInterval(() => {
+            countdown--;
             timerSpan.textContent = ` (через ${countdown} сек)`;
 
-            let interval = setInterval(() => {
-                countdown--;
-                timerSpan.textContent = ` (через ${countdown} сек)`;
+            if (countdown <= 0) {
+                clearInterval(interval);
+                resendLink.style.pointerEvents = 'auto';
+                resendLink.style.opacity = '1';
+                timerSpan.textContent = '';
+            }
+        }, 1000);
+    }
 
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    resendLink.style.pointerEvents = 'auto';
-                    resendLink.style.opacity = '1';
-                    timerSpan.textContent = '';
-                }
-            }, 1000);
-        }
+    function resendCode(event) {
+        event.preventDefault();
+        fetch("{% url 'confirm_email' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'resend=true'
+        })
+        .then(() => {
+            startTimer();
+            alert("Код отправлен повторно.");
+        });
+    }
 
-        function resendCode(event) {
-            event.preventDefault();
-            fetch("{% url 'confirm_email' %}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'resend=true'
-            })
-            .then(() => {
-                startTimer();
-                alert("Код отправлен повторно.");
-            });
-        }
-
-        window.onload = startTimer;
-    </script>
+    window.onload = startTimer;
+</script>
 </body>
 </html>
