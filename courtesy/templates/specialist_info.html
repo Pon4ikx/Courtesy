@@ -62,7 +62,7 @@
     </div>
 
     <div class="book-btn-container">
-        <a href="/" class="btn-book">Записаться</a>
+        <a href="{% url 'booking' %}?specialist={{ specialist.id }}" class="btn-book">Записаться</a>
     </div>
 </div>
 {% endblock %}

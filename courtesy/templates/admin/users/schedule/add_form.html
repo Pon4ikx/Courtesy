@@ -1,0 +1,22 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+  <div style="margin-bottom: 20px;">
+    <form method="get" action="{% url 'admin:apply_specialist_filter' %}">
+      <label for="specialist">Выберите специалиста:</label>
+      <select name="specialist" id="specialist">
+        {% for specialist in specialists %}
+          <option value="{{ specialist.id }}" {% if specialist.id|stringformat:"s" == specialist_id|stringformat:"s" %}selected{% endif %}>
+            {{ specialist.full_name }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="button">Применить фильтр</button>
+    </form>
+    {% if filter_message %}
+      <p><strong>{{ filter_message }}</strong></p>
+    {% endif %}
+  </div>
+
+  {{ block.super }}
+{% endblock %}

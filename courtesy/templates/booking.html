@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Запись на приём | Courtesy{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+<link rel="stylesheet" href="{% static 'css/other.css' %}">
+
+<div class="container">
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb">
+            <a href="/"><b>Главная</b></a> &gt;
+            <a href="/services"><b>Услуги</b></a> &gt;
+            <span><b>Запись на приём</b></span>
+        </nav>
+    </div>
+</div>
+
+<div class="container-booking mt-5">
+    <h2 class="mb-4">Запись на приём</h2>
+
+    {% if selected_specialist %}
+    <div class="direction-box">
+        <span class="direction-title">Направление специалиста:</span>
+        {{ selected_specialist.category.name }}
+    </div>
+    {% elif selected_service %}
+    <div class="direction-box">
+        <span class="direction-title">Направление услуги:</span>
+        {{ selected_service.category.name }}
+    </div>
+    {% endif %}
+
+
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_specialist" class="form-label">Специалист</label>
+            {{ form.specialist }}
+            {% if form.specialist.field.disabled %}
+            <small class="text-muted d-block">Специалист выбран</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_service" class="form-label">Услуга</label>
+            {{ form.service }}
+            {% if form.service.field.disabled %}
+            <small class="text-muted d-block">Услуга выбрана</small>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_date" class="form-label">Дата</label>
+            {{ form.date }}
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Показать талоны</button>
+    </form>
+    {% if selected_date %}
+    <div class="mt-4">
+        <h4 class="available-title">Доступные талоны на {{ selected_date }}</h4>
+        {% if available_talons %}
+        <ul class="talon-grid">
+            {% for talon_time in available_talons %}
+            <div class="talon-card">
+                <div class="talon-time">{{ talon_time|time:"H:i" }}</div>
+                <form method="post" action="{% url 'create_talon' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="specialist_id" value="{{ form.specialist.value }}">
+                    <input type="hidden" name="service_id" value="{{ form.service.value }}">
+                    <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                    <input type="hidden" name="time" value="{{ talon_time|time:'H:i:s' }}">
+                    <button type="submit" class="btn-choose">Выбрать</button>
+                </form>
+            </div>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Нет доступных талонов на эту дату.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

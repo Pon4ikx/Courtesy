@@ -13,76 +13,166 @@
             <a href="/"><b>Главная</b></a> &gt; <span><b>Личный кабинет</b></span>
         </nav>
     </div>
-</div>
-<div class="container">
-    <div class="personal-main">
-        <h2>Добро пожаловать, {{ user.first_name }}!</h2>
-        <p>{{ user.email }}</p>
-        <p>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name}}</p>
-        <p>{{ user.phone }}</p>
-        <br>
+
+
+    <div class="personal-container">
+        <div class="personal-header">
+            <div class="user-avatar">
+                {% if user.photo %}
+                <img src="{{ user.photo.url }}" alt="Аватар">
+                {% else %}
+                <div class="avatar-placeholder">{{ user.first_name|first }}{{ user.last_name|first }}</div>
+                {% endif %}
+            </div>
+            <div class="user-info">
+                <h1>Добро пожаловать, {{ user.first_name }}!</h1>
+                <div class="user-meta">
+                    <span><i class="fas fa-envelope"></i> {{ user.email }}</span>
+                    <span><i class="fas fa-phone"></i> {{ user.phone }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-wrapper">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="current">Актуальные записи</button>
+                <button class="tab-btn" data-tab="history">История посещений</button>
+                <button class="tab-btn" data-tab="settings">Настройки</button>
+            </div>
+
+            <div class="tab-content active" id="current">
+                <h2><i class="fas fa-calendar-check"></i> Предстоящие записи</h2>
+
+                {% if current_talons %}
+                <div class="talons-grid">
+                    {% for talon in current_talons %}
+                    <div class="talon-card">
+                        <div class="talon-header">
+                            <span class="talon-date">{{ talon.date|date:"d.m.Y" }}</span>
+                            <span class="talon-time">{{ talon.time|time:"H:i" }}</span>
+                            <span class="talon-status upcoming">Запланирован</span>
+                        </div>
+
+                        <div class="talon-body">
+                            <div class="talon-doctor">
+                                <div class="doctor-info">
+                                    <h3>{{ talon.doctor.speciality }}</h3>
+                                    <p>Доктор {{ talon.doctor.last_name }} {{ talon.doctor.first_name }} {{
+                                        talon.doctor.middle_name }}</p>
+                                </div>
+                            </div>
+
+                            <div class="talon-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Кабинет: {{ talon.cabinet }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-procedures"></i>
+                                    <span>Услуга: {{ talon.service.name }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Стоимость:
+                                        {% if talon.service.price > 0 %}
+                                        от {{ talon.service.price }} руб.
+                                        {% else %}
+                                        <span class="price-notice">уточняется в клинике</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>У вас нет предстоящих записей</p>
+                    <a href="/booking/" class="btn btn-primary">Записаться на прием</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="tab-content" id="history">
+                <!-- Аналогично для истории посещений -->
+            </div>
+
+            <div class="tab-content" id="settings">
+                <h2><i class="fas fa-user-cog"></i> Настройки аккаунта</h2>
+
+                <div class="account-settings">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-user-edit"></i> Личные данные</h3>
+                        <form method="post" action="{% url 'update_profile' %}" class="profile-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_first_name">Имя:</label>
+                                <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}"
+                                    class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_last_name">Фамилия:</label>
+                                <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}"
+                                    class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_phone">Телефон:</label>
+                                <input type="tel" id="id_phone" name="phone" value="{{ user.phone }}"
+                                    class="form-input">
+                            </div>
+
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Сохранить изменения
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="settings-section security">
+                        <h3><i class="fas fa-shield-alt"></i> Безопасность</h3>
+
+                        <div class="security-actions">
+                            <a href="{% url 'password_change' %}" class="btn btn-change-password">
+                                <i class="fas fa-key"></i> Сменить пароль
+                            </a>
+
+                            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-logout">
+                                    <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="delete-account">
+                            <button class="btn btn-delete" id="deleteAccountBtn">
+                                <i class="fas fa-trash-alt"></i> Удалить аккаунт
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для подтверждения удаления -->
+            <div id="deleteAccountModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Подтверждение удаления аккаунта</h3>
+                    <p>Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.</p>
+                    <form method="post" action="{% url 'delete_account' %}">
+                        {% csrf_token %}
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-cancel">Отмена</button>
+                            <button type="submit" class="btn btn-confirm-delete">Удалить аккаунт</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <div class="tabs-container">
-        <div class="tabs">
-            <button class="tab-link" onclick="openTab(event, 'current-tickets')">Актуальные талоны</button>
-            <button class="tab-link" onclick="openTab(event, 'past-tickets')">Прошлые талоны</button>
-            <button class="tab-link" onclick="openTab(event, 'account-settings')">Параметры учётной записи</button>
-        </div>
-
-        <div id="current-tickets" class="tab-content">
-            <h3>Актуальные талоны</h3>
-            <p>Здесь будут отображаться актуальные талоны.</p>
-        </div>
-
-        <div id="past-tickets" class="tab-content" style="display:none;">
-            <h3>Прошлые талоны</h3>
-            <p>Здесь будут отображаться прошлые талоны.</p>
-        </div>
-
-        <div id="account-settings" class="tab-content" style="display:none;">
-            <h3>Параметры учётной записи</h3>
-
-            <form method="post" action="">
-                {% csrf_token %}
-                <label for="email">Электронная почта:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}">
-
-                <label for="first_name">Имя:</label>
-                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
-
-                <label for="last_name">Фамилия:</label>
-                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
-
-                <label for="phone_number">Номер телефона:</label>
-                <input type="text" id="phone_number" name="phone_number" value="{{ user.phone_number }}">
-
-                <button type="submit" class="btn-save">Сохранить изменения</button>
-            </form>
-            <a href="" class="btn-change-password">Сменить пароль</a>
-        </div>
-    </div>
-</div>
-<div class="personal-footer">
-    <a href="/logout/" class="btn-logout">Выйти из аккаунта</a>
-    <a href="/feedback/" class="btn-feedback">Оставить отзыв</a>
-</div>
-
-<script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tab-link");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-</script>
-
-{% endblock content %}
+    <script src="{% static 'js/personal.js' %}"></script>
+    {% endblock %}

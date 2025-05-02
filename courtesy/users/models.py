@@ -108,6 +108,11 @@ class Specialist(models.Model):
     dop_info = models.TextField(verbose_name="Дополнительная информация", blank=True)
     display_on_main = models.BooleanField(default=False, verbose_name="Отображать на главной странице")
 
+    appointment_duration = models.PositiveIntegerField(
+        default=20,
+        verbose_name="Длительность приёма (в минутах)"
+    )
+
     class Meta:
         verbose_name = "Специалист"
         verbose_name_plural = "Специалисты"
@@ -150,7 +155,7 @@ class Service(models.Model):
         verbose_name_plural = "Услуги"
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def save(self, *args, **kwargs):
         if not self.slug:  # Генерация слага только если он отсутствует
@@ -421,11 +426,28 @@ class EmailConfirmationCode(models.Model):
 
 class Cabinet(models.Model):
     number = models.CharField(max_length=10, unique=True, verbose_name="Номер кабинета")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Направление")
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, verbose_name="Направление")
 
     class Meta:
         verbose_name = "Кабинет"
         verbose_name_plural = "Кабинеты"
 
     def __str__(self):
-        return f"Кабинет {self.number} ({self.category.name})"
+        return f"Кабинет №{self.number}"
+
+
+class Schedule(models.Model):
+    specialist = models.ForeignKey('Specialist', on_delete=models.CASCADE, verbose_name="Специалист")
+    date = models.DateField(verbose_name="Дата")
+    start_time = models.TimeField(verbose_name="Время начала", null=True)
+    end_time = models.TimeField(verbose_name="Время окончания", null=True)
+    cabinet = models.ForeignKey('Cabinet', on_delete=models.SET_NULL, null=True, verbose_name="Кабинет")
+    is_day_off = models.BooleanField(default=False, verbose_name="Выходной")
+
+    class Meta:
+        verbose_name = "Расписание"
+        verbose_name_plural = "Расписания"
+        unique_together = ("specialist", "date")
+
+    def __str__(self):
+        return f"{self.specialist} – {self.date}"

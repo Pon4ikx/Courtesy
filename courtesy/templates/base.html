@@ -19,11 +19,15 @@
             </div>
 
             <!-- Поисковая строка -->
-            <div class="search-container">
-                <input type="text" placeholder="Введите запрос" class="search-input">
-                <button type="submit" class="search-button">
-                    <img src="{% static 'images/search-icon.png' %}" alt="Искать">
-                </button>
+            <div class="search-container" style="position: relative;">
+                <form action="{% url 'global_search' %}" method="get" id="search-form">
+                    <input type="text" name="q" placeholder="Введите запрос" class="search-input" required
+                           autocomplete="off" id="search-input">
+                    <button type="submit" class="search-button">
+                        <img src="{% static 'images/search-icon.png' %}" alt="Искать">
+                    </button>
+                </form>
+                <div class="live-search-results" id="live-results"></div>
             </div>
 
 
@@ -105,7 +109,7 @@
 
     <script src="{% static 'js/scroll_button.js' %}"></script>
     <script src="{% static 'js/burger.js' %}"></script>
-
+    <script src="{% static 'js/search.js' %}"></script>
 </body>
 
 </html>

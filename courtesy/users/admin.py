@@ -3,7 +3,8 @@ from django.http import HttpResponseRedirect
 from django.urls import path
 import os
 from courtesy.settings import BASE_DIR
-from .models import Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address, Contacts
+from .models import (Account, Category, Specialist, Service, News, Talon, Review, SpecialistService, Address, Contacts,
+                     Cabinet, Schedule)
 
 admin.site.site_header = "Администрирование Courtesy"  # Заголовок панели администратора
 admin.site.site_title = "Администрирование Courtesy"  # Заголовок на вкладке браузера
@@ -46,8 +47,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class SpecialistAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience', "display_on_main")
-    list_filter = ('category', 'speciality')  # Фильтры по категориям и специальностям
+    list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience', "display_on_main",
+                    "appointment_duration")
+    list_filter = ('category', 'speciality', "appointment_duration")  # Фильтры по категориям и специальностям
     search_fields = ('last_name', 'first_name', 'middle_name', 'speciality', 'display_on_main')  # Поля для поиска
     ordering = ('last_name', 'first_name', 'display_on_main')  # Сортировка по фамилии и имени
     exclude = ('slug',)  # Исключаем поле slug из формы
@@ -55,7 +57,7 @@ class SpecialistAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'photo', 'last_name', 'first_name', 'middle_name',
-                'speciality', 'category', 'experience', 'dop_info',
+                'speciality', 'category', "appointment_duration", 'experience', 'dop_info',
                 'display_on_main')
         }),
 
@@ -145,7 +147,6 @@ class TalonAdmin(admin.ModelAdmin):
         js = ('js/talon_filter.js',)  # Подключаем JS для динамической фильтрации
 
 
-@admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('get_user_short_name', 'rating', 'content_preview', 'date')  # Поля, отображаемые в списке
     list_filter = ('rating', 'date')  # Фильтрация по оценке
@@ -183,7 +184,7 @@ def set_category_id(category_id):
 
 class SpecialistServiceAdmin(admin.ModelAdmin):
     list_display = ('specialist', 'service', 'specialist_category')
-    search_fields = ('specialist__name', 'service__name',)
+    search_fields = ('specialist__first_name', 'specialist__last_name', 'service__name',)
     list_filter = ('specialist', 'specialist__category',)
 
     def specialist_category(self, obj):
@@ -272,6 +273,71 @@ class ContactsAdmin(admin.ModelAdmin):
     fields = ("person", "contact", "what_doing")
 
 
+class CabinetAdmin(admin.ModelAdmin):
+    list_display = ('number', 'category')
+    list_filter = ('category',)
+    search_fields = ('number',)
+    ordering = ('number',)
+
+
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ('specialist', 'cabinet', 'date', 'start_time', 'end_time')
+    search_fields = ('specialist__name', 'cabinet__number', 'date',)
+    list_filter = ('specialist', 'date',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('apply_specialist_filter/', self.admin_site.admin_view(self.apply_specialist_filter),
+                 name='apply_specialist_filter'),
+        ]
+        return custom_urls + urls
+
+    def apply_specialist_filter(self, request):
+        specialist_id = request.GET.get('specialist')
+        if specialist_id:
+            # Если выбран специалист, сохраняем его id в сессию
+            request.session['specialist_id'] = specialist_id
+            return HttpResponseRedirect(f'/admin/users/schedule/add/?specialist={specialist_id}')
+        return HttpResponseRedirect('/admin/users/schedule/add/')
+
+    def add_view(self, request, form_url='', extra_context=None):
+        specialist_id = request.GET.get('specialist')
+        if specialist_id:
+            request.session['specialist_id'] = specialist_id
+
+        specialist_id = request.session.get('specialist_id')
+        cabinets = Cabinet.objects.all()
+        specialists = Specialist.objects.all()
+
+        # фильтрация кабинетов
+        if specialist_id:
+            specialist = Specialist.objects.filter(id=specialist_id).first()
+            if specialist:
+                cabinets = Cabinet.objects.filter(category=specialist.category)
+                filter_message = f"Фильтрация по направлению: {specialist.category.name}"
+            else:
+                filter_message = ""
+        else:
+            filter_message = ""
+
+        extra_context = extra_context or {}
+        extra_context['specialist_id'] = specialist_id
+        extra_context['cabinets'] = cabinets
+        extra_context['specialists'] = specialists
+        extra_context['filter_message'] = filter_message
+
+        return super().add_view(request, form_url, extra_context=extra_context)
+
+    def get_specialist_category(self, specialist_id):
+        """ Получаем категорию специалиста по его id """
+        if specialist_id:
+            specialist = Specialist.objects.filter(id=specialist_id).first()
+            if specialist:
+                return specialist.category.id
+        return None
+
+
 # Регистрация модели в админке
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -282,3 +348,6 @@ admin.site.register(Talon, TalonAdmin)
 admin.site.register(SpecialistService, SpecialistServiceAdmin)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Contacts, ContactsAdmin)
+admin.site.register(Review, ReviewAdmin)
+admin.site.register(Cabinet, CabinetAdmin)
+admin.site.register(Schedule, ScheduleAdmin)

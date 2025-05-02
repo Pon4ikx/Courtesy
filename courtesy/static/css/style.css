@@ -56,49 +56,51 @@ header {
 /* Поисковая строка */
 .search-container {
   position: relative;
-  display: flex;
+  display: inline-flex; /* Изменено с flex на inline-flex */
   align-items: center;
   margin-top: 10px;
-
+  width: 300px; /* Фиксированная ширина контейнера */
 }
 
 /* Поле ввода */
 .search-input {
-  width: 300px;
-
-  padding: 10px 15px;
+  width: 100%; /* Занимает всю ширину контейнера */
+  padding: 10px 60px 10px 15px; /* Правое поле увеличено для кнопки */
   font-size: 14px;
   border: 1px solid #C4E6DE;
   border-radius: 25px;
-
   outline: none;
+  box-sizing: border-box; /* Важно! */
+  background-color: #fff; /* На случай кастомного фона */
 }
 
 /* Кнопка поиска */
 .search-button {
   position: absolute;
-  right: 10px;
-
+  right: 15px; /* Уменьшено с 10px для лучшего баланса */
+  top: 50%;
+  transform: translateY(-50%); /* Центрирование по вертикали */
   background-color: transparent;
   border: none;
   cursor: pointer;
+  padding: 0; /* Уменьшено с 5px */
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
 }
 
 /* Иконка лупы */
 .search-button img {
-  width: 20px;
-  height: 20px;
+  width: 100%; /* Использует размеры кнопки */
+  height: 100%;
+  object-fit: contain; /* Для правильного отображения иконки */
   filter: brightness(0.5);
-
   transition: transform 0.2s, filter 0.2s;
-
 }
 
-.search-button img:hover {
+.search-button:hover img {
   transform: scale(1.1);
   filter: brightness(0.8);
 }

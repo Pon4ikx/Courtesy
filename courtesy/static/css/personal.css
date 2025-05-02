@@ -2,82 +2,491 @@ body {
     background-color: #d2fffa;
 }
 
-.tabs-container {
+/* Основные стили */
+.personal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+/* Шапка профиля */
+.personal-header {
     display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.user-avatar {
+    margin-right: 25px;
+}
+
+.user-avatar img,
+.avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4DAEAA;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.avatar-placeholder.small {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+}
+
+.user-info h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 28px;
+}
+
+.user-meta {
+    margin-top: 10px;
+}
+
+.user-meta span {
+    display: inline-block;
+    margin-right: 20px;
+    color: #666;
+    font-size: 15px;
+}
+
+.user-meta i {
+    margin-right: 5px;
+    color: #4DAEAA;
+}
+
+/* Табы */
+.tabs-wrapper {
+    margin-top: 30px;
 }
 
 .tabs {
-    flex: 1;
-    max-width: 200px;
-    border-right: 1px solid #ddd;
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 20px;
 }
 
-.tab-link {
-    display: block;
-    padding: 10px;
-    background-color: #f1f1f1;
+.tab-btn {
+    padding: 12px 25px;
+    background: none;
     border: none;
-    text-align: left;
     cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.tab-btn.active {
+    color: #4DAEAA;
+    font-weight: 500;
+}
+
+.tab-btn.active:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
     width: 100%;
-}
-
-.tab-link:hover {
-    background-color: #ddd;
-}
-
-.tab-link.active {
-    background-color: #ccc;
+    height: 2px;
+    background: #4DAEAA;
 }
 
 .tab-content {
-    flex: 3;
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Карточки талонов */
+.talons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.talon-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.talon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.talon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.talon-date,
+.talon-time {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.talon-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.talon-status.upcoming {
+    background: #e3f8f7;
+    color: #4DAEAA;
+}
+
+.talon-body {
     padding: 20px;
 }
 
-.personal-footer {
-    margin-top: 20px;
+.talon-doctor {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.doctor-avatar {
+    margin-right: 15px;
+}
+
+.doctor-info h3 {
+    margin: 0 0 5px 0;
+    color: #4DAEAA;
+    font-size: 16px;
+}
+
+.doctor-info p {
+    margin: 0;
+    color: #333;
+    font-size: 15px;
+}
+
+.talon-details {
+    margin-top: 15px;
+}
+
+.price-notice {
+    color: #e67e22;
+    font-style: italic;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.detail-item i {
+    margin-right: 10px;
+    color: #4DAEAA;
+    width: 20px;
     text-align: center;
 }
 
-.btn-logout,
-.btn-feedback {
-    display: inline-block;
-    margin: 10px;
+.talon-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+/* Кнопки */
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-cancel {
+    background: #fff0f0;
+    color: #e74c3c;
+    border: 1px solid #ffd6d6;
+}
+
+.btn-cancel:hover {
+    background: #ffe0e0;
+}
+
+.btn-reminder {
+    background: #f0f7ff;
+    color: #3498db;
+    border: 1px solid #d6e7ff;
+}
+
+.btn-reminder:hover {
+    background: #e0efff;
+}
+
+.btn-primary {
+    background: #4DAEAA;
+    color: white;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
     text-decoration: none;
     border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
 }
 
-.btn-logout:hover,
-.btn-feedback:hover {
-    background-color: #0056b3;
+.btn-primary:hover {
+    background: #3d9c98;
 }
 
-.btn-save {
-    display: block;
+/* Состояние пустого списка */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state i {
+    font-size: 50px;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: #777;
+    font-size: 16px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .personal-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .talons-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Стили для раздела настроек */
+.account-settings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-.btn-save:hover {
-    background-color: #218838;
+.settings-section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.settings-section h3 {
+    margin-top: 0;
+    color: #4DAEAA;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-section h3 i {
+    font-size: 1.1em;
+}
+
+.profile-form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.form-input:focus {
+    border-color: #4DAEAA;
+    outline: none;
+}
+
+.security-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-change-password, .btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s;
 }
 
 .btn-change-password {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #007bff;
+    background-color: #f0f7ff;
+    color: #3498db;
+    border: 1px solid #d6e7ff;
+}
+
+.btn-logout {
+    background-color: #fff0f0;
+    color: #e74c3c;
+    border: 1px solid #ffd6d6;
 }
 
 .btn-change-password:hover {
-    text-decoration: underline;
+    background-color: #e0efff;
+}
+
+.btn-logout:hover {
+    background-color: #ffe0e0;
+}
+
+.delete-account {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    background: #f1f1f1;
+    color: #333;
+}
+
+.btn-confirm-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .account-settings {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Результаты поиска | Courtesy{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+
+<div class="search-results-container">
+    <h2>Результаты поиска: "{{ query }}"</h2>
+    
+    {% if empty_query %}
+        <div class="empty-message">Пожалуйста, введите поисковый запрос</div>
+    {% elif not has_results %}
+        <div class="empty-message">По вашему запросу ничего не найдено</div>
+    {% else %}
+        <!-- Результаты по специалистам -->
+        {% if specialists %}
+        <section class="search-section">
+            <h3>Наши специалисты</h3>
+            {% for specialist in specialists %}
+            <div class="specialist-card">
+                <div class="specialist-photo-container">
+                    {% if specialist.photo %}
+                        <img src="{{ specialist.photo.url }}" alt="{{ specialist.last_name }}" class="specialist-photo">
+                    {% else %}
+                        <div class="placeholder-photo">Фото</div>
+                    {% endif %}
+                </div>
+                <div class="specialist-info">
+                    <h4>{{ specialist.last_name }} {{ specialist.first_name }} {{ specialist.middle_name }}</h4>
+                    <p><b>Специальность:</b> {{ specialist.speciality }}</p>
+                    <p><b>Категория:</b> {{ specialist.category.name }}</p>
+                    <p><b>Опыт работы:</b> {{ specialist.experience }} лет</p>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+        
+        <!-- Результаты по услугам -->
+        {% if services %}
+        <section class="search-section">
+            <h3>Услуги клиники</h3>
+            {% for service in services %}
+            <div class="service-card">
+                <div class="service-name">{{ service.name }}</div>
+                <div class="service-price {% if not service.price %}not-available{% endif %}">
+                    <b>Цена: </b> 
+                    {% if service.price %}
+                       от {{ service.price }} руб.
+                    {% else %}
+                        Уточняется в клинике
+                    {% endif %}
+                </div>
+                {% if service.description %}
+                <div class="service-description">
+                    {{ service.description }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

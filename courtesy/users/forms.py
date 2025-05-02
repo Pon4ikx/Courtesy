@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Account
+from .models import Account, Specialist, Service
+import datetime
 
 
 class SignupForm(UserCreationForm):
@@ -20,3 +21,58 @@ class SignupForm(UserCreationForm):
             if self.initial.get(field_name) is None:
                 self.initial[field_name] = ''  # Заменяем None на пустую строку
 
+
+class BookingForm(forms.Form):
+    specialist = forms.ModelChoiceField(queryset=Specialist.objects.all(), label="Специалист")
+    service = forms.ModelChoiceField(queryset=Service.objects.all(), label="Услуга")
+    date = forms.DateField(
+        label="Дата",
+        widget=forms.DateInput(attrs={"type": "date", "min": datetime.date.today().isoformat()}),
+        required=False
+    )
+
+    def __init__(self, *args, fixed_specialist=None, fixed_service=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if fixed_specialist:
+            self.fields['specialist'].queryset = Specialist.objects.filter(id=fixed_specialist.id)
+            self.fields['specialist'].initial = fixed_specialist
+            self.fields['specialist'].disabled = True
+            self.fields['service'].queryset = Service.objects.filter(
+                specialists__specialist=fixed_specialist
+            )
+
+        if fixed_service:
+            self.fields['service'].queryset = Service.objects.filter(id=fixed_service.id)
+            self.fields['service'].initial = fixed_service
+            self.fields['service'].disabled = True
+            self.fields['specialist'].queryset = Specialist.objects.filter(
+                services__service=fixed_service
+            )
+
+
+from django import forms
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+
+User = get_user_model()
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'middle_name', 'email', 'phone']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'middle_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'email': forms.EmailInput(attrs={'class': 'form-input'}),
+            'phone': forms.TextInput(attrs={'class': 'form-input'}),
+        }
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        # Можно добавить валидацию номера телефона
+        if len(phone) < 5:  # Пример простой проверки
+            raise ValidationError("Номер телефона слишком короткий")
+        return phone

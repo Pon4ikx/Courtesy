@@ -53,7 +53,7 @@
             {% if service.link %}
             <p><a href="{{ service.link }}" class="service-link" target="_blank">Подробнее вы можете почитать</a></p>
             {% endif %}
-            <a href="#" class="btn-book">Записаться</a>
+            <a href="{% url 'booking' %}?service={{ service.id }}" class="btn-book">Записаться</a>
         </div>
         {% empty %}
         <p>Услуги не найдены.</p>
