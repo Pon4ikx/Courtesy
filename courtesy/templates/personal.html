@@ -57,7 +57,7 @@
                             <div class="talon-doctor">
                                 <div class="doctor-info">
                                     <h3>{{ talon.doctor.speciality }}</h3>
-                                    <p>Доктор {{ talon.doctor.last_name }} {{ talon.doctor.first_name }} 
+                                    <p>Доктор {{ talon.doctor.last_name }} {{ talon.doctor.first_name }}
                                         {{ talon.doctor.middle_name }}</p>
                                 </div>
                             </div>
@@ -82,6 +82,17 @@
                                     </span>
                                 </div>
                             </div>
+
+                            <div class="talon-actions">
+                                <form method="post" action="{% url 'cancel_talon' talon.id %}" class="cancel-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-cancel" 
+                                            data-talon-id="{{ talon.id }}"
+                                            onclick="return confirmCancel(event, {{ talon.id }})">
+                                        <i class="fas fa-times-circle"></i> Отменить запись
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -90,17 +101,68 @@
                 <div class="empty-state">
                     <i class="fas fa-calendar-times"></i>
                     <p>У вас нет предстоящих записей</p>
-                    <a href="/booking/" class="btn btn-primary">Записаться на прием</a>
+                    <a href="/services" class="btn btn-primary">Записаться на прием</a>
                 </div>
                 {% endif %}
             </div>
 
+
             <div class="tab-content" id="history">
-                <!-- Аналогично для истории посещений -->
+                <h2><i class="fas fa-history"></i> История посещений</h2>
+
+                {% if past_talons %}
+                <div class="talons-grid">
+                    {% for talon in past_talons %}
+                    <div class="talon-card">
+                        <div class="talon-header">
+                            <span class="talon-date">{{ talon.date|date:"d.m.Y" }}</span>
+                            <span class="talon-time">{{ talon.time|time:"H:i" }}</span>
+                            <span class="talon-status completed">Завершен</span>
+                        </div>
+
+                        <div class="talon-body">
+                            <div class="talon-doctor">
+                                <div class="doctor-info">
+                                    <h3>{{ talon.doctor.speciality }}</h3>
+                                    <p>Доктор {{ talon.doctor.last_name }} {{ talon.doctor.first_name }}
+                                        {{ talon.doctor.middle_name }}</p>
+                                </div>
+                            </div>
+
+                            <div class="talon-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Кабинет: {{ talon.cabinet }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-procedures"></i>
+                                    <span>Услуга: {{ talon.service.name }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Стоимость:
+                                        {% if talon.service.price > 0 %}
+                                        {{ talon.service.price }} руб.
+                                        {% else %}
+                                        <span class="price-notice">уточняется в клинике</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <p>У вас пока нет завершенных посещений</p>
+                </div>
+                {% endif %}
             </div>
 
+
             <div class="tab-content" id="settings">
-                <h2><i class="fas fa-user-cog"></i> Настройки аккаунта</h2>
 
                 <div class="account-settings">
                     <div class="settings-section">
@@ -119,6 +181,15 @@
                                     class="form-input">
                             </div>
 
+                            {% if user.middle_name or not user.middle_name %}
+                            <div class="form-group">
+                                <label for="id_middle_name">Отчество:</label>
+                                <input type="text" id="id_middle_name" name="middle_name" value="{{ user.middle_name|default:'' }}"
+                                    class="form-input">
+                                <small class="text-muted">(Необязательно)</small>
+                            </div>
+                            {% endif %}
+
                             <div class="form-group">
                                 <label for="id_phone">Телефон:</label>
                                 <input type="tel" id="id_phone" name="phone" value="{{ user.phone }}"
@@ -131,7 +202,27 @@
                         </form>
                     </div>
 
+
                     <div class="settings-section security">
+                        <h3><i class="fas fa-comment-medical"></i> Ваш отзыв</h3>
+
+                        {% if past_talons %}
+                        {% if not user_has_review %}
+                        <a href="{% url 'create_review' %}" class="btn btn-review" id="leaveReviewBtn">
+                            <i class="fas fa-pen"></i> Написать отзыв
+                        </a>
+                        {% else %}
+                        <div class="review-notice">
+                            <i class="fas fa-check-circle"></i> Вы уже оставили отзыв. Спасибо!
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        <div class="review-notice">
+                            <i class="fas fa-info-circle"></i> Отзыв можно оставить после первого посещения клиники.
+                        </div>
+                        {% endif %}
+
+
                         <h3><i class="fas fa-shield-alt"></i> Безопасность</h3>
 
                         <div class="security-actions">

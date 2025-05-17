@@ -1,0 +1,41 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-icon');
+    const ratingInput = document.getElementById('id_rating');
+    
+    // Инициализация текущего рейтинга
+    const currentRating = parseInt(ratingInput.value) || 0;
+    if (currentRating > 0) {
+        highlightStars(currentRating);
+    }
+    
+    // Обработка кликов по звёздам
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            ratingInput.value = value;
+            highlightStars(value);
+        });
+        
+        // Эффект при наведении
+        star.addEventListener('mouseover', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            highlightStars(value);
+        });
+        
+        // Сброс при уходе мыши
+        star.addEventListener('mouseout', function() {
+            const currentValue = parseInt(ratingInput.value) || 0;
+            highlightStars(currentValue);
+        });
+    });
+    
+    function highlightStars(count) {
+        stars.forEach((star, index) => {
+            if (index < count) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+});

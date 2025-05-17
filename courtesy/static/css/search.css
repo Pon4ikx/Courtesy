@@ -68,6 +68,15 @@ body {
     font-size: 1.2rem;
 }
 
+/* новая обёртка */
+.specialist-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* чтобы кнопка упала вниз */
+    flex: 1;
+    position: relative;
+}
+
 .specialist-info {
     flex-grow: 1;
 }
@@ -119,6 +128,37 @@ body {
     margin-bottom: 10px;
 }
 
+.service-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.service-link:hover {
+    background-color: #0056b3;
+}
+
+.btn-book {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-book:hover {
+    background-color: #218838;
+}
+
 /* Сообщения */
 .empty-message {
     text-align: center;
@@ -130,6 +170,28 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Обёртка, которая прижимает кнопку к низу */
+.btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* сама кнопка */
+.btn-services {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 8px 16px;
+    background-color: #4DAEAA;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-services:hover {
+    background-color: #3d938f;
+}
 /* Адаптивность */
 @media (max-width: 768px) {
     .specialist-card {

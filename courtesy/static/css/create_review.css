@@ -1,0 +1,198 @@
+
+.star-icon {
+    font-size: 32px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.star-icon:hover,
+.star-icon.active {
+    color: #ffc107;
+    transform: scale(1.1);
+}
+
+.rating-hint {
+    color: #777;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Остальные стили остаются как в предыдущем варианте */
+.review-form-container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Основные стили формы */
+.review-form-container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.5s ease;
+}
+
+.review-form-container h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.review-form-container h2 i {
+    color: #4DAEAA;
+}
+
+/* Стили для группы полей */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+/* Стили для звёзд рейтинга */
+.rating-stars {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    font-size: 0; /* Убираем пробелы между inline-элементами */
+}
+
+.rating-stars input[type="radio"] {
+    display: none;
+}
+
+.rating-stars label.star {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 36px;
+    transition: all 0.2s ease;
+}
+
+.rating-stars input[type="radio"]:checked ~ label.star,
+.rating-stars label.star:hover,
+.rating-stars label.star:hover ~ label.star {
+    color: #ffc107;
+    transform: scale(1.1);
+}
+
+.rating-stars input[type="radio"]:checked + label.star {
+    color: #ffc107;
+}
+
+/* Стили для текстового поля */
+.form-group textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-group textarea:focus {
+    border-color: #4DAEAA;
+    box-shadow: 0 0 0 3px rgba(77, 174, 170, 0.2);
+    outline: none;
+}
+
+/* Стили для кнопки */
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: #4DAEAA;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: #3d9c98;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 174, 170, 0.3);
+}
+
+.btn-primary i {
+    font-size: 18px;
+}
+
+/* Стили для ошибок */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+.errorlist li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+
+.errorlist li:before {
+    content: "⚠";
+    font-size: 16px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .review-form-container {
+        padding: 30px 20px;
+        margin: 20px auto;
+    }
+    
+    .rating-stars label.star {
+        font-size: 30px;
+    }
+    
+    .review-form-container h2 {
+        font-size: 24px;
+    }
+}

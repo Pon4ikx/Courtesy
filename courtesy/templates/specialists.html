@@ -52,7 +52,7 @@
                         <h3 style="margin-left: 5%;">{{ specialist.last_name }} {{ specialist.first_name }}{% if specialist.middle_name %} {{specialist.middle_name }}{% endif %}</h3>
                         <p><b>Специальность:</b> {{ specialist.speciality }}</p>
                         <p><b>Направление:</b> {% if specialist.category %}{{ specialist.category.name }}{% else %}Не указана{% endif %}</p>
-                        <p><b>Стаж работы:</b> {{ specialist.experience }}</p>
+                        <p><b>Опыт работы:</b> {{ specialist.experience }}</p>
                         {% if specialist.dop_info %}
                         <p><b>Дополнительная информация:</b> {{ specialist.dop_info }}</p>
                         {% endif %}

@@ -217,29 +217,35 @@ body {
 
 .talon-actions {
     display: flex;
-    justify-content: space-between;
-    padding: 15px 20px;
+    justify-content: flex-end;
+    padding: 15px;
     border-top: 1px solid #eee;
-}
-
-/* Кнопки */
-.btn {
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: none;
 }
 
 .btn-cancel {
     background: #fff0f0;
     color: #e74c3c;
     border: 1px solid #ffd6d6;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-cancel:hover {
     background: #ffe0e0;
+}
+
+.btn-cancel i {
+    font-size: 1.1em;
+}
+
+.btn-cancel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .btn-reminder {
@@ -323,6 +329,22 @@ body {
     }
 }
 
+/* Стили для необязательных полей */
+.text-muted {
+    color: #6c757d;
+    font-size: 0.85em;
+    margin-left: 5px;
+}
+
+/* Подсветка обязательных полей */
+.form-input:required {
+    border-left: 3px solid #4DAEAA;
+}
+
+.form-input:required+.text-muted {
+    display: none;
+}
+
 /* Стили для раздела настроек */
 .account-settings {
     display: grid;
@@ -335,7 +357,7 @@ body {
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 .settings-section h3 {
@@ -387,7 +409,9 @@ body {
     margin-top: 20px;
 }
 
-.btn-change-password, .btn-logout {
+.btn-change-password,
+.btn-logout,
+.btn-save {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -399,7 +423,8 @@ body {
     transition: all 0.3s;
 }
 
-.btn-change-password {
+.btn-change-password,
+.btn-save {
     background-color: #f0f7ff;
     color: #3498db;
     border: 1px solid #d6e7ff;
@@ -411,7 +436,8 @@ body {
     border: 1px solid #ffd6d6;
 }
 
-.btn-change-password:hover {
+.btn-change-password:hover,
+.btn-save:hover {
     background-color: #e0efff;
 }
 
@@ -446,7 +472,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -484,9 +510,114 @@ body {
     color: white;
 }
 
+.talon-status.completed {
+    background: #e8f5e9;
+    color: #4caf50;
+}
+
+/* Обновленные стили для кнопки отзыва */
+#leaveReviewBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    background-color: #f0f7ff;
+    color: #3498db;
+    border: 1px solid #d6e7ff;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin: 15px 0;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+#leaveReviewBtn i {
+    width: 20px;
+    text-align: center;
+}
+
+#leaveReviewBtn:hover {
+    background-color: #e0efff;
+    text-decoration: none;
+}
+
+/* Обновленные стили для уведомлений */
+.review-notice {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    color: #555;
+    margin: 15px 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.4;
+}
+
+.review-notice i {
+    color: #4DAEAA;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+
+.talon-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     .account-settings {
         grid-template-columns: 1fr;
     }
+}
+
+/* Стили для toast-уведомлений */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(150%);
+    transition: transform 0.3s ease-out;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-success {
+    background: #4CAF50;
+    color: white;
+}
+
+.toast-error {
+    background: #F44336;
+    color: white;
+}
+
+.toast-icon {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.toast-message {
+    font-size: 15px;
+}
+
+/* Анимация удаления карточки */
+.talon-card {
+    transition: all 0.3s ease;
 }

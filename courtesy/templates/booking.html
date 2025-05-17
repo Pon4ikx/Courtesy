@@ -53,6 +53,13 @@
         </div>
 
         <div class="mb-3">
+            <label for="id_dop_info" class="form-label">Дополнительная информация</label>
+            <textarea id="id_dop_info" name="dop_info" class="form-control" rows="3" 
+                      style="resize: none; min-height: 100px; max-height: 200px;"
+                      placeholder="Укажите дополнительные сведения, которые помогут врачу (симптомы, аллергии и т.д.)"></textarea>
+        </div>
+
+        <div class="mb-3">
             <label for="id_date" class="form-label">Дата</label>
             {{ form.date }}
         </div>
@@ -74,6 +81,7 @@
                     <input type="hidden" name="service_id" value="{{ form.service.value }}">
                     <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
                     <input type="hidden" name="time" value="{{ talon_time|time:'H:i:s' }}">
+                    <input type="hidden" name="dop_info" value="{{ request.POST.dop_info }}">
                     <button type="submit" class="btn-choose">Выбрать</button>
                 </form>
             </div>

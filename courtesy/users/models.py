@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.utils import timezone
 import requests
 from urllib.parse import quote
-from django.utils.timezone import now
+from django.utils.timezone import localdate
 from django.conf import settings
 
 
@@ -247,7 +247,7 @@ class Review(models.Model):
             MaxValueValidator(5, "Оценка не может быть больше 5.")
         ]
     )
-    date = models.DateField(verbose_name="Дата", default=now)
+    date = models.DateField(verbose_name="Дата", default=localdate)
     content = models.TextField(verbose_name="Содержимое", blank=True)
 
     class Meta:
@@ -267,7 +267,7 @@ class Review(models.Model):
 
     def clean(self):
         """Проверка, что дата не в будущем."""
-        if self.date > now().date():
+        if self.date > localdate():  # Сравниваем date с date
             raise ValidationError({"date": "Дата не может быть в будущем."})
 
 

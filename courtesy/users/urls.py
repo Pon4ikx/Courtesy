@@ -4,12 +4,11 @@ from . import views
 from .views import AdressesViewSet
 from django.contrib.auth import views as auth_views
 
-
 router = SimpleRouter()
 router.register('api/addresses', AdressesViewSet)
 
 urlpatterns = [
-                  path("", views.index),
+                  path("", views.index, name='home'),
                   path('login/', views.login_view, name='login'),
                   path('personal/', views.personal_view, name='personal'),
                   path('signup/', views.signup_view, name='signup'),
@@ -23,6 +22,8 @@ urlpatterns = [
                            success_url='/personal/'
                        ),
                        name='password_change'),
+                  path('cancel_talon/<int:talon_id>/', views.cancel_talon, name='cancel_talon'),
+
                   path("about/", views.about, name='about'),
                   path('addresses/', views.addresses_view, name='addresses'),
                   path('contacts/', views.contacts_view, name='contacts'),
@@ -30,7 +31,10 @@ urlpatterns = [
                   path('services/', views.service_list_view, name='services'),
                   path('news/', views.news_list_view, name='news_list'),
                   path('news/<slug:slug>/', views.news_detail, name='news_detail'),
+
                   path('reviews/', views.reviews_view, name='reviews_list'),
+                  path('reviews/create/', views.create_review, name='create_review'),
+
                   path('confirm_email/', views.confirm_email, name='confirm_email'),
                   path('specialist/<slug:slug>/', views.specialist_info, name='specialist_info'),
 

@@ -2,7 +2,7 @@ from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .forms import SignupForm, BookingForm, UserProfileForm
+from .forms import SignupForm, BookingForm, UserProfileForm, ReviewForm
 from django.contrib.auth import logout
 from random import sample
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -105,6 +105,36 @@ def delete_account(request):
     return redirect('personal')
 
 
+@login_required
+def cancel_talon(request, talon_id):
+    if request.method == 'POST':
+        try:
+            talon = Talon.objects.get(id=talon_id, user=request.user)
+            talon.delete()
+
+            # Для AJAX-запросов
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Запись успешно отменена!',
+                    'talon_id': talon_id
+                })
+            # Для обычных запросов
+            messages.success(request, 'Запись успешно отменена!')
+            return redirect('personal')
+
+        except Talon.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Запись не найдена или уже отменена'
+            }, status=404)
+
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Неправильный метод запроса'
+    }, status=400)
+
+
 # Страница входа
 def login_view(request):
     if request.method == 'POST':
@@ -138,6 +168,8 @@ def personal_view(request):
         date__lt=timezone.now().date()
     ).order_by('-date', '-time')
 
+    user_has_review = Review.objects.filter(user=request.user).exists()
+
     # Подготавливаем данные для формы
     if request.method == 'POST':
         # Обработка сохранения данных профиля
@@ -153,9 +185,32 @@ def personal_view(request):
         'current_talons': current_talons,
         'past_talons': past_talons,
         'form': form,
+        'user_has_review': user_has_review,
     }
 
     return render(request, 'personal.html', context)
+
+
+@login_required
+def create_review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.date = timezone.localdate()  # Устанавливаем текущую дату
+            if 1 <= review.rating <= 5:
+                review.save()
+                request.user.has_review = True
+                request.user.save()
+                messages.success(request, 'Спасибо за ваш отзыв!')
+                return redirect('personal')
+            else:
+                form.add_error('rating', 'Оценка должна быть от 1 до 5')
+    else:
+        form = ReviewForm()
+
+    return render(request, 'create_review.html', {'form': form})
 
 
 def signup_view(request):
@@ -360,6 +415,7 @@ def create_talon(request):
         service_id = request.POST.get('service_id')
         date = request.POST.get('date')
         time = request.POST.get('time')
+        dop_info = request.POST.get('dop_info', '')
 
         if Talon.objects.filter(doctor_id=specialist_id, date=date, time=time).exists():
             messages.error(request, 'Это время уже занято! Пожалуйста, выберите другое время.')
@@ -368,7 +424,7 @@ def create_talon(request):
         specialist = Specialist.objects.get(id=specialist_id)
         service = Service.objects.get(id=service_id)
 
-        # Получаем кабинет из расписания (пример, может потребоваться доработка)
+        # Получаем кабинет из расписания
         schedule = Schedule.objects.filter(specialist=specialist, date=date).first()
         cabinet = schedule.cabinet if schedule else "Кабинет не указан"
 
@@ -379,9 +435,10 @@ def create_talon(request):
             doctor=specialist,
             service=service,
             cabinet=cabinet,
-            dop_info=""
+            dop_info=dop_info  # Сохраняем дополнительную информацию
         )
 
-        return redirect('personal')  # Перенаправляем в профиль или куда нужно
+        messages.success(request, 'Запись успешно создана!')
+        return redirect('personal')
 
-    return redirect('booking')  # Если запрос не POST
+    return redirect('booking')

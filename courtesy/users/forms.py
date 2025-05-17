@@ -1,7 +1,25 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Account, Specialist, Service
+from .models import Account, Specialist, Service, Review
 import datetime
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'rows': 5,
+                'placeholder': 'Опишите ваш опыт посещения...'
+            }),
+        }
+        labels = {
+            'content': 'Текст отзыва'
+        }
 
 
 class SignupForm(UserCreationForm):
@@ -50,10 +68,6 @@ class BookingForm(forms.Form):
                 services__service=fixed_service
             )
 
-
-from django import forms
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
