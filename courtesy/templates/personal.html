@@ -86,9 +86,8 @@
                             <div class="talon-actions">
                                 <form method="post" action="{% url 'cancel_talon' talon.id %}" class="cancel-form">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-cancel" 
-                                            data-talon-id="{{ talon.id }}"
-                                            onclick="return confirmCancel(event, {{ talon.id }})">
+                                    <button type="submit" class="btn btn-cancel" data-talon-id="{{ talon.id }}"
+                                        onclick="return confirmCancel(event, {{ talon.id }})">
                                         <i class="fas fa-times-circle"></i> Отменить запись
                                     </button>
                                 </form>
@@ -169,31 +168,38 @@
                         <h3><i class="fas fa-user-edit"></i> Личные данные</h3>
                         <form method="post" action="{% url 'update_profile' %}" class="profile-form">
                             {% csrf_token %}
+
+                            {{ form.non_field_errors }}
+
                             <div class="form-group">
-                                <label for="id_first_name">Имя:</label>
-                                <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}"
-                                    class="form-input">
+                                <label for="{{ form.first_name.id_for_label }}">Имя:</label>
+                                {{ form.first_name }}
+                                {{ form.first_name.errors }}
                             </div>
 
                             <div class="form-group">
-                                <label for="id_last_name">Фамилия:</label>
-                                <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}"
-                                    class="form-input">
+                                <label for="{{ form.last_name.id_for_label }}">Фамилия:</label>
+                                {{ form.last_name }}
+                                {{ form.last_name.errors }}
                             </div>
 
-                            {% if user.middle_name or not user.middle_name %}
                             <div class="form-group">
-                                <label for="id_middle_name">Отчество:</label>
-                                <input type="text" id="id_middle_name" name="middle_name" value="{{ user.middle_name|default:'' }}"
-                                    class="form-input">
+                                <label for="{{ form.middle_name.id_for_label }}">Отчество:</label>
+                                {{ form.middle_name }}
                                 <small class="text-muted">(Необязательно)</small>
+                                {{ form.middle_name.errors }}
                             </div>
-                            {% endif %}
 
                             <div class="form-group">
-                                <label for="id_phone">Телефон:</label>
-                                <input type="tel" id="id_phone" name="phone" value="{{ user.phone }}"
-                                    class="form-input">
+                                <label for="{{ form.email.id_for_label }}">Email:</label>
+                                {{ form.email }}
+                                {{ form.email.errors }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.phone.id_for_label }}">Телефон:</label>
+                                {{ form.phone }}
+                                {{ form.phone.errors }}
                             </div>
 
                             <button type="submit" class="btn btn-save">

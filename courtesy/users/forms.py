@@ -74,7 +74,7 @@ User = get_user_model()
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = User  # Теперь это будет ваша модель Account
         fields = ['first_name', 'last_name', 'middle_name', 'email', 'phone']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-input'}),
@@ -86,7 +86,6 @@ class UserProfileForm(forms.ModelForm):
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
-        # Можно добавить валидацию номера телефона
-        if len(phone) < 5:  # Пример простой проверки
+        if phone and len(phone) < 5:  # Добавил проверку на наличие значения
             raise ValidationError("Номер телефона слишком короткий")
         return phone

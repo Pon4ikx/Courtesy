@@ -89,9 +89,14 @@ def update_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Профиль успешно обновлен')
+            return redirect('personal')  # Редирект после успешного сохранения
         else:
             messages.error(request, 'Ошибка при обновлении профиля')
-    return redirect('personal')
+    else:
+        form = UserProfileForm(instance=request.user)
+
+    # Если GET запрос или форма не валидна, показываем форму снова
+    return render(request, 'personal.html', {'form': form})
 
 
 @login_required
@@ -320,9 +325,17 @@ def service_list_view(request):
 
 
 def reviews_view(request):
-    reviews = Review.objects.all()
-    average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
-    return render(request, 'reviews.html', {'reviews': reviews, 'average_rating': average_rating})
+    # Получаем только подтверждённые отзывы
+    confirmed_reviews = Review.objects.filter(confirmed=True).order_by('-date')
+
+    # Рассчитываем средний рейтинг только для подтверждённых отзывов
+    average_rating = confirmed_reviews.aggregate(Avg('rating'))['rating__avg']
+
+    context = {
+        'reviews': confirmed_reviews,
+        'average_rating': average_rating
+    }
+    return render(request, 'reviews.html', context)
 
 
 class AdressesViewSet(ReadOnlyModelViewSet):

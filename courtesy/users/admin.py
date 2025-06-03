@@ -148,11 +148,11 @@ class TalonAdmin(admin.ModelAdmin):
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('get_user_short_name', 'rating', 'content_preview', 'date')  # Поля, отображаемые в списке
-    list_filter = ('rating', 'date')  # Фильтрация по оценке
+    list_display = ('get_user_short_name', 'rating', 'content_preview', 'date', 'confirmed')  # Поля, отображаемые в списке
+    list_filter = ('rating', 'date', 'confirmed')  # Фильтрация по оценке
     search_fields = ('user__last_name', 'user__first_name', 'content', 'date')  # Поиск по имени и содержимому
     readonly_fields = ('get_user_short_name',)  # Поле только для чтения
-    fields = ('get_user_short_name', 'rating', 'date', 'content')  # Порядок полей в форме
+    fields = ('confirmed', 'get_user_short_name', 'rating', 'date', 'content')  # Порядок полей в форме
     date_hierarchy = 'date'
 
     @admin.display(description="Пользователь")

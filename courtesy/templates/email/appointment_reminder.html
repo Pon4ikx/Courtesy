@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Напоминание о приеме</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { color: #4DAEAA; font-size: 24px; margin-bottom: 20px; }
+        .details { background: #f5f5f5; padding: 15px; border-radius: 5px; }
+        .footer { margin-top: 20px; font-size: 14px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Напоминание о приеме</div>
+        
+        <p>Здравствуйте, {{ user.first_name }}!</p>
+        
+        <p>Напоминаем, что завтра <strong>{{ date }}</strong> в <strong>{{ time }}</strong> у вас запланирован прием.</p>
+        
+        <div class="details">
+            <h3>Детали приема:</h3>
+            <ul>
+                <li><strong>Врач:</strong> {{ talon.doctor }}</li>
+                <li><strong>Услуга:</strong> {{ talon.service }}</li>
+                <li><strong>Кабинет:</strong> {{ talon.cabinet }}</li>
+                {% if talon.dop_info %}
+                <li><strong>Доп. информация:</strong> {{ talon.dop_info }}</li>
+                {% endif %}
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>С уважением,<br>Команда клиники</p>
+        </div>
+    </div>
+</body>
+</html>

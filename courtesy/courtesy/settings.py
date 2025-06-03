@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     # Отвечает за управление сессиями пользователей
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # Добавляет объект request.user в каждый запрос. Этот объект содержит информацию о текущем пользователе. Также проверяет, авторизован ли пользователь, и предоставляет атрибут is_authenticated для проверки его статуса
 ]
 
 ROOT_URLCONF = 'courtesy.urls'
@@ -169,3 +168,21 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'courtesy.clinic.email@gmail.com'
 EMAIL_HOST_PASSWORD = 'mupf lptp ktfs iepu'
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL для Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'  # Установите ваш часовой пояс
+
+# Расписание для Celery Beat
+CELERY_BEAT_SCHEDULE = {
+    'send-appointment-reminders': {
+        'task': 'your_app.tasks.send_appointment_reminders',
+        'schedule': 86400,  # Каждые 24 часа (в секундах)
+        # Или используйте crontab:
+        # 'schedule': crontab(hour=9, minute=0),  # Каждый день в 9 утра
+    },
+}

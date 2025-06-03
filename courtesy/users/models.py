@@ -249,6 +249,7 @@ class Review(models.Model):
     )
     date = models.DateField(verbose_name="Дата", default=localdate)
     content = models.TextField(verbose_name="Содержимое", blank=True)
+    confirmed = models.BooleanField(verbose_name="Проверено", default=False)
 
     class Meta:
         verbose_name = "Отзыв"
