@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -160,7 +162,6 @@ ADMIN_SITE_TITLE = "Администрирование"
 ADMIN_INTERFACE_HIDE_THEMES = True
 GRAPPELLI_SWITCH_THEME = False
 
-
 # Почта
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -168,7 +169,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'courtesy.clinic.email@gmail.com'
 EMAIL_HOST_PASSWORD = 'mupf lptp ktfs iepu'
-
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'  # URL для Redis
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
@@ -180,9 +180,8 @@ CELERY_TIMEZONE = 'Europe/Moscow'  # Установите ваш часовой 
 # Расписание для Celery Beat
 CELERY_BEAT_SCHEDULE = {
     'send-appointment-reminders': {
-        'task': 'your_app.tasks.send_appointment_reminders',
-        'schedule': 86400,  # Каждые 24 часа (в секундах)
+        'task': 'users.task.send_appointment_reminders',
         # Или используйте crontab:
-        # 'schedule': crontab(hour=9, minute=0),  # Каждый день в 9 утра
+        'schedule': crontab(hour=0, minute=0),
     },
 }

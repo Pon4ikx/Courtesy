@@ -34,7 +34,7 @@ def send_appointment_reminders():
                 subject=f'Напоминание о приеме {talon.date}',
                 message=message,
                 html_message=html_message,
-                from_email='noreply@yourclinic.com',
+                from_email='courtesy.clinic.email@gmail.com',
                 recipient_list=[talon.user.email],
                 fail_silently=False,
             )
