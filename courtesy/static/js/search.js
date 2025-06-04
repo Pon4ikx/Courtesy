@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     });
     
-    // Скрываем результаты при клике вне поиска
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.search-container')) {
             liveResults.style.display = 'none';

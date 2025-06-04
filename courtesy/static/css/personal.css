@@ -2,7 +2,7 @@ body {
     background-color: #d2fffa;
 }
 
-/* Основные стили */
+
 .personal-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -11,7 +11,7 @@ body {
     color: #333;
 }
 
-/* Шапка профиля */
+
 .personal-header {
     display: flex;
     align-items: center;
@@ -72,7 +72,7 @@ body {
     color: #4DAEAA;
 }
 
-/* Табы */
+
 .tabs-wrapper {
     margin-top: 30px;
 }
@@ -118,7 +118,7 @@ body {
     display: block;
 }
 
-/* Карточки талонов */
+
 .talons-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -272,7 +272,7 @@ body {
     background: #3d9c98;
 }
 
-/* Состояние пустого списка */
+
 .empty-state {
     text-align: center;
     padding: 50px 20px;
@@ -292,7 +292,7 @@ body {
     font-size: 16px;
 }
 
-/* Анимации */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -303,7 +303,7 @@ body {
     }
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .personal-header {
         flex-direction: column;
@@ -329,14 +329,14 @@ body {
     }
 }
 
-/* Стили для необязательных полей */
+
 .text-muted {
     color: #6c757d;
     font-size: 0.85em;
     margin-left: 5px;
 }
 
-/* Подсветка обязательных полей */
+
 .form-input:required {
     border-left: 3px solid #4DAEAA;
 }
@@ -345,7 +345,7 @@ body {
     display: none;
 }
 
-/* Стили для раздела настроек */
+
 .account-settings {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -463,7 +463,7 @@ body {
     gap: 10px;
 }
 
-/* Модальное окно */
+
 .modal {
     display: none;
     position: fixed;
@@ -515,7 +515,7 @@ body {
     color: #4caf50;
 }
 
-/* Обновленные стили для кнопки отзыва */
+
 #leaveReviewBtn {
     display: flex;
     align-items: center;
@@ -543,7 +543,7 @@ body {
     text-decoration: none;
 }
 
-/* Обновленные стили для уведомлений */
+
 .review-notice {
     padding: 15px;
     background: #f8f9fa;
@@ -569,14 +569,14 @@ body {
     border-top: 1px solid #eee;
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .account-settings {
         grid-template-columns: 1fr;
     }
 }
 
-/* Стили для toast-уведомлений */
+
 .toast {
     position: fixed;
     top: 20px;
@@ -617,7 +617,6 @@ body {
     font-size: 15px;
 }
 
-/* Анимация удаления карточки */
 .talon-card {
     transition: all 0.3s ease;
 }

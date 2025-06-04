@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
-    // Показать/спрятать кнопку с анимацией
+
     window.addEventListener("scroll", function () {
         if (window.pageYOffset > 300) {
             scrollToTopBtn.classList.add("show");
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Плавная прокрутка наверх
+
     scrollToTopBtn.addEventListener("click", function () {
         window.scrollTo({
             top: 0,

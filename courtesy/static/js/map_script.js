@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function() {
-    // Инициализация карты
-    const map = L.map("map").setView([53.9, 27.5667], 12); // Центр карты (Минск)
 
-    // Добавление слоя OpenStreetMap
+    const map = L.map("map").setView([53.9, 27.5667], 12);
+
+
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
         attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     const addresses = await response.json()
     console.log(addresses);
 
-// Добавление маркеров на карту
 addresses.forEach(function (addr) {
     L.marker([addr.latitude, addr.longitude])
         .addTo(map)

@@ -1,11 +1,9 @@
-/* Общие настройки */
 body {
     background-color: #B2E3E0;
     font-family: "Segoe UI", sans-serif;
     color: #333;
 }
 
-/* Верхняя панель */
 #header {
     background-color: #4DAEAA;
     border-bottom: 2px solid #B2F2E8;
@@ -18,31 +16,30 @@ body {
     text-decoration: none;
 }
 
-/* Левое меню */
 #nav-sidebar {
     background-color: #ffffff;
     border-right: 1px solid #B2F2E8;
-    width: 260px; /* увеличиваем ширину меню */
-    min-width: 260px; /* задаём минимальную ширину */
-    border-radius: 12px; /* скругляем углы меню */
-    padding: 15px 10px; /* добавляем немного внутреннего отступа */
+    width: 260px;
+    min-width: 260px;
+    border-radius: 12px;
+    padding: 15px 10px;
 }
 
-/* Элементы списка */
+
 #nav-sidebar li {
-    margin-bottom: 10px; /* добавляем отступы между пунктами меню */
+    margin-bottom: 10px;
 }
 
-/* Ссылки внутри списка */
+
 #nav-sidebar li a {
     display: block;
     color: #4DAEAA;
-    padding: 10px 15px; /* увеличиваем padding, чтобы сделать элементы больше */
-    border-radius: 12px; /* скругляем углы ссылок */
+    padding: 10px 15px;
+    border-radius: 12px;
     transition: background 0.2s, color 0.2s;
 }
 
-/* Наведение на ссылки */
+
 #nav-sidebar li a:hover,
 #nav-sidebar .current-model > a,
 #nav-sidebar .current-app > a {
@@ -51,7 +48,7 @@ body {
 }
 
 
-/* Основной контент */
+
 #content {
     background-color: white;
     border-radius: 16px;
@@ -60,7 +57,7 @@ body {
     box-shadow: 0 0 10px rgba(77, 174, 170, 0.1);
 }
 
-/* Кнопки */
+
 button,
 input[type=submit],
 .button {
@@ -73,7 +70,7 @@ input[type=submit],
     transition: background 0.2s ease;
 }
 
-/* Формы */
+
 input, select, textarea {
     border: 1px solid #B2F2E8;
     border-radius: 6px;
@@ -90,21 +87,21 @@ table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавление тени */
-    border-radius: 8px; /* Скругление углов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 table th,
 table td {
     border: 1px solid #B2F2E8;
-    padding: 15px; /* Увеличенные отступы */
+    padding: 15px;
     text-align: left;
-    transition: background-color 0.3s; /* Плавный переход */
+    transition: background-color 0.3s;
 }
 
 table th {
     color: #333;
-    font-weight: bold; /* Жирный шрифт для заголовков */
+    font-weight: bold;
 }
 
 table tr:nth-child(even) {
@@ -112,14 +109,14 @@ table tr:nth-child(even) {
 }
 
 table tr:hover {
-    background-color: #e0f7f7; /* Эффект при наведении */
+    background-color: #e0f7f7;
 }
 
 table tr {
-    border-radius: 8px; /* Скругление углов строк */
+    border-radius: 8px;
 }
 
-/* Сообщения и алерты */
+
 .messagelist .success {
     background-color: #4DAEAA;
     color: white;
@@ -136,7 +133,7 @@ table tr {
     margin-bottom: 20px;
 }
 
-/* Страница входа */
+
 .login {
     background-color: #B2E3E0;
 }
@@ -148,13 +145,11 @@ table tr {
     box-shadow: 0 0 12px rgba(0,0,0,0.05);
 }
 
-/* Скрыть кнопку для смены темы */
 .theme-toggle {
     display: none !important;
 }
 
 
-/* Стиль тулбара */
 #toolbar {
     background-color: #f9f9f9;
     border-bottom: 1px solid #e1e1e1;
@@ -162,57 +157,50 @@ table tr {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* элементы выравниваются по левому краю */
+    justify-content: flex-start;
 }
 
-/* Стиль формы поиска */
 #changelist-search {
     display: flex;
     align-items: center;
     flex-grow: 1;
 }
 
-/* Лейбл для иконки поиска */
 #changelist-search label {
     margin-right: 8px;
     cursor: pointer;
 }
 
-/* Стиль поля ввода поиска */
 #changelist-search #searchbar {
     padding: 6px 10px;
     font-size: 14px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 250px; /* фиксированная ширина поля */
-    margin-right: 10px; /* отступ между полем поиска и кнопкой */
+    width: 250px;
+    margin-right: 10px;
     margin-top: 5px;
 }
 
-/* Стиль кнопки поиска в тулбаре */
 #changelist-search input[type="submit"] {
     width: 100px !important;
-    padding: 4px 10px !important; /* добавляем !important для повышения приоритета */
+    padding: 4px 10px !important;
     border: 1px solid #4DAEAA !important;
     border-radius: 4px !important;
     cursor: pointer !important;
     transition: background-color 0.2s ease-in-out !important;
-    font-size: 14px !important; /* добавляем размер шрифта для кнопки */
+    font-size: 14px !important;
 }
 
-/* Эффект при наведении на кнопку */
 #changelist-search input[type="submit"]:hover {
     background-color: #3b8c8c !important;
     color: white !important;
 }
 
-/* Когда форма поиска пустая, скрываем кнопку */
 #changelist-search input[type="submit"]:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-/* Общие стили для блока действий */
 #changelist .actions {
     padding: 0 10px;
     padding-bottom: 3px;
@@ -228,36 +216,35 @@ table tr {
     background-color: #f9f9f9;
     border: 1px solid #e1e1e1;
     border-radius: 8px;
-    display: flex; /* Используем Flexbox для размещения в одну строку */
-    align-items: center; /* Выравнивание элементов по вертикали */
-    gap: 25px; /* Фиксированный отступ между элементами */
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
-/* Стиль для label */
+
 .actions label {
-    margin: 0; /* Убираем отступы */
-    padding: 0; /* Убираем внутренние отступы */
-    font-weight: bold; /* Сделаем текст жирным для выделения */
+    margin: 0;
+    font-weight: bold;
 }
 
-/* Стили для селектора */
+
 .actions .action-select {
-    padding: 4px 8px; /* Уменьшение внутреннего отступа */
+    padding: 4px 8px;
     font-size: 14px;
-    border-radius: 4px; /* Уменьшение радиуса скругления */
+    border-radius: 4px;
     border: 1px solid #B2F2E8;
     background-color: #ffffff;
     color: #333;
     transition: border-color 0.2s ease;
-    min-width: 150px; /* Уменьшение минимальной ширины */
+    min-width: 150px;
 }
 
-/* Стили для кнопок внутри .actions */
+
 .actions button {
-    padding: 4px 8px; /* Уменьшение внутреннего отступа */
+    padding: 4px 8px;
     background-color: #4DAEAA;
     border: none;
-    border-radius: 4px; /* Уменьшение радиуса скругления */
+    border-radius: 4px;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -268,20 +255,20 @@ table tr {
     background-color: #3b8c8c;
 }
 
-/* Стиль для счетчика действий */
+
 .action-counter {
     font-size: 14px;
     color: #333;
 }
 
-/* Мобильная версия */
+
 @media (max-width: 600px) {
     .actions {
-        flex-direction: column; /* На мобильных устройствах элементы становятся вертикальными */
+        flex-direction: column;
         align-items: flex-start;
     }
 
     .actions .action-select, .actions button {
-        margin-bottom: 5px; /* Уменьшение отступа между элементами */
+        margin-bottom: 5px;
     }
 }

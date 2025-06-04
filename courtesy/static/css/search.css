@@ -1,4 +1,4 @@
-/* search.css */
+
 body {
     background-color: #d2fffa;
 }
@@ -18,7 +18,7 @@ body {
     padding-bottom: 10px;
 }
 
-/* Секции результатов */
+
 .search-section {
     margin-bottom: 30px;
 }
@@ -32,7 +32,7 @@ body {
     border-bottom: 1px solid #ccc;
 }
 
-/* Карточки специалистов */
+
 .specialist-card {
     display: flex;
     gap: 20px;
@@ -68,11 +68,11 @@ body {
     font-size: 1.2rem;
 }
 
-/* новая обёртка */
+
 .specialist-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* чтобы кнопка упала вниз */
+    justify-content: space-between;
     flex: 1;
     position: relative;
 }
@@ -96,7 +96,7 @@ body {
     font-weight: bold;
 }
 
-/* Карточки услуг */
+
 .service-card {
     background-color: #fff;
     padding: 20px;
@@ -159,7 +159,7 @@ body {
     background-color: #218838;
 }
 
-/* Сообщения */
+
 .empty-message {
     text-align: center;
     font-size: 1.2rem;
@@ -170,14 +170,14 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Обёртка, которая прижимает кнопку к низу */
+
 .btn-wrapper {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-/* сама кнопка */
+
 .btn-services {
     font-size: 1.2rem;
     text-align: center;
@@ -192,7 +192,6 @@ body {
 .btn-services:hover {
     background-color: #3d938f;
 }
-/* Адаптивность */
 @media (max-width: 768px) {
     .specialist-card {
         flex-direction: column;

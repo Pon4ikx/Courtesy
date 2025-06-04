@@ -20,7 +20,6 @@
 <h2>Наши специалисты</h2>
 <div class="container">
     <div class="specialists-container">
-        <!-- Список фильтрации по категориям -->
         <div class="category-filter">
             <h3>Фильтровать по направлениям</h3>
             <form method="GET" action="{% url 'specialists' %}">
@@ -36,7 +35,6 @@
             </form>
         </div>
 
-        <!-- Список специалистов -->
         <div class="specialist-list">
             {% for specialist in specialists %}
             <div class="specialist-card">

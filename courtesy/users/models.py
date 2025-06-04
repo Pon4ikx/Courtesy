@@ -12,15 +12,15 @@ from django.utils.timezone import localdate
 from django.conf import settings
 
 
-# Кастомный менеджер для модели Account
+
 class AccountManager(BaseUserManager):
     def create_user(self, username=None, email=None, password=None, **extra_fields):
         if not email:
             raise ValueError("Email is required")
 
         email = self.normalize_email(email)
-        if username is None:  # Если username не передан
-            username = ""  # Устанавливаем пустым, чтобы не нарушать ограничения
+        if username is None:
+            username = ""
         user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -33,7 +33,6 @@ class AccountManager(BaseUserManager):
         return self.create_user(username, email, password, **extra_fields)
 
 
-# Модель Account
 class Account(AbstractUser):
     last_name = models.CharField(max_length=40, verbose_name="Фамилия")
     first_name = models.CharField(max_length=40, verbose_name="Имя")
@@ -49,11 +48,11 @@ class Account(AbstractUser):
         verbose_name_plural = "Аккаунты"
 
     def save(self, *args, **kwargs):
-        # Если это новый пользователь (первое сохранение) и username не задан
+
         if not self.username:
-            super().save(*args, **kwargs)  # Сначала сохранить, чтобы id был доступен
-            self.username = str(self.id)  # Установить username равным id
-        super().save(*args, **kwargs)  # Сохранить еще раз с обновленным username
+            super().save(*args, **kwargs)
+            self.username = str(self.id)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         full_name = f"{self.last_name} {self.first_name} {self.middle_name or ''}".strip()
@@ -73,7 +72,7 @@ class Category(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:  # Генерация слага только если он отсутствует
+        if not self.slug:
             self.slug = pytils_slugify(self.name)
 
         super().save(*args, **kwargs)
@@ -84,7 +83,7 @@ class Category(models.Model):
 
 
 class Specialist(models.Model):
-    # Поле для фото, можно указать, куда сохранять файлы
+
     photo = models.ImageField(upload_to='specialists/photos/', blank=True, null=True, verbose_name="Фото")
 
     last_name = models.CharField(max_length=40, verbose_name="Фамилия")
@@ -95,10 +94,10 @@ class Specialist(models.Model):
 
     speciality = models.CharField(max_length=200, verbose_name="Специальность")
 
-    # Поле с ForeignKey для связи с моделью категории
+
     category = models.ForeignKey(
-        'Category',  # Ссылка на модель категорий
-        on_delete=models.SET_NULL,  # Удаляем специалиста, если удалена категория
+        'Category',
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         verbose_name="Направление",
@@ -121,7 +120,7 @@ class Specialist(models.Model):
         return f"{self.last_name} {self.first_name} {self.middle_name or ''}".strip()
 
     def save(self, *args, **kwargs):
-        # Генерация слага
+
         if not self.slug:
             fio = f"{self.last_name} {self.first_name[0]}. {self.middle_name[0] if self.middle_name else ''}"
             self.slug = pytils_slugify(fio.strip())
@@ -131,10 +130,10 @@ class Specialist(models.Model):
 
 class Service(models.Model):
     name = models.CharField(max_length=200, unique=True, verbose_name="Название")
-    # Поле с ForeignKey для связи с моделью категории
+
     category = models.ForeignKey(
-        'Category',  # Ссылка на модель категорий
-        on_delete=models.SET_NULL,  # Удаляем специалиста, если удалена категория
+        'Category',
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         verbose_name="Направление",
@@ -144,8 +143,8 @@ class Service(models.Model):
     link = models.CharField(max_length=200, blank=True, null=True, verbose_name="Ссылка")
     slug = models.SlugField(max_length=200, unique=True, verbose_name="Слаг", blank=True, editable=False)
     price = models.DecimalField(
-        max_digits=10,  # Максимальная длина числа (включая запятую)
-        decimal_places=2,  # Количество знаков после запятой
+        max_digits=10,
+        decimal_places=2,
         default=Decimal('0.00'),
         verbose_name="Цена"
     )
@@ -158,7 +157,7 @@ class Service(models.Model):
         return str(self.name)
 
     def save(self, *args, **kwargs):
-        if not self.slug:  # Генерация слага только если он отсутствует
+        if not self.slug:
             a = str(self.name) + " " + str(self.category)
             self.slug = pytils_slugify(a)
 
@@ -170,16 +169,16 @@ class Service(models.Model):
 
 
 class News(models.Model):
-    title = models.CharField(max_length=255, unique=True, verbose_name="Название")  # Поле для названия
-    main_image = models.ImageField(upload_to='news_images/', verbose_name="Главное фото")  # Поле для фото
-    content = models.TextField(verbose_name="Содержимое")  # Поле для текста новости
-    published_date = models.DateField(verbose_name="Дата публикации")  # Поле для даты
+    title = models.CharField(max_length=255, unique=True, verbose_name="Название")
+    main_image = models.ImageField(upload_to='news_images/', verbose_name="Главное фото")
+    content = models.TextField(verbose_name="Содержимое")
+    published_date = models.DateField(verbose_name="Дата публикации")
     slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name="Слаг")
 
     class Meta:
         verbose_name = "Новость"
         verbose_name_plural = "Новости"
-        ordering = ['-published_date']  # Сортировка по убыванию даты публикации
+        ordering = ['-published_date']
 
     def __str__(self):
         return self.title
@@ -190,7 +189,7 @@ class News(models.Model):
         return self.published_date >= (timezone.now().date() - timedelta(days=7))
 
     def save(self, *args, **kwargs):
-        if not self.slug:  # Генерация слага только если он отсутствует
+        if not self.slug:
             self.slug = pytils_slugify(self.title)
 
         super().save(*args, **kwargs)
@@ -198,7 +197,7 @@ class News(models.Model):
 
 class Talon(models.Model):
     user = models.ForeignKey(
-        'Account',  # Связь с моделью Account
+        'Account',
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
         related_name="talons"
@@ -206,15 +205,15 @@ class Talon(models.Model):
     date = models.DateField(verbose_name="Дата приёма")
     cabinet = models.CharField(max_length=20, verbose_name="Кабинет")
     doctor = models.ForeignKey(
-        'Specialist',  # Связь с моделью Specialist
+        'Specialist',
         on_delete=models.SET_NULL,
         verbose_name="Врач",
         related_name="talons",
         null=True
     )
-    time = models.TimeField(verbose_name="Время приёма")  # Используем TimeField для времени
+    time = models.TimeField(verbose_name="Время приёма")
     service = models.ForeignKey(
-        'Service',  # Связь с моделью Service
+        'Service',
         on_delete=models.SET_NULL,
         verbose_name="Услуга",
         related_name="talons",
@@ -227,13 +226,13 @@ class Talon(models.Model):
         verbose_name_plural = "Талоны"
 
     def __str__(self):
-        # Отображаем пользователя, услугу и дату приёма
+
         return f'{self.user} - {self.service} ({self.date})'
 
 
 class Review(models.Model):
     user = models.ForeignKey(
-        'Account',  # Связь с моделью Account
+        'Account',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -254,10 +253,10 @@ class Review(models.Model):
     class Meta:
         verbose_name = "Отзыв"
         verbose_name_plural = "Отзывы"
-        ordering = ['-id']  # Последние отзывы вверху
+        ordering = ['-id']
 
     def __str__(self):
-        # Возвращаем сокращённое ФИО и оценку
+
         return f"{self.user} - {self.rating}/5"
 
     def get_user_short_name(self):
@@ -268,19 +267,19 @@ class Review(models.Model):
 
     def clean(self):
         """Проверка, что дата не в будущем."""
-        if self.date > localdate():  # Сравниваем date с date
+        if self.date > localdate():
             raise ValidationError({"date": "Дата не может быть в будущем."})
 
 
 class SpecialistService(models.Model):
     specialist = models.ForeignKey(
-        'Specialist',  # Ссылка на модель Specialist
+        'Specialist',
         on_delete=models.CASCADE,
         verbose_name="Специалист",
         related_name="services"
     )
     service = models.ForeignKey(
-        'Service',  # Ссылка на модель Service
+        'Service',
         on_delete=models.CASCADE,
         verbose_name="Услуга",
         related_name="specialists"
@@ -289,7 +288,7 @@ class SpecialistService(models.Model):
     class Meta:
         verbose_name = "Связь специалиста и услуги"
         verbose_name_plural = "Связи специалистов и услуг"
-        unique_together = ('specialist', 'service')  # Уникальная пара "специалист-услуга"
+        unique_together = ('specialist', 'service')
 
     def __str__(self):
         return f"{self.specialist} - {self.service}"
@@ -304,21 +303,21 @@ class Address(models.Model):
                   "Если в адресе проспект, то надо писать полностью: проспект (Название)"
     )
     working_hours = models.CharField(max_length=100, verbose_name="Время работы", blank=True,
-                                     null=True)  # Время работы
+                                     null=True)
 
     latitude = models.DecimalField(
         max_digits=9, decimal_places=6, verbose_name="Широта", blank=True, null=True
-    )  # Поле для широты
+    )
     longitude = models.DecimalField(
         max_digits=9, decimal_places=6, verbose_name="Долгота", blank=True, null=True
-    )  # Поле для долготы
+    )
 
     class Meta:
         verbose_name = "Адрес"
         verbose_name_plural = "Адреса"
 
     def save(self, *args, **kwargs):
-        # Проверяем, если координаты пустые, заполняем их через геокодирование
+
         if not self.latitude or not self.longitude:
             url = "https://nominatim.openstreetmap.org/search"
             params = {
@@ -333,10 +332,10 @@ class Address(models.Model):
             }
             response = requests.get(url, params=params, headers=headers)
 
-            # Проверяем статус ответа
+
             if response.status_code == 200:
                 data = response.json()
-                # Выводим отладочную информацию
+
                 print(f"Запрос: {self.address}")
                 print(f"Ответ: {data}")
 
@@ -348,7 +347,7 @@ class Address(models.Model):
             else:
                 print(f"Ошибка: {response.status_code} - {response.text}")
 
-        # Сохраняем объект, без изменения других данных
+
         super().save(*args, **kwargs)
 
     def __str__(self):

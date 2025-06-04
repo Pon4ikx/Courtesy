@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const arrow = document.querySelector(".burger-toggle .arrow");
 
     burgerToggle.addEventListener("click", function (event) {
-        event.preventDefault(); // Предотвращаем переход по ссылке
-        burgerMenu.classList.toggle("active"); // Переключаем класс активности меню
-        arrow.classList.toggle("rotated"); // Переключаем класс для стрелки
+        event.preventDefault();
+        burgerMenu.classList.toggle("active");
+        arrow.classList.toggle("rotated");
     });
 });

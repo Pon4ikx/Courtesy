@@ -37,7 +37,7 @@ class SignupForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             if self.initial.get(field_name) is None:
-                self.initial[field_name] = ''  # Заменяем None на пустую строку
+                self.initial[field_name] = ''
 
 
 class BookingForm(forms.Form):
@@ -74,7 +74,7 @@ User = get_user_model()
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = User  # Теперь это будет ваша модель Account
+        model = User
         fields = ['first_name', 'last_name', 'middle_name', 'email', 'phone']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-input'}),
@@ -86,6 +86,6 @@ class UserProfileForm(forms.ModelForm):
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
-        if phone and len(phone) < 5:  # Добавил проверку на наличие значения
+        if phone and len(phone) < 5:
             raise ValidationError("Номер телефона слишком короткий")
         return phone

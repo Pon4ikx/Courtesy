@@ -132,7 +132,6 @@ button.btn-primary:hover {
     background-color: #e98b83;
 }
 
-/* Добавьте в booking.css */
 .form-control {
     width: 100%;
     padding: 10px 15px;
@@ -152,12 +151,11 @@ button.btn-primary:hover {
 .form-control::placeholder {
     color: #aaa;
 }
-/* Стили для textarea с фиксированными размерами */
 #id_dop_info {
-    resize: none; /* Запрещаем изменение размера */
-    min-height: 100px; /* Минимальная высота */
-    max-height: 200px; /* Максимальная высота */
-    width: 100%; /* Ширина на весь контейнер */
+    resize: none;
+    min-height: 100px;
+    max-height: 200px;
+    width: 100%;
     padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -172,7 +170,6 @@ button.btn-primary:hover {
     box-shadow: 0 0 0 2px rgba(77, 174, 170, 0.2);
 }
 
-/* Для адаптивности */
 @media (max-width: 768px) {
     #id_dop_info {
         min-height: 80px;

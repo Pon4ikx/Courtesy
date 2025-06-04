@@ -8,12 +8,12 @@
 <div class="login-main">
     <div class="login-container">
         <h2>Вход в аккаунт</h2>
-        <form method="POST">  <!-- Добавлено -->
+        <form method="POST">
             {% csrf_token %}
             <input type="email" name="email" class="login-input" placeholder="Электронная почта" required>
             <input type="password" name="password" class="login-input" placeholder="Пароль" required>
-            <button type="submit" class="login-button">Войти</button>  <!-- Изменено -->
-            {% if error %}  <!-- Обработка ошибок -->
+            <button type="submit" class="login-button">Войти</button>
+            {% if error %}
                 <p style="color: red;">{{ error }}</p>
             {% endif %}
         </form>

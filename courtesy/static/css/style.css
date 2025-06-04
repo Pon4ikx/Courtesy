@@ -32,7 +32,7 @@ header {
   margin: 0 auto;
 }
 
-/* Логотип */
+
 .logo {
   display: flex;
   flex-direction: column;
@@ -53,37 +53,37 @@ header {
 
 }
 
-/* Поисковая строка */
+
 .search-container {
   position: relative;
-  display: inline-flex; /* Изменено с flex на inline-flex */
+  display: inline-flex;
   align-items: center;
   margin-top: 10px;
-  width: 300px; /* Фиксированная ширина контейнера */
+  width: 300px;
 }
 
-/* Поле ввода */
+
 .search-input {
-  width: 100%; /* Занимает всю ширину контейнера */
-  padding: 10px 60px 10px 15px; /* Правое поле увеличено для кнопки */
+  width: 100%;
+  padding: 10px 60px 10px 15px;
   font-size: 14px;
   border: 1px solid #C4E6DE;
   border-radius: 25px;
   outline: none;
-  box-sizing: border-box; /* Важно! */
-  background-color: #fff; /* На случай кастомного фона */
+  box-sizing: border-box;
+  background-color: #fff;
 }
 
-/* Кнопка поиска */
+
 .search-button {
   position: absolute;
-  right: 15px; /* Уменьшено с 10px для лучшего баланса */
+  right: 15px;
   top: 50%;
-  transform: translateY(-50%); /* Центрирование по вертикали */
+  transform: translateY(-50%);
   background-color: transparent;
   border: none;
   cursor: pointer;
-  padding: 0; /* Уменьшено с 5px */
+  padding: 0;
   width: 20px;
   height: 20px;
   display: flex;
@@ -91,11 +91,11 @@ header {
   justify-content: center;
 }
 
-/* Иконка лупы */
+
 .search-button img {
-  width: 100%; /* Использует размеры кнопки */
+  width: 100%;
   height: 100%;
-  object-fit: contain; /* Для правильного отображения иконки */
+  object-fit: contain;
   filter: brightness(0.5);
   transition: transform 0.2s, filter 0.2s;
 }
@@ -105,7 +105,7 @@ header {
   filter: brightness(0.8);
 }
 
-/* Навигация */
+
 nav {
   display: flex;
   gap: 20px;
@@ -130,7 +130,7 @@ nav a:hover {
   transform: scale(1.05);
 }
 
-/* Бургер-меню */
+
 .burger-menu {
   position: relative;
 }
@@ -150,7 +150,7 @@ nav a:hover {
   transform: scale(1.05);
 }
 
-/* Скрыть подпункты по умолчанию */
+
 .burger-links {
   display: none;
   position: absolute;
@@ -178,23 +178,23 @@ nav a:hover {
   color: #D2FFFB;
 }
 
-/* Показываем подпункты при активации */
+
 .burger-menu.active .burger-links {
   display: block;
 }
 
-/* Стрелка */
+
 .arrow {
   display: inline-block;
   font-size: 12px;
   margin-left: 8px;
   transform: rotate(0deg);
-  /* Начальное положение */
+
   transition: transform 0.3s ease;
-  /* Убедитесь, что время изменяется */
+
 }
 
-/* Поворот стрелки вверх */
+
 .burger-menu.active .arrow {
   transform: rotate(180deg);
 }
@@ -203,7 +203,7 @@ nav a:hover {
   transform: rotate(180deg);
 }
 
-/* Иконка профиля */
+
 .profile-icon {
   display: flex;
   flex-direction: column;
@@ -220,7 +220,7 @@ nav a:hover {
   cursor: pointer;
 }
 
-/* Подпись "Личный кабинет" */
+
 .profile-icon .profile-label {
   font-size: 16px;
   font-weight: 500;
@@ -232,7 +232,7 @@ nav a:hover {
   text-align: center;
 }
 
-/* Эффект наведения для подписи */
+
 .profile-icon .profile-label:hover {
   color: #D2FFFB;
   background-color: #5EAEA7;
@@ -240,7 +240,7 @@ nav a:hover {
 }
 
 
-/* Футер */
+
 footer {
   background-color: #5eaea6;
   padding: 20px 0;
@@ -248,7 +248,7 @@ footer {
   font-family: Arial, sans-serif;
 }
 
-/* Контейнер футера */
+
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -258,7 +258,7 @@ footer {
   padding: 0 20px;
 }
 
-/* Блок контактов */
+
 .footer-contacts,
 .footer-addresses {
   color: #333;
@@ -270,7 +270,7 @@ footer {
   margin: 5px 0;
 }
 
-/* Блок социальных сетей */
+
 .footer-socials {
   display: flex;
   gap: 15px;
@@ -291,7 +291,7 @@ footer {
 }
 
 
-/*Вход*/
+
 .login-container {
   max-width: 400px;
   margin: 50px auto;
@@ -363,7 +363,7 @@ footer {
   margin-top: 15px;
 }
 
-/* news_detail.html */
+
 
 #scrollToTopBtn {
   position: fixed;
@@ -403,19 +403,19 @@ html {
   transform: scale(1);
 }
 
-/* кнопка админки */
+
 #adminPanelBtn {
   position: fixed;
-  bottom: 120px;  /* над кнопкой "Наверх" */
+  bottom: 120px;
   right: 42px;
   z-index: 100;
   background-color: #F4A6A0;
   color: white;
   border: none;
-  border-radius: 50%;  /* идеально круглую форму */
-  width: 70px;  /* ширина кнопки */
-  height: 70px;  /* высота кнопки, равная ширине */
-  padding: 0;  /* убираем внутренние отступы */
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding: 0;
   font-size: 30px;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
@@ -430,7 +430,7 @@ html {
 }
 
 #adminPanelBtn:hover {
-  transform: scale(1);  /* увеличение кнопки при наведении */
-  background-color: #e28b86;  /* изменение цвета на более светлый */
+  transform: scale(1);
+  background-color: #e28b86;
 }
 

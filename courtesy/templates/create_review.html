@@ -24,7 +24,6 @@
     <form method="post">
         {% csrf_token %}
         
-        <!-- Скрытое поле для хранения значения рейтинга -->
         <input type="hidden" id="id_rating" name="rating" value="{{ form.rating.value|default:'0' }}">
         
         <div class="form-group">
@@ -34,7 +33,6 @@
                 <i class="fas fa-star star-icon" data-value="{{ i }}"></i>
                 {% endfor %}
             </div>
-            <!-- <div class="rating-hint">1 звезда - плохо, 5 звёзд - отлично</div> -->
             {{ form.rating.errors }}
         </div>
 

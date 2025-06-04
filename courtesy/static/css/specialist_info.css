@@ -7,7 +7,7 @@
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
 }
 
-/* Верхняя часть — фото + инфо */
+
 .specialist-main {
     display: flex;
     gap: 30px;
@@ -55,7 +55,7 @@
     margin: 6px 0;
 }
 
-/* Услуги */
+
 .specialist-services h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
@@ -77,7 +77,6 @@
     font-size: 1rem;
 }
 
-/* Кнопка записи */
 .book-btn-container {
     text-align: right;
     margin-top: 30px;

@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Переключение табов
+
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const tabId = this.getAttribute('data-tab');
             
-            // Удаляем активный класс у всех кнопок и контента
+
             document.querySelectorAll('.tab-btn, .tab-content').forEach(el => {
                 el.classList.remove('active');
             });
             
-            // Добавляем активный класс текущей кнопке и контенту
+
             this.classList.add('active');
             document.getElementById(tabId).classList.add('active');
         });
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
-// Обработка модального окна удаления аккаунта
+
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('deleteAccountModal');
     const btn = document.getElementById('deleteAccountBtn');
@@ -67,10 +67,10 @@ document.querySelectorAll('.btn-cancel').forEach(btn => {
                 const data = await response.json();
                 
                 if (response.ok && data.status === 'success') {
-                    // Создаем красивое уведомление
+
                     showToast(data.message, 'success');
                     
-                    // Плавно скрываем карточку
+
                     card.style.transition = 'all 0.3s ease';
                     card.style.opacity = '0';
                     setTimeout(() => card.remove(), 300);
@@ -86,7 +86,6 @@ document.querySelectorAll('.btn-cancel').forEach(btn => {
     });
 });
 
-// Функция для показа красивых уведомлений
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;

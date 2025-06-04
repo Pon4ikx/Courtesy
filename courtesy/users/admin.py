@@ -11,7 +11,6 @@ admin.site.site_title = "Администрирование Courtesy"  # Заг�
 admin.site.index_title = "Администрирование Courtesy"  # Текст на главной странице админки
 
 
-# Настройка админки для модели Account
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('email', 'first_name', 'last_name', 'middle_name', 'is_active', 'is_staff')
     search_fields = ('username', 'email', 'phone', 'first_name', 'last_name', 'middle_name')
@@ -33,7 +32,6 @@ class AccountAdmin(admin.ModelAdmin):
 
     ordering = ('username',)
 
-    # Переопределяем метод сохранения для хэширования паролей
     def save_model(self, request, obj, form, change):
         if form.cleaned_data.get('password') and not obj.pk:
             obj.set_password(form.cleaned_data['password'])
@@ -41,18 +39,18 @@ class AccountAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Убрали slug из отображаемых колонок
-    search_fields = ('name',)  # Поле поиска остается по имени
-    exclude = ('slug',)  # Исключаем поле slug из формы
+    list_display = ('name',)
+    search_fields = ('name',)
+    exclude = ('slug',)
 
 
 class SpecialistAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'middle_name', 'speciality', 'category', 'experience', "display_on_main",
                     "appointment_duration")
-    list_filter = ('category', 'speciality', "appointment_duration")  # Фильтры по категориям и специальностям
-    search_fields = ('last_name', 'first_name', 'middle_name', 'speciality', 'display_on_main')  # Поля для поиска
-    ordering = ('last_name', 'first_name', 'display_on_main')  # Сортировка по фамилии и имени
-    exclude = ('slug',)  # Исключаем поле slug из формы
+    list_filter = ('category', 'speciality', "appointment_duration")
+    search_fields = ('last_name', 'first_name', 'middle_name', 'speciality', 'display_on_main')
+    ordering = ('last_name', 'first_name', 'display_on_main')
+    exclude = ('slug',)
     fieldsets = (
         (None, {
             'fields': (
@@ -65,10 +63,10 @@ class SpecialistAdmin(admin.ModelAdmin):
 
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', "price", "description")  # Отображаемые поля в списке
-    search_fields = ('name', 'category__name')  # Поля для поиска (включая название категории)
-    list_filter = ('category',)  # Фильтрация по категории
-    exclude = ('slug',)  # Исключаем поле slug из формы
+    list_display = ('name', 'category', "price", "description")
+    search_fields = ('name', 'category__name')
+    list_filter = ('category',)
+    exclude = ('slug',)
 
     fieldsets = (
         (None, {
@@ -78,13 +76,13 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'published_date', 'main_image_preview')  # Отображение столбцов в списке
-    search_fields = ('title', 'content', 'published_date')  # Поля для поиска
-    list_filter = ('published_date',)  # Фильтр по дате публикации
-    date_hierarchy = 'published_date'  # Навигация по датам
-    fields = ('title', 'main_image', 'content', 'published_date')  # Поля в форме редактирования
-    readonly_fields = ('main_image_preview',)  # Поле для предпросмотра изображения
-    exclude = ('slug',)  # Исключаем поле slug из формы
+    list_display = ('title', 'published_date', 'main_image_preview')
+    search_fields = ('title', 'content', 'published_date')
+    list_filter = ('published_date',)
+    date_hierarchy = 'published_date'
+    fields = ('title', 'main_image', 'content', 'published_date')
+    readonly_fields = ('main_image_preview',)
+    exclude = ('slug',)
 
     def main_image_preview(self, obj):
         """Отображение предпросмотра изображения в админке."""
@@ -128,13 +126,11 @@ class TalonAdmin(admin.ModelAdmin):
         if db_field.name == "service" and 'doctor' in request.GET:
             doctor_id = request.GET.get('doctor')
             if doctor_id:
-                # Получаем все услуги, связанные с выбранным специалистом через промежуточную модель SpecialistService
                 service_ids = SpecialistService.objects.filter(specialist_id=doctor_id).values_list('service_id',
                                                                                                     flat=True)
                 kwargs['queryset'] = Service.objects.filter(id__in=service_ids)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    # Меняем порядок полей в форме
     def get_fieldsets(self, request, obj=None):
         fieldsets = [
             (None, {
@@ -144,15 +140,15 @@ class TalonAdmin(admin.ModelAdmin):
         return fieldsets
 
     class Media:
-        js = ('js/talon_filter.js',)  # Подключаем JS для динамической фильтрации
+        js = ('js/talon_filter.js',)
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('get_user_short_name', 'rating', 'content_preview', 'date', 'confirmed')  # Поля, отображаемые в списке
-    list_filter = ('rating', 'date', 'confirmed')  # Фильтрация по оценке
-    search_fields = ('user__last_name', 'user__first_name', 'content', 'date')  # Поиск по имени и содержимому
-    readonly_fields = ('get_user_short_name',)  # Поле только для чтения
-    fields = ('confirmed', 'get_user_short_name', 'rating', 'date', 'content')  # Порядок полей в форме
+    list_display = ('get_user_short_name', 'rating', 'content_preview', 'date', 'confirmed')
+    list_filter = ('rating', 'date', 'confirmed')
+    search_fields = ('user__last_name', 'user__first_name', 'content', 'date')
+    readonly_fields = ('get_user_short_name',)
+    fields = ('confirmed', 'get_user_short_name', 'rating', 'date', 'content')
     date_hierarchy = 'date'
 
     @admin.display(description="Пользователь")
@@ -210,27 +206,24 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
     def apply_filter(self, request):
         category_id = request.GET.get('category')
         if category_id:
-            set_category_id(category_id)  # Сохраняем в файл
+            set_category_id(category_id)
             return HttpResponseRedirect(f'/admin/users/specialistservice/add/?category={category_id}')
         return HttpResponseRedirect('/admin/users/specialistservice/add/')
 
     def add_view(self, request, form_url='', extra_context=None):
-        # Получаем category_id из GET-запроса, если он был передан
+
         category_id = request.GET.get('category')
 
-        # Если category_id передан, сохраняем его в файл
         if category_id:
-            set_category_id(category_id)  # Сохраняем в файл
+            set_category_id(category_id)
 
-        # Получаем category_id из файла для дальнейшего использования
         category_id_from_file = get_category_id()
 
         categories = Category.objects.all()
 
-        # Формируем сообщение о фильтрации
         filter_message = ""
         if category_id_from_file and category_id_from_file.isdigit():
-            category_id_from_file = int(category_id_from_file)  # Приводим к типу int
+            category_id_from_file = int(category_id_from_file)
             category = categories.filter(id=category_id_from_file).first()
             if category:
                 filter_message = f"Фильтрация по направлению: {category.name}"
@@ -247,7 +240,7 @@ class SpecialistServiceAdmin(admin.ModelAdmin):
     def response_add(self, request, obj, post_url_continue=None):
         category_id = request.POST.get('category')
         if category_id:
-            set_category_id(category_id)  # Сохраняем в файл
+            set_category_id(category_id)
         return super().response_add(request, obj, post_url_continue)
 
 
@@ -296,7 +289,6 @@ class ScheduleAdmin(admin.ModelAdmin):
     def apply_specialist_filter(self, request):
         specialist_id = request.GET.get('specialist')
         if specialist_id:
-            # Если выбран специалист, сохраняем его id в сессию
             request.session['specialist_id'] = specialist_id
             return HttpResponseRedirect(f'/admin/users/schedule/add/?specialist={specialist_id}')
         return HttpResponseRedirect('/admin/users/schedule/add/')
@@ -310,7 +302,6 @@ class ScheduleAdmin(admin.ModelAdmin):
         cabinets = Cabinet.objects.all()
         specialists = Specialist.objects.all()
 
-        # фильтрация кабинетов
         if specialist_id:
             specialist = Specialist.objects.filter(id=specialist_id).first()
             if specialist:
@@ -337,8 +328,6 @@ class ScheduleAdmin(admin.ModelAdmin):
                 return specialist.category.id
         return None
 
-
-# Регистрация модели в админке
 admin.site.register(Account, AccountAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Specialist, SpecialistAdmin)

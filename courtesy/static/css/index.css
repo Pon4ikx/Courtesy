@@ -1,4 +1,4 @@
-/* Основные стили для главной страницы */
+
 body {
     display: flex;
     flex-direction: column;
@@ -9,7 +9,7 @@ main {
     flex: 1;
 }
 
-/* разграничитель */
+
 .divider {
     max-width: 1200px;
     height: 5px;
@@ -17,7 +17,7 @@ main {
     margin: 40px auto;
 }
 
-/* Блок Hero - главный баннер */
+
 .hero-container {
     display: flex;
     justify-content: space-between;
@@ -76,7 +76,7 @@ main {
     border-radius: 10px;
 }
 
-/* Преимущества */
+
 .advantages {
     padding: 40px 20px;
     background-color: #d2fffa;
@@ -96,7 +96,7 @@ main {
     padding: 0;
     display: flex;
     flex-direction: column;
-    /* Элементы в столбик */
+
     gap: 20px;
     align-items: center;
 }
@@ -115,7 +115,7 @@ main {
 
 
 
-/* Сотрудники */
+
 .staff {
     padding: 40px 20px;
     max-width: 1200px;
@@ -133,7 +133,7 @@ main {
 .staff-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* 3 столбца */
+
     gap: 20px;
 }
 
@@ -172,7 +172,6 @@ main {
 }
 
 
-/* Последние новости */
 .latest-news {
     background-color: #d2fffa;
     padding: 40px 20px;

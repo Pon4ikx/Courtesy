@@ -27,7 +27,6 @@ def global_search(request):
 
     from .models import Specialist, Service
 
-    # Поиск специалистов
     specialists = Specialist.objects.annotate(
         full_name=Concat(
             'last_name', Value(' '),
@@ -41,7 +40,6 @@ def global_search(request):
         Q(speciality__icontains=query)
     ).distinct()
 
-    # Поиск услуг
     services = Service.objects.filter(
         Q(name__icontains=query) |
         Q(description__icontains=query)
@@ -49,7 +47,7 @@ def global_search(request):
 
     return render(request, 'search_results.html', {
         'query': query,
-        'specialists': specialists[:10],  # Ограничиваем количество результатов
+        'specialists': specialists[:10],
         'services': services[:10],
         'has_results': specialists.exists() or services.exists()
     })
@@ -58,7 +56,6 @@ def global_search(request):
 def index(request):
     specialists_to_display = Specialist.objects.filter(display_on_main=True)
 
-    # Получаем случайных 3 специалистов, если их больше 3
     if specialists_to_display.count() > 3:
         specialists = sample(list(specialists_to_display), 3)
     else:
@@ -89,13 +86,12 @@ def update_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Профиль успешно обновлен')
-            return redirect('personal')  # Редирект после успешного сохранения
+            return redirect('personal')
         else:
             messages.error(request, 'Ошибка при обновлении профиля')
     else:
         form = UserProfileForm(instance=request.user)
 
-    # Если GET запрос или форма не валидна, показываем форму снова
     return render(request, 'personal.html', {'form': form})
 
 
@@ -117,14 +113,12 @@ def cancel_talon(request, talon_id):
             talon = Talon.objects.get(id=talon_id, user=request.user)
             talon.delete()
 
-            # Для AJAX-запросов
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
                     'status': 'success',
                     'message': 'Запись успешно отменена!',
                     'talon_id': talon_id
                 })
-            # Для обычных запросов
             messages.success(request, 'Запись успешно отменена!')
             return redirect('personal')
 
@@ -155,35 +149,36 @@ def login_view(request):
     return render(request, 'login.html')
 
 
-# Личный кабинет
 @login_required
 def personal_view(request):
-    # Получаем текущего пользователя
     user = request.user
+    now = timezone.now()
 
-    # Получаем актуальные талоны (дата >= сегодня)
-    current_talons = Talon.objects.filter(
-        user=user,
-        date__gte=timezone.now().date()
-    ).order_by('date', 'time')
+    all_talons = Talon.objects.filter(user=user)
 
-    # Получаем историю посещений (дата < сегодня)
-    past_talons = Talon.objects.filter(
-        user=user,
-        date__lt=timezone.now().date()
-    ).order_by('-date', '-time')
+    current_talons = []
+    past_talons = []
 
-    user_has_review = Review.objects.filter(user=request.user).exists()
+    for talon in all_talons:
+        talon_dt = datetime.combine(talon.date, talon.time)
+        talon_dt = timezone.make_aware(talon_dt, timezone.get_current_timezone())
 
-    # Подготавливаем данные для формы
+        if talon_dt >= now:
+            current_talons.append(talon)
+        else:
+            past_talons.append(talon)
+
+    current_talons.sort(key=lambda t: (t.date, t.time))
+    past_talons.sort(key=lambda t: (t.date, t.time), reverse=True)
+
     if request.method == 'POST':
-        # Обработка сохранения данных профиля
         form = UserProfileForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            # Можно добавить сообщение об успешном сохранении
     else:
         form = UserProfileForm(instance=user)
+
+    user_has_review = Review.objects.filter(user=user).exists()
 
     context = {
         'user': user,
@@ -203,7 +198,7 @@ def create_review(request):
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.date = timezone.localdate()  # Устанавливаем текущую дату
+            review.date = timezone.localdate()
             if 1 <= review.rating <= 5:
                 review.save()
                 request.user.has_review = True
@@ -222,20 +217,16 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            # Сохраняем пользователя, но не активируем его сразу
             user = form.save(commit=False)
             user.is_active = False  # Блокируем до подтверждения email
             user.save()
 
-            # Генерация кода подтверждения
             code = str(random.randint(100000, 999999))  # Генерация случайного 6-значного кода
-            # Сохраняем код подтверждения в базе данных
             EmailConfirmationCode.objects.create(user=user, code=code)
 
-            # Отправка письма с кодом подтверждения
             send_confirmation_email(user, code)
 
-            return redirect('confirm_email')  # Редирект на страницу подтверждения (нужно создать эту страницу)
+            return redirect('confirm_email')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -325,10 +316,8 @@ def service_list_view(request):
 
 
 def reviews_view(request):
-    # Получаем только подтверждённые отзывы
     confirmed_reviews = Review.objects.filter(confirmed=True).order_by('-date')
 
-    # Рассчитываем средний рейтинг только для подтверждённых отзывов
     average_rating = confirmed_reviews.aggregate(Avg('rating'))['rating__avg']
 
     context = {
@@ -386,7 +375,6 @@ def booking_view(request):
         selected_date = form.cleaned_data.get("date")
         specialist = form.cleaned_data["specialist"]
 
-        # Получаем расписание специалиста на выбранную дату
         schedule = Schedule.objects.filter(specialist=specialist, date=selected_date).first()
 
         if schedule:
@@ -394,19 +382,16 @@ def booking_view(request):
             end = datetime.combine(selected_date, schedule.end_time)
             duration = timedelta(minutes=specialist.appointment_duration)
 
-            # Получаем все занятые талоны на эту дату и специалиста
             booked_talons = Talon.objects.filter(
                 doctor=specialist,
                 date=selected_date
-            ).values_list('time', flat=True)  # Получаем список занятых времён
-
+            ).values_list('time', flat=True)
             current = start
             available_talons = []
 
             while current + duration <= end:
                 time_slot = current.time()
 
-                # Добавляем только свободные талоны
                 if time_slot not in booked_talons:
                     available_talons.append(time_slot)
 
@@ -437,7 +422,6 @@ def create_talon(request):
         specialist = Specialist.objects.get(id=specialist_id)
         service = Service.objects.get(id=service_id)
 
-        # Получаем кабинет из расписания
         schedule = Schedule.objects.filter(specialist=specialist, date=date).first()
         cabinet = schedule.cabinet if schedule else "Кабинет не указан"
 
@@ -448,7 +432,7 @@ def create_talon(request):
             doctor=specialist,
             service=service,
             cabinet=cabinet,
-            dop_info=dop_info  # Сохраняем дополнительную информацию
+            dop_info=dop_info
         )
 
         messages.success(request, 'Запись успешно создана!')
