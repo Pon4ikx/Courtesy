@@ -508,6 +508,17 @@ body {
 .btn-confirm-delete {
     background: #e74c3c;
     color: white;
+    transition: all 0.3s;
+    gap: 10px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid #d6e7ff;
+
+}
+
+.btn-confirm-delete:hover {
+    color: #333;
+    background-color: #f1f1f1;
 }
 
 .talon-status.completed {
